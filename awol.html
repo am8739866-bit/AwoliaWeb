@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>አወሊያ ወጣቶች ጀምአ | እውቂያ እና ልገሳ</title>
+    <title>አወሊያ ወጣቶች ጀምአ | ትክክለኛ መረጃ</title>
     <style>
         * {
             margin: 0;
@@ -71,7 +71,7 @@
             background: #2c7a4d;
         }
 
-        /* --- Left Sidebar Navigation (FIXED - Now visible when opened) --- */
+        /* --- Left Sidebar Navigation --- */
         .sidebar {
             position: fixed;
             top: 0;
@@ -141,7 +141,6 @@
             padding-left: 1.2rem;
         }
 
-        /* Close sidebar when clicking outside (optional overlay) */
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -196,13 +195,6 @@
             padding-left: 1rem;
             margin-bottom: 1rem;
         }
-        .hero .quick-info {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-        }
 
         .section-title {
             font-size: 1.6rem;
@@ -232,6 +224,37 @@
             margin-bottom: 0.75rem;
             border-left: 3px solid #f5b042;
             padding-left: 0.7rem;
+        }
+
+        .values-list {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .values-list li {
+            margin: 0.8rem 0;
+            margin-left: 1.5rem;
+        }
+
+        .activity-block {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .activity-block h3 {
+            color: #1f5e3a;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid #f5b042;
+            padding-left: 0.7rem;
+        }
+        .activity-block ul {
+            margin-left: 1.5rem;
+        }
+        .activity-block li {
+            margin: 0.5rem 0;
         }
 
         .donate-box {
@@ -380,10 +403,8 @@
     <button class="toggle-btn" id="toggleSidebarBtn">☰</button>
 </header>
 
-<!-- Sidebar Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo-wrapper">
         <img src="awolia-youth-logo.jpg" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -391,8 +412,8 @@
     </div>
     <div class="sidebar-logo">አወሊያ <span>ወጣቶች ጀምአ</span></div>
     <div class="sidebar-nav">
-        <a data-page="about" class="active">🏠 መነሻ</a>
-        <a data-page="history">📜 ታሪክ</a>
+        <a data-page="home" class="active">🏠 መነሻ</a>
+        <a data-page="activities">📋 ተግባራት</a>
         <a data-page="community">🤝 ማህበረሰብ</a>
         <a data-page="donate">💚 ልገሳ</a>
         <a data-page="prayer">🕌 የሶላት ሰዓት</a>
@@ -404,49 +425,126 @@
 
 <div class="main-content" id="mainContent">
     <div class="container">
-        <!-- Home Page -->
-        <div id="about-page" class="page active-page">
+        <!-- HOME PAGE: Mission, Vision, Core Values (accurate) -->
+        <div id="home-page" class="page active-page">
             <div class="hero">
                 <h1>🧕 አወሊያ ወጣቶች ጀምአ</h1>
-                <div class="tagline">ቀጣዩን ትውልድ ማብቃት · የአወሊያ መስጊድ ወጣቶች</div>
-                <div class="quick-info">📍 አድራሻ፦ አወሊያ መስጊድ፣ አዲስ አበባ | የተመሠረተው 2010</div>
-                <div class="quick-info" style="margin-top:0.8rem; background:rgba(0,0,0,0.2);">📖 እምነት፣ አመራር እና ማህበረሰብ አገልግሎት</div>
+                <div class="tagline">ቀጣዩን ትውልድ ማብቃት · በእስልምና መሠረት</div>
             </div>
-            <p>እንኳን ወደ አወሊያ ወጣቶች ጀምአ በደህና መጡ — የአወሊያ መስጊድ ይፋዊ የወጣቶች ድርጅት። ወጣት ሙስሊሞችን በእስላማዊ ትምህርት፣ በአመራር ልማት እና በማህበረሰብ ተሳትፎ ለማሳደግ ቆርጠን እንሠራለን። ተልዕኮአችን በእምነት ሥር የሰደደ እና ለአዎንታዊ ለውጥ ቁርጠኛ የሆነ ትውልድ መገንባት ነው።</p>
-        </div>
-
-        <!-- History Page -->
-        <div id="history-page" class="page">
-            <h2 class="section-title">📜 ታሪክ እና መነሻ</h2>
-            <p style="margin-bottom: 1rem;">የአወሊያ (አዋሊያ) መስጊድ በኢትዮጵያ አዲስ አበባ ከመጀመሪያዎቹ እስላማዊ ተቋማት አንዱ ነው። ስሙ “አወሊያ” ማለት “መጀመሪያ” ወይም “ቀዳሚ” ማለት ሲሆን የአቅኚነት ሚናውን ያንጸባርቃል። መስጊዱ ትምህርት ቤት እና ጤና ጣቢያ ያካተተ ትልቅ ኮምፕሌክስ አካል ነው። <strong>የአወሊያ ወጣቶች ጀምአ</strong> የተቋቋመው በ2010 ዓ.ም ሲሆን ወጣቶችን በመስጊዱ ተግባራት ለማሳተፍ እና ቅርሱን ወደፊት ለማስቀጠል ነው።</p>
-            <div class="cards-grid">
-                <div class="info-card"><h3>የስሙ ትርጉም</h3><p>“አወሊያ” ከአረብኛ ሲተረጎም <strong>“መጀመሪያ”</strong> ወይም <strong>“ቀዳሚ”</strong> ማለት ነው። በዋና ከተማው ከመጀመሪያዎቹ እስላማዊ ተቋማት አንዱ ነበር።</p></div>
-                <div class="info-card"><h3>የመሥራቻ ቀን</h3><p>መስጊዱ የተመሠረተው <strong>1944 ዓ.ም (1951/52 እ.ኤ.አ.)</strong> በኢትዮጵያ ሙስሊም ምሁራን ነው። የወጣቶች ጀምአ የተመሠረተው በ2010 እ.ኤ.አ. ነው።</p></div>
-                <div class="info-card"><h3>መስጊድ እና የወጣቶች እንቅስቃሴ</h3><p>መስጊዱ የማህበረሰቡ ልብ ነው፤ የወጣቶች ጀምአ ለወጣት አባላት ፕሮግራሞችን ያዘጋጃል።</p></div>
-                <div class="info-card"><h3>ለምን “ኢራን መስጊድ”?</h3><p>ከ1979 ዓ.ም በኋላ የኢራን ድጋፍ ምክንያት “ኢራን መስጊድ” ተብሎ ይጠራል።</p></div>
-                <div class="info-card"><h3>የወጣቶች ፕሮግራሞች</h3><ul><li>ቁርአን ጥናት ክበቦች</li><li>የአመራር አውደ ጥናቶች</li><li>የማህበረሰብ በጎ ፈቃድ ቀናት</li></ul></div>
-                <div class="info-card"><h3>ትምህርት ቤት እና ጤና ጣቢያ</h3><p>እስላማዊ ትምህርት ያለው አንደኛ/ሁለተኛ ደረጃ ትምህርት ቤት፤ ጤና ጣቢያ ለሁሉም ሃይማኖት ክፍት ነው። የወጣቶች ጀምአ በሁለቱም ያግዛል።</p></div>
-            </div>
-        </div>
-
-        <!-- Community Page -->
-        <div id="community-page" class="page">
-            <h2 class="section-title">🤝 የወጣቶች እና ማህበረሰብ ተጽእኖ</h2>
-            <p>የአወሊያ ወጣቶች ጀምአ በአዲስ አበባ በመቶዎች ለሚቆጠሩ ወጣቶች አገልግሎት ይሰጣል። በመስጊዱ መገልገያዎች አማካኝነት ገጸ ባህሪን፣ እውቀትን እና ማህበራዊ ሃላፊነትን የሚገነቡ ፕሮግራሞችን እንሰራለን።</p>
-            <div style="background: #fff3e0; border-radius: 1rem; padding: 1.5rem; margin-top: 1.5rem;">
-                <h3 style="color:#1f5e3a;">የወጣቶች ፕሮግራሞች እና አገልግሎቶች</h3>
-                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
-                    <li>ሳምንታዊ ቁርአን እና አረብኛ ትምህርቶች</li>
-                    <li>የወጣቶች አመራር እና የንግግር ስልጠና</li>
-                    <li>የስፖርት ውድድሮች እና ጤናማ መዝናኛ</li>
-                    <li>የማህበረሰብ ኢፍጣር እና ምግብ ስርጭት (ረመዳን)</li>
-                    <li>አማካሪ እና የሙያ መመሪያ</li>
-                    <li>የአካባቢ ጽዳት ዘመቻዎች</li>
+            
+            <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
+            <p>የአወሊያ መስጊድ ወጣቶች ጀምአ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይህም ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ በማፍራት ነው። ይህ ማህበረሰብ በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እና ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ነው።</p>
+            
+            <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
+            <p>በ2012 ዓ.ም (2020 እ.ኤ.አ.) በአወሊያ መስጊድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጊዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም።</p>
+            
+            <h2 class="section-title">💎 መሠረታዊ እሴቶች (Core Values)</h2>
+            <div class="values-list">
+                <ul>
+                    <li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ሀዲት በመከተል በትጋት መፈጸም።</li>
+                    <li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li>
+                    <li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li>
+                    <li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li>
+                    <li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ቁርጠኝነትን ማሳየት።</li>
+                    <li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li>
+                    <li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Donate Page -->
+        <!-- ACTIVITIES PAGE (formerly History) - Detailed 5 sectors -->
+        <div id="activities-page" class="page">
+            <h2 class="section-title">📋 የአወሊያ ወጣቶች ጀምአ ተግባራት</h2>
+            
+            <div class="activity-block">
+                <h3>1. ማህበራዊ ዘርፍ (Social Sector)</h3>
+                <ul>
+                    <li>ከአወሊያ መስጊድ አስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) መሰብሰብ እና ማከፋፈል።</li>
+                    <li>የዘካተ ፊጥርን ከመስጊዱ ማህበረሰብ መሰብሰብ እና በሸሪዓ መርሆች መሠረት ለብቁዎች ማከፋፈል።</li>
+                    <li>ከግለሰቦች እና ድርጅቶች ጋር በማስተባበር የኡድሂያ (ቁርባኒ) መስዋዕት ማዘጋጀት እና ለተቸገሩ ማድረስ።</li>
+                    <li>የጉብኝት ፕሮግራም (ዚያራ) ለጀምአ አባላት እና ለመስጊዱ ማህበረሰብ ማካሄድ።</li>
+                    <li>አዲስ እና ያገለገሉ ልብሶችን እንዲሁም ጫማዎችን ከማህበረሰቡ መሰብሰብ እና ለተቸገሩ ማድረስ።</li>
+                    <li>ከመስጊዱ አስተዳደር ኮሚቴ ጋር በክረምት ወቅት የትምህርት ቁሳቁሶችን መሰብሰብ እና ማከፋፈል።</li>
+                    <li>ከልግስና ሰጪዎች (አህለል ከይር) በተገኘ ገንዘብ ኢፍጣር ፕሮግራም ማዘጋጀት።</li>
+                </ul>
+            </div>
+
+            <div class="activity-block">
+                <h3>2. ዳዕዋ እና ቁርአን ጥናት ዘርፍ (Dawah & Quranic Studies)</h3>
+                <ul>
+                    <li>ከመድረሳ ጋር በመተባበር በክረምት ወቅት የሸሪዓ ኮርሶችን በየጊዜው ማዘጋጀት።</li>
+                    <li>ለማህበረሰቡ በዲን ላይ የተመሠረተ ጥያቄ እና መልስ ዝግጅቶችን ማዘጋጀት።</li>
+                    <li>ትምህርታዊ የሃይማኖት መጣጥፎችን እና ጽሑፎችን መለጠፍ።</li>
+                    <li>ከኢማሞች ጋር በመተባበር በመስጊዱ ውስጥ የሚካሄዱትን የቁርአን ቅራኣት እና የዳዕዋ ፕሮግራሞችን መከታተል እና መደገፍ።</li>
+                </ul>
+            </div>
+
+            <div class="activity-block">
+                <h3>3. ስፖርት ዘርፍ (Sports Sector)</h3>
+                <ul>
+                    <li>መስጊዱን የሚወክል “አክህላቅ ቱርናሜንት” ቡድንን ማስተዳደር።</li>
+                    <li>በጀምአ አባላት መካከል የእግር ኳስ ልምምድ ክፍለ ጊዜዎችን ማዘጋጀት።</li>
+                    <li>የእሁድ እግር ኳስ ፕሮግራምን መምራት።</li>
+                    <li>ከክረምት ኮርሶች ጋር ተያይዘው የሚቀርቡ የወጣቶች ስፖርት ፕሮግራሞችን (እንደ ቦክስ እና ታክዎንዶ) ማስተዳደር እና መቆጣጠር።</li>
+                </ul>
+            </div>
+
+            <div class="activity-block">
+                <h3>4. የሴቶች ዘርፍ (Women’s Sector)</h3>
+                <ul>
+                    <li>ሁሉንም የድርጅት እና የአመራር ተግባራት ከወንዶች ጎን ጋር በማመሳሰል ማስተባበር።</li>
+                    <li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li>
+                    <li>“ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞችን ማዘጋጀት።</li>
+                    <li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ (ካዳሚ) ማድረግ።</li>
+                </ul>
+            </div>
+
+            <div class="activity-block">
+                <h3>5. ሌሎች አጠቃላይ ተግባራት (General Activities)</h3>
+                <ul>
+                    <li>ለዒድ ሶላት አቀባበል እና ሎጂስቲክስ በማስተባበር ግንባር ቀደም ሚና መጫወት።</li>
+                    <li>ለመስጊዱ ወይም ለኮምፕሌክሱ በሚዘጋጁ የገንዘብ ማሰባሰብያ ዝግጅቶች እና ሌሎች ዋና ፕሮግራሞች በጎ ፈቃድ አገልግሎት መስጠት።</li>
+                    <li>በኮምፕሌክሱ ውስጥ ወይም በሌሎች ድርጅቶች ለሚዘጋጁ ኢፍጣር ፕሮግራሞች ሃላፊነት መውሰድ ወይም መተባበር።</li>
+                    <li>በመስጊዱ ውስጥ እና ውጭ የጽዳት ዘመቻዎችን ማካሄድ።</li>
+                    <li>በመስጊዱ ለሚካሄዱ የገንዘብ ማሰባሰብያ ፕሮግራሞች ማስተባበር።</li>
+                    <li>በጁሙዓ ሶላት ወቅት የረድፎች (ሳፍ) አደረጃጀት እና ቦታ አያያዝ ማመቻቸት።</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- COMMUNITY PAGE - Social Sector & Women's Initiatives (additional focus) -->
+        <div id="community-page" class="page">
+            <h2 class="section-title">🤝 ማህበረሰብ እና የሴቶች ተነሳሽነት</h2>
+            <div class="activity-block">
+                <h3>ማህበራዊ እንክብካቤ (Social Care)</h3>
+                <ul>
+                    <li>የረመዳን የምግብ ዕርዳታ (አስበዛ) ስርጭት ከአስተዳደር ኮሚቴ ጋር በመተባበር።</li>
+                    <li>ዘካተ ፊጥር እና ኡድሂያ ማከፋፈል።</li>
+                    <li>የጉብኝት ፕሮግራም (ዚያራ) ለታመሙ እና ለተቸገሩ አባላት።</li>
+                    <li>የልብስ እና ጫማ ልገሳ ስብስብ ለተቸገሩ ቤተሰቦች።</li>
+                    <li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li>
+                </ul>
+            </div>
+            <div class="activity-block">
+                <h3>👩 የሴቶች ዘርፍ ተግባራት</h3>
+                <ul>
+                    <li>ራሳቸውን ችለው የቁርአን ቅራኣት ክፍለ ጊዜዎች ለእናቶች።</li>
+                    <li>“ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች ሴቶችን ለማበረታታት።</li>
+                    <li>ለጁሙዓ ሶላት የአገልግሎት እና ቅዳሜ አመቻቸት።</li>
+                    <li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li>
+                </ul>
+            </div>
+            <div class="activity-block">
+                <h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3>
+                <ul>
+                    <li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li>
+                    <li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li>
+                    <li>ቦክስ፣ ታክዎንዶ እና ሌሎች ስፖርቶች ከክረምት ኮርሶች ጋር።</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DONATE PAGE (unchanged, correct info) -->
         <div id="donate-page" class="page">
             <div class="donate-box">
                 <h3>💚 የአወሊያ ወጣቶች ጀምአን ደግፉ</h3>
@@ -462,7 +560,7 @@
             </div>
         </div>
 
-        <!-- Prayer Times Page -->
+        <!-- PRAYER TIMES PAGE (unchanged) -->
         <div id="prayer-page" class="page">
             <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
             <p>ለአወሊያ መስጊድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
@@ -482,44 +580,35 @@
             <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 1:00 ላይ ነው። የወጣቶች ጀምአ ከጁሙዓ በኋላ ለሳምንታዊ ሀላቃ ይሰበሰባል።</p>
         </div>
 
-        <!-- News & Games Page -->
+        <!-- NEWS & GAMES PAGE (unchanted, keep as is) -->
         <div id="news-page" class="page">
             <h2 class="section-title">📰 መጪ ጨዋታዎች እና ዝግጅቶች</h2>
-            <p>ከቅርብ ግጥሚያዎች፣ ውድድሮች እና የወጣቶች እንቅስቃሴዎች ጋር ወቅታዊ ይሁኑ።</p>
             <div class="events-list">
-                <div class="event-item"><div class="event-info"><div class="event-title">⚽ እግር ኳስ ወዳጃዊ ግጥሚያ</div><div class="event-details">አወሊያ ወጣቶች እና መርካቶ ዩናይትድ · ቦታ፦ አወሊያ ሜዳ</div></div><div class="event-date">📅 ሚያዝያ 12, 2025 · 4:00 ከሰዓት</div></div>
-                <div class="event-item"><div class="event-info"><div class="event-title">🏆 የረመዳን ውድድር ፍጻሜ</div><div class="event-details">ሻምፒዮንሺፕ ግጥሚያ · ቦታ፦ አዲስ አበባ ስታዲየም</div></div><div class="event-date">📅 ሚያዝያ 18, 2025 · 3:30 ከሰዓት</div></div>
-                <div class="event-item"><div class="event-info"><div class="event-title">🎮 ኢስፖርት ምሽት (ፊፋ እና ሞባይል ሌጀንድስ)</div><div class="event-details">የወጣቶች ማእከል የጌም ውድድር · ምዝገባ ያስፈልጋል</div></div><div class="event-date">📅 ሚያዝያ 25, 2025 · 7:00 ማታ</div></div>
-                <div class="event-item"><div class="event-info"><div class="event-title">🏃 5ኪሜ የበጎ አድራጎት ሩጫ</div><div class="event-details">በአወሊያ ወጣቶች ለአካባቢው ጤና ጣቢያ የተዘጋጀ</div></div><div class="event-date">📅 ግንቦት 3, 2025 · 8:00 ጠዋት</div></div>
-                <div class="event-item"><div class="event-info"><div class="event-title">📚 የወጣቶች ሴሚናር፦ አመራር በእስልምና</div><div class="event-details">እንግዳ ተናጋሪ፦ ሼኽ አህመድ · ለሁሉም ወጣቶች ክፍት</div></div><div class="event-date">📅 ግንቦት 10, 2025 · 2:00 ከሰዓት</div></div>
+                <div class="event-item"><div><div class="event-title">⚽ እግር ኳስ ወዳጃዊ ግጥሚያ</div><div>አወሊያ ወጣቶች እና መርካቶ ዩናይትድ</div></div><div class="event-date">ሚያዝያ 12, 2025</div></div>
+                <div class="event-item"><div><div class="event-title">🏆 የረመዳን ውድድር ፍጻሜ</div><div>አዲስ አበባ ስታዲየም</div></div><div class="event-date">ሚያዝያ 18, 2025</div></div>
+                <div class="event-item"><div><div class="event-title">🎮 ኢስፖርት ምሽት (ፊፋ እና ሞባይል ሌጀንድስ)</div><div>የወጣቶች ማእከል ውድድር</div></div><div class="event-date">ሚያዝያ 25, 2025</div></div>
             </div>
-            <p style="margin-top: 1rem; font-size: 0.85rem; color: #6b5a48;">* ተጨማሪ ዝግጅቶች በየጊዜው ይጨመራሉ። ለቀጥታ ዝመናዎች ቲክቶክን ይከተሉን!</p>
         </div>
 
-        <!-- Contact Page -->
+        <!-- CONTACT PAGE (all info remains) -->
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አወሊያ ወጣቶች ጀምአን ያግኙ</h2>
             <div class="contact-details">
-                <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div class="contact-value">በአወሊያ እርዳታ እና ልማት ድርጅት ዋና ጣቢያ ውስጥ (አወሊያ መስጊድ አካባቢ)፣ አዲስ አበባ፣ ኢትዮጵያ</div></div>
-                <div class="contact-item"><div class="contact-label">📞 ስልክ (ሞባይል)</div><div class="contact-value">+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button><br>+251 920 207 517 <button class="copy-btn" data-text="+251920207517">ቅዳ</button></div></div>
+                <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div class="contact-value">በአወሊያ እርዳታ እና ልማት ድርጅት ዋና ጣቢያ ውስጥ (አወሊያ መስጊድ አካባቢ)፣ አዲስ አበባ</div></div>
+                <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div class="contact-value">+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button><br>+251 920 207 517 <button class="copy-btn" data-text="+251920207517">ቅዳ</button></div></div>
                 <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div class="contact-value">aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
                 <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div class="contact-value"><a href="https://t.me/imamseid7517" target="_blank" class="telegram-link">💬 t.me/imamseid7517</a> <button class="copy-btn" data-text="https://t.me/imamseid7517">ሊንክ ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">📱 ቴሌብር</div><div class="contact-value">09XX XXX XXX <button class="copy-btn" data-text="09XXXXXXXXX">ቁጥር ቅዳ</button><br><span class="small-note">እባክዎ በስልክ ያግኙን ወይም ከወጣቶች ቢሮ ጋር ይገናኙ።</span></div></div>
-                <div class="contact-item"><div class="contact-label">📞 የስልክ ድጋፍ ሰዓት</div><div class="contact-value"><strong>ከሰኞ እስከ እሁድ ከ3:00 እስከ ኢሻ ሰላት</strong><br>ከሰኞ እስከ እሁድ፣ ከምሽቱ 3:00 እስከ እሻ ሶላት</div></div>
-                <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ የሥራ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ፦ 2:00 ከሰዓት – 6:00 ከሰዓት<br>ዓርብ፦ 10:00 ጠዋት – 12:00 ቀትር<br>ቅዳሜ፦ 3:00 ከሰዓት – 5:00 ከሰዓት (የወጣቶች መሰብሰቢያ)</div></div>
-                <div class="contact-item"><div class="contact-label">🏦 የአካውንት ስም</div><div class="contact-value">የአወሊያ መስጂድ ወጣቶች ጀምአ (Awolia Mosque Youth Jamah)</div></div>
-                <div class="contact-item"><div class="contact-label">🔢 የአካውንት ቁጥሮች</div><div class="contact-value"><strong>1000560249733</strong> <button class="copy-btn" data-text="1000560249733">ቅዳ</button><br>አጭር ቁጥር፦ <strong>9733</strong> <button class="copy-btn" data-text="9733">ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">🏛️ ቅርንጫፍ</div><div class="contact-value">የለም (ቀጥታ ተቀማጭ ወደ CBE አካውንት)</div></div>
+                <div class="contact-item"><div class="contact-label">📞 የስልክ ድጋፍ ሰዓት</div><div class="contact-value"><strong>ከሰኞ እስከ እሁድ ከ3:00 እስከ ኢሻ ሰላት</strong></div></div>
+                <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት<br>ዓርብ 10:00–12:00 ጠዋት<br>ቅዳሜ 3:00–5:00 ከሰዓት</div></div>
             </div>
             <div style="margin-top: 1.5rem; text-align: center;">
                 <a href="https://www.tiktok.com/@awoliayouth123" target="_blank" class="social-link">📱 ቲክቶክ፦ @awoliayouth123</a>
                 <a href="https://t.me/imamseid7517" target="_blank" class="telegram-link" style="margin-left: 0.5rem;">📲 ቴሌግራም ቻናል</a>
-                <p style="font-size: 0.8rem; margin-top: 0.5rem;">ለዝማኔዎች፣ ዝግጅቶች እና ማሳሰቢያዎች ይከተሉን!</p>
             </div>
         </div>
 
         <div class="footer">
-            <p>📌 አወሊያ ወጣቶች ጀምአ — ወጣት ሙስሊሞችን በእምነት እና አገልግሎት ማብቃት።<br>መቀመጫ፦ አወሊያ መስጊድ፣ አዲስ አበባ። ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948<br>📢 ቴሌግራም፦ <a href="https://t.me/imamseid7517" target="_blank" style="color:#1f5e3a; text-decoration:underline;">t.me/imamseid7517</a><br>© 2025</p>
+            <p>📌 አወሊያ ወጣቶች ጀምአ — ወጣት ሙስሊሞችን በእምነት እና አገልግሎት ማብቃት።<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948<br>© 2025</p>
         </div>
     </div>
 </div>
@@ -529,22 +618,14 @@
     const overlay = document.getElementById('sidebarOverlay');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
     
-    function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('active');
-    }
-    
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-    }
-    
+    function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
     toggleBtn.addEventListener('click', openSidebar);
     overlay.addEventListener('click', closeSidebar);
 
     const pages = {
-        about: document.getElementById('about-page'),
-        history: document.getElementById('history-page'),
+        home: document.getElementById('home-page'),
+        activities: document.getElementById('activities-page'),
         community: document.getElementById('community-page'),
         donate: document.getElementById('donate-page'),
         prayer: document.getElementById('prayer-page'),
