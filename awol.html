@@ -354,6 +354,21 @@
         .contact-value {
             flex: 1;
         }
+        .phone-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .phone-line:last-child {
+            margin-bottom: 0;
+        }
+        .phone-number {
+            white-space: nowrap;
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
 
         .footer {
             text-align: center;
@@ -385,6 +400,7 @@
             .main-logo { width: 45px; height: 45px; }
             .site-header { padding: 0.5rem 1rem; }
             .main-content { margin-top: 75px; }
+            .phone-number { white-space: normal; }
         }
     </style>
 </head>
@@ -590,25 +606,37 @@
             </div>
         </div>
 
-        <!-- CONTACT PAGE (updated address) -->
+        <!-- CONTACT PAGE - phone numbers with equal spacing -->
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አወሊያ መስጂድ ወጣቶች ጀምዐን ያግኙ</h2>
             <div class="contact-details">
                 <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div class="contact-value">በአወሊያ እርዳታ እና ልማት ድርጅት ዋና ቢሮ ውስጥ (አወሊያ መስጂድ አካባቢ)፣ አዲስ አበባ</div></div>
-                <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div class="contact-value">+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button><br>+251 920 207 517 <button class="copy-btn" data-text="+251920207517">ቅዳ</button></div></div>
+                <div class="contact-item">
+                    <div class="contact-label">📞 ስልክ</div>
+                    <div class="contact-value">
+                        <div class="phone-line">
+                            <span class="phone-number">+251 910 518 948</span>
+                            <button class="copy-btn" data-text="+251910518948">ቅዳ</button>
+                        </div>
+                        <div class="phone-line">
+                            <span class="phone-number">+251 922 957 451</span>
+                            <button class="copy-btn" data-text="+251922957451">ቅዳ</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div class="contact-value">aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div class="contact-value"><a href="https://t.me/imamseid7517" target="_blank" class="telegram-link">💬 t.me/imamseid7517</a> <button class="copy-btn" data-text="https://t.me/imamseid7517">ሊንክ ቅዳ</button></div></div>
+                <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div class="contact-value"><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" class="telegram-link">💬 t.me/+GdbodoOS7VQzYjk0</a> <button class="copy-btn" data-text="https://t.me/+GdbodoOS7VQzYjk0">ሊንክ ቅዳ</button></div></div>
                 <div class="contact-item"><div class="contact-label">📞 የስልክ ድጋፍ ሰዓት</div><div class="contact-value"><strong>ከሰኞ እስከ እሁድ ከምሽቱ 3:00 እስከ እሻ ሶላት</strong></div></div>
                 <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት<br>ዓርብ 10:00–12:00 ጠዋት<br>ቅዳሜ 3:00–5:00 ከሰዓት</div></div>
             </div>
             <div style="margin-top: 1.5rem; text-align: center;">
                 <a href="https://www.tiktok.com/@awoliayouth123" target="_blank" class="social-link">📱 ቲክቶክ፦ @awoliayouth123</a>
-                <a href="https://t.me/imamseid7517" target="_blank" class="telegram-link" style="margin-left: 0.5rem;">📲 ቴሌግራም ቻናል</a>
+                <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" class="telegram-link" style="margin-left: 0.5rem;">📲 ቴሌግራም ቻናል</a>
             </div>
         </div>
 
         <div class="footer">
-            <p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — ወጣት ሙስሊሞችን በእምነት እና አገልግሎት ማብቃት።<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948<br>© 2025 Awolia Mosque Youth Association</p>
+            <p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — ወጣት ሙስሊሞችን በእምነት እና አገልግሎት ማብቃት።<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948 | +251 922 957 451<br>📢 ቴሌግራም፦ <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#1f5e3a; text-decoration:underline;">t.me/+GdbodoOS7VQzYjk0</a><br>© 2025 Awolia Mosque Youth Association</p>
         </div>
     </div>
 </div>
