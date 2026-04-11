@@ -3,386 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <!-- Favicon using the provided logo image -->
-    <link rel="icon" type="image/jpg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" type="image/jpg">
+    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" type="image/jpeg">
     <title>አወሊያ መስጂድ ወጣቶች ጀምዐ | ስለ እኛ እና ልገሳ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #fef8f0;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            color: #2c2b2a;
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-
-        /* --- Site Header with Logo --- */
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            z-index: 1050;
-            padding: 0.8rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .main-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #1f5e3a;
-            background: #1f5e3a;
-        }
-        .site-title h1 {
-            font-size: 1.2rem;
-            color: #1f5e3a;
-            margin: 0;
-        }
-        .site-title p {
-            font-size: 0.8rem;
-            color: #e6b422;
-            margin: 0;
-        }
-        .toggle-btn {
-            background: #1f5e3a;
-            color: white;
-            border: none;
-            font-size: 1.6rem;
-            padding: 0.4rem 1rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .toggle-btn:hover {
-            background: #2c7a4d;
-        }
-
-        /* --- Left Sidebar Navigation --- */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100%;
-            background: #1f5e3a;
-            z-index: 1100;
-            transition: transform 0.3s ease;
-            transform: translateX(-100%);
-            box-shadow: 2px 0 12px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem 1rem;
-            overflow-y: auto;
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-        }
-
-        .sidebar-logo-wrapper {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .sidebar-logo-wrapper img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f5b042;
-            background: #1f5e3a;
-        }
-        .sidebar-logo {
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        .sidebar-logo span {
-            color: #f5b042;
-        }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .sidebar-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.6rem 0.8rem;
-            border-radius: 0.5rem;
-            transition: 0.2s;
-            font-size: 0.95rem;
-            display: block;
-            cursor: pointer;
-        }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: #2c7a4d;
-            color: #f5e2c9;
-            padding-left: 1.2rem;
-        }
-
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1055;
-            display: none;
-        }
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        .main-content {
-            margin-top: 85px;
-            padding: 1rem;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .page.active-page {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #1f5e3a 0%, #2c7a4d 100%);
-            color: white;
-            border-radius: 2rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        .hero h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        .hero .tagline {
-            font-size: 1rem;
-            border-left: 3px solid #f5b042;
-            padding-left: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin: 2rem 0 1rem 0;
-            border-left: 5px solid #e6b422;
-            padding-left: 1rem;
-            color: #1e3a2f;
-        }
-
-        .values-list {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .values-list li {
-            margin: 0.8rem 0;
-            margin-left: 1.5rem;
-        }
-
-        .activity-block {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .activity-block h3 {
-            color: #1f5e3a;
-            margin-bottom: 0.8rem;
-            border-left: 3px solid #f5b042;
-            padding-left: 0.7rem;
-        }
-        .activity-block ul {
-            margin-left: 1.5rem;
-        }
-        .activity-block li {
-            margin: 0.5rem 0;
-        }
-
-        .donate-box {
-            background: #fff3e0;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
-        .single-bank {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            max-width: 500px;
-            margin: 1.5rem auto 0;
-            text-align: left;
-            border-left: 5px solid #e6b422;
-        }
-        .copy-btn {
-            background: #1f5e3a;
-            color: white;
-            border: none;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            margin-left: 0.5rem;
-        }
-
-        .prayer-table {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .prayer-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0e2d2;
-        }
-        .countdown-box {
-            background: #1f5e3a;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin-top: 1rem;
-        }
-        #countdownTimer {
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-
-        .match-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.8rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-left: 6px solid #e6b422;
-            text-align: center;
-        }
-        .match-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1f5e3a;
-            margin-bottom: 1rem;
-        }
-        .match-detail {
-            font-size: 1.1rem;
-            margin: 0.8rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-        .match-label {
-            font-weight: 600;
-            color: #2c7a4d;
-        }
-        .match-value {
-            color: #2c2b2a;
-        }
-
-        .contact-details {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .contact-item {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0e2d2;
-        }
-        .contact-label {
-            font-weight: 700;
-            width: 200px;
-            color: #1f5e3a;
-        }
-        .contact-value {
-            flex: 1;
-        }
-        .phone-line {
-            margin-bottom: 0.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .phone-line:last-child {
-            margin-bottom: 0;
-        }
-        .phone-number {
-            white-space: nowrap;
-            font-family: monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            border-top: 1px solid #e8ddcf;
-            font-size: 0.8rem;
-        }
-
-        .social-link, .telegram-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #010101;
-            color: white;
-            text-decoration: none;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-        .telegram-link {
-            background: #0088cc;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #fef8f0; font-family: 'Inter', system-ui, sans-serif; color: #2c2b2a; line-height: 1.5; overflow-x: hidden; }
+        .site-header { position: fixed; top: 0; left: 0; right: 0; background: white; box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 1050; padding: 0.8rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        .logo-wrapper { display: flex; align-items: center; gap: 1rem; }
+        .main-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #1f5e3a; background: #1f5e3a; }
+        .site-title h1 { font-size: 1.2rem; color: #1f5e3a; margin: 0; }
+        .site-title p { font-size: 0.8rem; color: #e6b422; margin: 0; }
+        .toggle-btn { background: #1f5e3a; color: white; border: none; font-size: 1.6rem; padding: 0.4rem 1rem; border-radius: 0.5rem; cursor: pointer; transition: 0.2s; }
+        .toggle-btn:hover { background: #2c7a4d; }
+        .sidebar { position: fixed; top: 0; left: 0; width: 280px; height: 100%; background: #1f5e3a; z-index: 1100; transition: transform 0.3s ease; transform: translateX(-100%); box-shadow: 2px 0 12px rgba(0,0,0,0.2); display: flex; flex-direction: column; padding: 1.5rem 1rem; overflow-y: auto; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-logo-wrapper { text-align: center; margin-bottom: 1rem; }
+        .sidebar-logo-wrapper img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #f5b042; background: #1f5e3a; }
+        .sidebar-logo { color: white; font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .sidebar-logo span { color: #f5b042; }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+        .sidebar-nav a { color: white; text-decoration: none; font-weight: 500; padding: 0.6rem 0.8rem; border-radius: 0.5rem; transition: 0.2s; font-size: 0.95rem; display: block; cursor: pointer; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: #2c7a4d; color: #f5e2c9; padding-left: 1.2rem; }
+        .sidebar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1055; display: none; }
+        .sidebar-overlay.active { display: block; }
+        .main-content { margin-top: 85px; padding: 1rem; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hero { background: linear-gradient(135deg, #1f5e3a 0%, #2c7a4d 100%); color: white; border-radius: 2rem; padding: 2rem; margin-bottom: 2rem; }
+        .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .hero .tagline { font-size: 1rem; border-left: 3px solid #f5b042; padding-left: 1rem; margin-bottom: 1rem; }
+        .section-title { font-size: 1.6rem; font-weight: 600; margin: 2rem 0 1rem 0; border-left: 5px solid #e6b422; padding-left: 1rem; color: #1e3a2f; }
+        .values-list { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .values-list li { margin: 0.8rem 0; margin-left: 1.5rem; }
+        .activity-block { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .activity-block h3 { color: #1f5e3a; margin-bottom: 0.8rem; border-left: 3px solid #f5b042; padding-left: 0.7rem; }
+        .activity-block ul { margin-left: 1.5rem; }
+        .activity-block li { margin: 0.5rem 0; }
+        .donate-box { background: #fff3e0; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; text-align: center; }
+        .single-bank { background: white; border-radius: 1rem; padding: 1.5rem; max-width: 500px; margin: 1.5rem auto 0; text-align: left; border-left: 5px solid #e6b422; }
+        .copy-btn { background: #1f5e3a; color: white; border: none; padding: 0.2rem 0.8rem; border-radius: 30px; font-size: 0.7rem; cursor: pointer; margin-left: 0.5rem; }
+        .prayer-table { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .prayer-row { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid #f0e2d2; }
+        .countdown-box { background: #1f5e3a; color: white; text-align: center; padding: 1rem; border-radius: 1rem; margin-top: 1rem; }
+        #countdownTimer { font-size: 1.6rem; font-weight: bold; }
+        .match-card { background: white; border-radius: 1rem; padding: 1.8rem; margin: 1.5rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-left: 6px solid #e6b422; text-align: center; }
+        .match-title { font-size: 1.6rem; font-weight: 700; color: #1f5e3a; margin-bottom: 1rem; }
+        .match-detail { font-size: 1.1rem; margin: 0.8rem 0; display: flex; align-items: center; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+        .match-label { font-weight: 600; color: #2c7a4d; }
+        .match-value { color: #2c2b2a; }
+        .contact-details { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
+        .contact-item { display: flex; flex-wrap: wrap; padding: 0.8rem 0; border-bottom: 1px solid #f0e2d2; }
+        .contact-label { font-weight: 700; width: 200px; color: #1f5e3a; }
+        .contact-value { flex: 1; }
+        .phone-line { margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+        .phone-line:last-child { margin-bottom: 0; }
+        .phone-number { white-space: nowrap; font-family: monospace; letter-spacing: 0.5px; }
+        .footer { text-align: center; margin-top: 3rem; padding: 2rem; border-top: 1px solid #e8ddcf; font-size: 0.8rem; }
+        .social-link, .telegram-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #010101; color: white; text-decoration: none; padding: 0.4rem 1rem; border-radius: 40px; font-size: 0.85rem; margin-top: 0.5rem; }
+        .telegram-link { background: #0088cc; }
         @media (max-width: 600px) {
             .hero h1 { font-size: 1.4rem; }
             .contact-label { width: 100%; }
@@ -395,22 +76,15 @@
     </style>
 </head>
 <body>
-
-<!-- Site Header with Logo -->
 <header class="site-header">
     <div class="logo-wrapper">
         <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አወሊያ መስጂድ ወጣቶች ጀምዐ አርማ" class="main-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; font-size: 28px; color: white;">🕌</div>
-        <div class="site-title">
-            <h1>አወሊያ መስጂድ ወጣቶች ጀምዐ</h1>
-            <p>Awolia Mosque Youth Association</p>
-        </div>
+        <div class="site-title"><h1>አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><p>Awolia Mosque Youth Association</p></div>
     </div>
     <button class="toggle-btn" id="toggleSidebarBtn">☰</button>
 </header>
-
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo-wrapper">
         <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አርማ" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -427,241 +101,66 @@
     </div>
     <div style="margin-top: auto; text-align: center; font-size: 0.7rem; color: rgba(255,255,255,0.5); padding-top: 1rem;">© 2025</div>
 </div>
-
 <div class="main-content" id="mainContent">
     <div class="container">
-        <!-- HOME PAGE -->
         <div id="home-page" class="page active-page">
-            <div class="hero">
-                <h1>🌙 አወሊያ መስጂድ ወጣቶች ጀምዐ</h1>
-                <div class="tagline">تكوين مجتمع شباب مسلم يقظ، واعٍ، ونشط</div>
-            </div>
-            
-            <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
-            <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
-            
-            <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
-            <p>በ2012 ዓ.ም (2020 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
-            
+            <div class="hero"><h1>🌙 አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><div class="tagline">تكوين مجتمع شباب مسلم يقظ، واعٍ، ونشط</div></div>
+            <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2><p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
+            <h2 class="section-title">👁️ ራዕይ (Vision)</h2><p>በ2012 ዓ.ም (2020 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
             <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
-            <div class="values-list">
-                <ul>
-                    <li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li>
-                    <li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li>
-                    <li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li>
-                    <li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li>
-                    <li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li>
-                    <li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li>
-                    <li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li>
-                </ul>
-            </div>
+            <div class="values-list"><ul><li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li><li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li><li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li><li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li><li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li><li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li><li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li></ul></div>
         </div>
-
-        <!-- COMMUNITY PAGE (ዘርፎች) -->
         <div id="community-page" class="page">
             <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
-            <div class="activity-block">
-                <h3>ማህበራዊ እንክብካቤ</h3>
-                <ul>
-                    <li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል።</li>
-                    <li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት።</li>
-                    <li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት።</li>
-                    <li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ።</li>
-                    <li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li>
-                </ul>
-            </div>
-            <div class="activity-block">
-                <h3>👩 የሴቶች ዘርፍ ተግባራት</h3>
-                <ul>
-                    <li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li>
-                    <li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች።</li>
-                    <li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት።</li>
-                    <li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li>
-                </ul>
-            </div>
-            <div class="activity-block">
-                <h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3>
-                <ul>
-                    <li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li>
-                    <li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li>
-                    <li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ፣ ታክዎንዶ እና ሌሎች ስፖርቶች።</li>
-                </ul>
-            </div>
+            <div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል።</li><li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት።</li><li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት።</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ።</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li></ul></div>
+            <div class="activity-block"><h3>👩 የሴቶች ዘርፍ ተግባራት</h3><ul><li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li><li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች።</li><li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት።</li><li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li></ul></div>
+            <div class="activity-block"><h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3><ul><li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li><li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li><li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ እና ሌሎች ስፖርቶች።</li></ul></div>
         </div>
-
-        <!-- DONATE PAGE -->
         <div id="donate-page" class="page">
-            <div class="donate-box">
-                <h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ደግፉ</h3>
-                <p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p>
-                <div class="single-bank">
-                    <h4 style="color:#1f5e3a; margin-bottom:0.8rem;">🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4>
-                    <p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p>
-                    <p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span style="font-size:0.8rem;">(አጭር ቁጥር / አጭር ቁጥር፦ 9733)</span></p>
-                    <p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p>
-                    <p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p>
-                </div>
-                <p class="donate-note">🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ። እናመሰግናለን!<br>🙏 እባክዎ ማጣቀሻ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" ብለው ይጠቀሙ። እናመሰግናለን!<br>📱 ቴሌብር / ቴሌብር፦ 09XX XXX XXX (ከዚህ በታች ይመልከቱ)</p>
-            </div>
+            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p><div class="single-bank"><h4 style="color:#1f5e3a; margin-bottom:0.8rem;">🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4><p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p><p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span style="font-size:0.8rem;">(አጭር ቁጥር / አጭር ቁጥር፦ 9733)</span></p><p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p><p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p class="donate-note">🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ። እናመሰግናለን!<br>🙏 እባክዎ ማጣቀሻ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" ብለው ይጠቀሙ። እናመሰግናለን!<br>📱 ቴሌብር / ቴሌብር፦ 09XX XXX XXX (ከዚህ በታች ይመልከቱ)</p></div>
         </div>
-
-        <!-- PRAYER TIMES PAGE -->
         <div id="prayer-page" class="page">
-            <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
-            <p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
-            <div class="prayer-table">
-                <div class="prayer-row"><span>ፋጅር (ንጋት)</span><span>5:12 ጠዋት</span></div>
-                <div class="prayer-row"><span>ፀሐይ መውጣት</span><span>6:22 ጠዋት</span></div>
-                <div class="prayer-row"><span>ዙህር (ቀትር)</span><span>12:29 ቀትር</span></div>
-                <div class="prayer-row"><span>ዐስር (ከሰዓት)</span><span>3:37 ከሰዓት</span></div>
-                <div class="prayer-row"><span>መግሪብ (ምሽት)</span><span>6:35 ከሰዓት</span></div>
-                <div class="prayer-row"><span>እሻ (ሌሊት)</span><span>7:41 ማታ</span></div>
-            </div>
-            <div class="countdown-box">
-                <h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4>
-                <div id="countdownTimer">-- : -- : --</div>
-                <p style="margin-top: 0.5rem; font-size: 0.8rem;">ቀጣይ ሶላት፦ <span id="nextPrayerName">--</span></p>
-            </div>
+            <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2><p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
+            <div class="prayer-table"><div class="prayer-row"><span>ፋጅር (ንጋት)</span><span>5:12 ጠዋት</span></div><div class="prayer-row"><span>ፀሐይ መውጣት</span><span>6:22 ጠዋት</span></div><div class="prayer-row"><span>ዙህር (ቀትር)</span><span>12:29 ቀትር</span></div><div class="prayer-row"><span>ዐስር (ከሰዓት)</span><span>3:37 ከሰዓት</span></div><div class="prayer-row"><span>መግሪብ (ምሽት)</span><span>6:35 ከሰዓት</span></div><div class="prayer-row"><span>ዒሻ (ሌሊት)</span><span>7:41 ማታ</span></div></div>
+            <div class="countdown-box"><h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4><div id="countdownTimer">-- : -- : --</div><p style="margin-top: 0.5rem; font-size: 0.8rem;">ቀጣይ ሶላት፦ <span id="nextPrayerName">--</span></p></div>
             <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 1:00 ላይ ነው። የወጣቶች ጀምዐ ከጁሙዓ በኋላ ለሳምንታዊ ሀላቃ ይሰበሰባል።</p>
         </div>
-
-        <!-- NEWS & GAMES PAGE - Match title in Amharic -->
         <div id="news-page" class="page">
             <h2 class="section-title">⚽ ቀጣይ ግጥሚያ (Next Match)</h2>
-            <div class="match-card">
-                <div class="match-title">🏆 አቡበከር ሲዲቅ vs. ጃዕፈር ኢብኑ አቢ ጠሊብ</div>
-                <div class="match-detail">
-                    <span class="match-label">📅 ቀን / Date:</span>
-                    <span class="match-value">2ኛ ሚያዝያ 2018</span>
-                </div>
-                <div class="match-detail">
-                    <span class="match-label">⏰ ሰዓት / Time:</span>
-                    <span class="match-value">After Fajir (ከፋጅር በኋላ)</span>
-                </div>
-                <div class="match-detail">
-                    <span class="match-label">📍 ቦታ / Location:</span>
-                    <span class="match-value">in the small area (በትንሹ ሜዳ)</span>
-                </div>
-            </div>
+            <div class="match-card"><div class="match-title">🏆 አቡበከር ሲዲቅ vs. ጃዕፈር ኢብኑ አቢ ጠሊብ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">4ኛ ሚያዝያ 2018</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After Fajir (ከፋጅር በኋላ)</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area (በትንሹ ሜዳ)</span></div></div>
             <p style="margin-top: 0.5rem; font-size: 0.9rem; text-align: center; color: #1f5e3a;">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
         </div>
-
-        <!-- CONTACT PAGE (ስለ እኛ) -->
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አወሊያ መስጂድ ወጣቶች ጀምዐን ያግኙ</h2>
             <div class="contact-details">
                 <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div class="contact-value">በአዲስ አበባ ከተማ አስተዳደር ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div>
-                <div class="contact-item">
-                    <div class="contact-label">📞 ስልክ</div>
-                    <div class="contact-value">
-                        <div class="phone-line">
-                            <span class="phone-number">+251 910 518 948</span>
-                            <button class="copy-btn" data-text="+251910518948">ቅዳ</button>
-                        </div>
-                        <div class="phone-line">
-                            <span class="phone-number">+251 922 957 451</span>
-                            <button class="copy-btn" data-text="+251922957451">ቅዳ</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div class="contact-value"><div class="phone-line"><span class="phone-number">+251 910 518 948</span><button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div class="phone-line"><span class="phone-number">+251 922 957 451</span><button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div>
                 <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div class="contact-value">aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
                 <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div class="contact-value"><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" class="telegram-link">💬 t.me/+GdbodoOS7VQzYjk0</a> <button class="copy-btn" data-text="https://t.me/+GdbodoOS7VQzYjk0">ሊንክ ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">📞 የስልክ ድጋፍ ሰዓት</div><div class="contact-value"><strong>ከሰኞ እስከ እሁድ ከምሽቱ 3:00 እስከ እሻ ሶላት</strong></div></div>
-                <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት<br>ዓርብ 10:00–12:00 ጠዋት<br>ቅዳሜ 3:00–5:00 ከሰዓት</div></div>
+                <!-- Phone support hours removed completely -->
+                <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)<br>ዓርብ 10:00–12:00 ጠዋት (ከእያንዳንዱ ሶላት በኋላ)<br>ቅዳሜ 3:00–5:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)</div></div>
             </div>
-            <div style="margin-top: 1.5rem; text-align: center;">
-                <a href="https://www.tiktok.com/@awoliayouth123" target="_blank" class="social-link">📱 ቲክቶክ፦ @awoliayouth123</a>
-                <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" class="telegram-link" style="margin-left: 0.5rem;">📲 ቴሌግራም ቻናል</a>
-            </div>
+            <div style="margin-top: 1.5rem; text-align: center;"><a href="https://www.tiktok.com/@awoliayouth123" target="_blank" class="social-link">📱 ቲክቶክ፦ @awoliayouth123</a><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" class="telegram-link" style="margin-left: 0.5rem;">📲 ቴሌግራም ቻናል</a></div>
         </div>
-
-        <!-- FOOTER -->
-        <div class="footer">
-            <p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ - Keep your faith in Allah<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948 | +251 922 957 451<br>📢 ቴሌግራም፦ <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#1f5e3a; text-decoration:underline;">t.me/+GdbodoOS7VQzYjk0</a><br>© 2025 Awolia Mosque Youth Association</p>
-        </div>
+        <div class="footer"><p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ - Keep your faith in Allah<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948 | +251 922 957 451<br>📢 ቴሌግራም፦ <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#1f5e3a; text-decoration:underline;">t.me/+GdbodoOS7VQzYjk0</a><br>© 2025 Awolia Mosque Youth Association</p></div>
     </div>
 </div>
-
 <script>
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
-    
     function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
     function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
     toggleBtn.addEventListener('click', openSidebar);
     overlay.addEventListener('click', closeSidebar);
-
-    const pages = {
-        home: document.getElementById('home-page'),
-        community: document.getElementById('community-page'),
-        donate: document.getElementById('donate-page'),
-        prayer: document.getElementById('prayer-page'),
-        news: document.getElementById('news-page'),
-        contact: document.getElementById('contact-page')
-    };
+    const pages = { home: document.getElementById('home-page'), community: document.getElementById('community-page'), donate: document.getElementById('donate-page'), prayer: document.getElementById('prayer-page'), news: document.getElementById('news-page'), contact: document.getElementById('contact-page') };
     const navLinks = document.querySelectorAll('.sidebar-nav a');
-
-    function switchPage(pageId) {
-        Object.values(pages).forEach(page => page.classList.remove('active-page'));
-        pages[pageId].classList.add('active-page');
-        navLinks.forEach(link => {
-            if (link.getAttribute('data-page') === pageId) link.classList.add('active');
-            else link.classList.remove('active');
-        });
-        closeSidebar();
-        window.scrollTo(0, 0);
-    }
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const pageId = link.getAttribute('data-page');
-            if (pageId && pages[pageId]) switchPage(pageId);
-        });
-    });
-
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const text = this.getAttribute('data-text');
-            navigator.clipboard.writeText(text).then(() => {
-                const original = this.innerText;
-                this.innerText = 'ተቀድቷል!';
-                setTimeout(() => this.innerText = original, 1500);
-            });
-        });
-    });
-
-    function getNextPrayer() {
-        const times = { Fajr: "05:12", Dhuhr: "12:29", Asr: "15:37", Maghrib: "18:35", Isha: "19:41" };
-        const now = new Date();
-        const currentTotal = now.getHours() * 60 + now.getMinutes();
-        let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity;
-        for (const [name, timeStr] of Object.entries(times)) {
-            const [hours, minutes] = timeStr.split(":").map(Number);
-            let total = hours * 60 + minutes;
-            if (total < currentTotal) total += 24 * 60;
-            const diff = total - currentTotal;
-            if (diff < nextDiff) { nextDiff = diff; nextPrayer = name; nextTimeStr = timeStr; }
-        }
-        const hoursLeft = Math.floor(nextDiff / 60);
-        const minutesLeft = nextDiff % 60;
-        const secondsLeft = 60 - now.getSeconds();
-        let prayerNameAmh = nextPrayer === "Fajr" ? "ፋጅር" : nextPrayer === "Dhuhr" ? "ዙህር" : nextPrayer === "Asr" ? "ዐስር" : nextPrayer === "Maghrib" ? "መግሪብ" : "እሻ";
-        return { name: prayerNameAmh, time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft };
-    }
-
-    function updateCountdown() {
-        const next = getNextPrayer();
-        const timerDiv = document.getElementById('countdownTimer');
-        const nextNameSpan = document.getElementById('nextPrayerName');
-        if (timerDiv && nextNameSpan) {
-            timerDiv.innerHTML = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
-            nextNameSpan.innerText = `${next.name} (${next.time})`;
-        }
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    function switchPage(pageId) { Object.values(pages).forEach(page => page.classList.remove('active-page')); pages[pageId].classList.add('active-page'); navLinks.forEach(link => { if (link.getAttribute('data-page') === pageId) link.classList.add('active'); else link.classList.remove('active'); }); closeSidebar(); window.scrollTo(0, 0); }
+    navLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const pageId = link.getAttribute('data-page'); if (pageId && pages[pageId]) switchPage(pageId); }); });
+    document.querySelectorAll('.copy-btn').forEach(btn => { btn.addEventListener('click', function() { const text = this.getAttribute('data-text'); navigator.clipboard.writeText(text).then(() => { const original = this.innerText; this.innerText = 'ተቀድቷል!'; setTimeout(() => this.innerText = original, 1500); }); }); });
+    function getNextPrayer() { const times = { Fajr: "05:12", Dhuhr: "12:29", Asr: "15:37", Maghrib: "18:35", Isha: "19:41" }; const now = new Date(); const currentTotal = now.getHours() * 60 + now.getMinutes(); let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity; for (const [name, timeStr] of Object.entries(times)) { const [hours, minutes] = timeStr.split(":").map(Number); let total = hours * 60 + minutes; if (total < currentTotal) total += 24 * 60; const diff = total - currentTotal; if (diff < nextDiff) { nextDiff = diff; nextPrayer = name; nextTimeStr = timeStr; } } const hoursLeft = Math.floor(nextDiff / 60); const minutesLeft = nextDiff % 60; const secondsLeft = 60 - now.getSeconds(); let prayerNameAmh = nextPrayer === "Fajr" ? "ፋጅር" : nextPrayer === "Dhuhr" ? "ዙህር" : nextPrayer === "Asr" ? "ዐስር" : nextPrayer === "Maghrib" ? "መግሪብ" : "ዒሻ"; return { name: prayerNameAmh, time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft }; }
+    function updateCountdown() { const next = getNextPrayer(); const timerDiv = document.getElementById('countdownTimer'); const nextNameSpan = document.getElementById('nextPrayerName'); if (timerDiv && nextNameSpan) { timerDiv.innerHTML = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`; nextNameSpan.innerText = `${next.name} (${next.time})`; } }
+    updateCountdown(); setInterval(updateCountdown, 1000);
 </script>
 </body>
 </html>
