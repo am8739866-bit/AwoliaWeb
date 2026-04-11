@@ -205,27 +205,6 @@
             color: #1e3a2f;
         }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .info-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #f0e2d2;
-        }
-        .info-card h3 {
-            font-size: 1.3rem;
-            color: #1f5e3a;
-            margin-bottom: 0.75rem;
-            border-left: 3px solid #f5b042;
-            padding-left: 0.7rem;
-        }
-
         .values-list {
             background: white;
             border-radius: 1rem;
@@ -309,29 +288,36 @@
             font-weight: bold;
         }
 
-        .events-list {
+        .match-card {
             background: white;
             border-radius: 1rem;
-            padding: 1.5rem;
+            padding: 1.8rem;
             margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 6px solid #e6b422;
+            text-align: center;
         }
-        .event-item {
-            padding: 1rem;
-            border-bottom: 1px solid #f0e2d2;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .event-title {
+        .match-title {
+            font-size: 1.6rem;
             font-weight: 700;
             color: #1f5e3a;
+            margin-bottom: 1rem;
         }
-        .event-date {
-            background: #e6b422;
-            padding: 0.3rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.75rem;
+        .match-detail {
+            font-size: 1.1rem;
+            margin: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .match-label {
+            font-weight: 600;
+            color: #2c7a4d;
+        }
+        .match-value {
+            color: #2c2b2a;
         }
 
         .contact-details {
@@ -401,6 +387,7 @@
             .site-header { padding: 0.5rem 1rem; }
             .main-content { margin-top: 75px; }
             .phone-number { white-space: normal; }
+            .match-title { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -409,7 +396,6 @@
 <!-- Site Header with Logo -->
 <header class="site-header">
     <div class="logo-wrapper">
-        <!-- Updated image source to raw GitHub URL -->
         <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አወሊያ መስጂድ ወጣቶች ጀምዐ አርማ" class="main-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; font-size: 28px; color: white;">🕌</div>
         <div class="site-title">
@@ -424,14 +410,12 @@
 
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo-wrapper">
-        <!-- Updated sidebar image source -->
         <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አርማ" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; margin: 0 auto; font-size: 45px; color: white;">🕌</div>
     </div>
     <div class="sidebar-logo">አወሊያ መስጂድ <span>ወጣቶች ጀምዐ</span></div>
     <div class="sidebar-nav">
         <a data-page="home" class="active">🏠 መነሻ</a>
-        <!-- ተግባራት page removed as requested -->
         <a data-page="community">🤝 ዘርፎች</a>
         <a data-page="donate">💚 ልገሳ</a>
         <a data-page="prayer">🕌 የሶላት ሰዓት</a>
@@ -538,17 +522,28 @@
             <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 1:00 ላይ ነው። የወጣቶች ጀምዐ ከጁሙዓ በኋላ ለሳምንታዊ ሀላቃ ይሰበሰባል።</p>
         </div>
 
-        <!-- NEWS & GAMES PAGE -->
+        <!-- NEWS & GAMES PAGE - Match title translated to Amharic -->
         <div id="news-page" class="page">
-            <h2 class="section-title">📰 መጪ ጨዋታዎች እና ዝግጅቶች</h2>
-            <div class="events-list">
-                <div class="event-item"><div><div class="event-title">⚽ እግር ኳስ ወዳጃዊ ግጥሚያ</div><div>አወሊያ መስጂድ ወጣቶች እና መርካቶ ዩናይትድ</div></div><div class="event-date">ሚያዝያ 12, 2025</div></div>
-                <div class="event-item"><div><div class="event-title">🏆 የረመዳን ውድድር ፍጻሜ</div><div>አዲስ አበባ ስታዲየም</div></div><div class="event-date">ሚያዝያ 18, 2025</div></div>
-                <div class="event-item"><div><div class="event-title">🎮 ኢስፖርት ምሽት (ፊፋ እና ሞባይል ሌጀንድስ)</div><div>የወጣቶች ማእከል ውድድር</div></div><div class="event-date">ሚያዝያ 25, 2025</div></div>
+            <h2 class="section-title">⚽ ቀጣይ ግጥሚያ (Next Match)</h2>
+            <div class="match-card">
+                <div class="match-title">🏆 አቡበከር ሲዲቅ vs. ጃዕፈር ኢብኑ አቢ ጠሊብ</div>
+                <div class="match-detail">
+                    <span class="match-label">📅 ቀን / Date:</span>
+                    <span class="match-value">4ኛ ሚያዝያ 2018</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">⏰ ሰዓት / Time:</span>
+                    <span class="match-value">After Fajir (ከፋጅር በኋላ)</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">📍 ቦታ / Location:</span>
+                    <span class="match-value">in the small area (በትንሹ ሜዳ)</span>
+                </div>
             </div>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; text-align: center; color: #1f5e3a;">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
         </div>
 
-        <!-- CONTACT PAGE (now renamed to ስለ እኛ but content remains contact info) -->
+        <!-- CONTACT PAGE (ስለ እኛ) -->
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አወሊያ መስጂድ ወጣቶች ጀምዐን ያግኙ</h2>
             <div class="contact-details">
@@ -577,7 +572,7 @@
             </div>
         </div>
 
-        <!-- FOOTER - modified as requested: removed old phrase and added keep faith in Allah -->
+        <!-- FOOTER -->
         <div class="footer">
             <p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ - Keep your faith in Allah<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948 | +251 922 957 451<br>📢 ቴሌግራም፦ <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#1f5e3a; text-decoration:underline;">t.me/+GdbodoOS7VQzYjk0</a><br>© 2025 Awolia Mosque Youth Association</p>
         </div>
