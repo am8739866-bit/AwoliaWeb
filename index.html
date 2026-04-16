@@ -7,71 +7,513 @@
     <link rel="shortcut icon" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" type="image/jpeg">
     <title>አወሊያ መስጂድ ወጣቶች ጀምዐ | ስለ እኛ እና ልገሳ</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #fef8f0; font-family: 'Inter', system-ui, sans-serif; color: #2c2b2a; line-height: 1.5; overflow-x: hidden; }
-        .site-header { position: fixed; top: 0; left: 0; right: 0; background: white; box-shadow: 0 2px 15px rgba(0,0,0,0.08); z-index: 1050; padding: 0.8rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-        .logo-wrapper { display: flex; align-items: center; gap: 1rem; }
-        .main-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #1f5e3a; background: #1f5e3a; }
-        .site-title h1 { font-size: 1.2rem; color: #1f5e3a; margin: 0; }
-        .site-title p { font-size: 0.8rem; color: #e6b422; margin: 0; }
-        .toggle-btn { background: #1f5e3a; color: white; border: none; font-size: 1.6rem; padding: 0.4rem 1rem; border-radius: 0.5rem; cursor: pointer; transition: 0.2s; }
-        .toggle-btn:hover { background: #2c7a4d; }
-        .sidebar { position: fixed; top: 0; left: 0; width: 280px; height: 100%; background: #1f5e3a; z-index: 1100; transition: transform 0.3s ease; transform: translateX(-100%); box-shadow: 2px 0 12px rgba(0,0,0,0.2); display: flex; flex-direction: column; padding: 1.5rem 1rem; overflow-y: auto; }
-        .sidebar.open { transform: translateX(0); }
-        .sidebar-logo-wrapper { text-align: center; margin-bottom: 1rem; }
-        .sidebar-logo-wrapper img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #f5b042; background: #1f5e3a; }
-        .sidebar-logo { color: white; font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        .sidebar-logo span { color: #f5b042; }
-        .sidebar-nav { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
-        .sidebar-nav a { color: white; text-decoration: none; font-weight: 500; padding: 0.6rem 0.8rem; border-radius: 0.5rem; transition: 0.2s; font-size: 0.95rem; display: block; cursor: pointer; }
-        .sidebar-nav a:hover, .sidebar-nav a.active { background: #2c7a4d; color: #f5e2c9; padding-left: 1.2rem; }
-        .sidebar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1055; display: none; }
-        .sidebar-overlay.active { display: block; }
-        .main-content { margin-top: 85px; padding: 1rem; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem; }
-        .page { display: none; animation: fadeIn 0.3s ease; }
-        .page.active-page { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .hero { background: linear-gradient(135deg, #1f5e3a 0%, #2c7a4d 100%); color: white; border-radius: 2rem; padding: 2rem; margin-bottom: 2rem; }
-        .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .hero .tagline { font-size: 1rem; border-left: 3px solid #f5b042; padding-left: 1rem; margin-bottom: 1rem; }
-        .section-title { font-size: 1.6rem; font-weight: 600; margin: 2rem 0 1rem 0; border-left: 5px solid #e6b422; padding-left: 1rem; color: #1e3a2f; }
-        .values-list { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
-        .values-list li { margin: 0.8rem 0; margin-left: 1.5rem; }
-        .activity-block { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .activity-block h3 { color: #1f5e3a; margin-bottom: 0.8rem; border-left: 3px solid #f5b042; padding-left: 0.7rem; }
-        .activity-block ul { margin-left: 1.5rem; }
-        .activity-block li { margin: 0.5rem 0; }
-        .donate-box { background: #fff3e0; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; text-align: center; }
-        .single-bank { background: white; border-radius: 1rem; padding: 1.5rem; max-width: 500px; margin: 1.5rem auto 0; text-align: left; border-left: 5px solid #e6b422; }
-        .copy-btn { background: #1f5e3a; color: white; border: none; padding: 0.2rem 0.8rem; border-radius: 30px; font-size: 0.7rem; cursor: pointer; margin-left: 0.5rem; }
-        .prayer-table { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
-        .prayer-row { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid #f0e2d2; }
-        .countdown-box { background: #1f5e3a; color: white; text-align: center; padding: 1rem; border-radius: 1rem; margin-top: 1rem; }
-        #countdownTimer { font-size: 1.6rem; font-weight: bold; }
-        .match-card { background: white; border-radius: 1rem; padding: 1.8rem; margin: 1.5rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-left: 6px solid #e6b422; text-align: center; }
-        .match-title { font-size: 1.6rem; font-weight: 700; color: #1f5e3a; margin-bottom: 1rem; }
-        .match-detail { font-size: 1.1rem; margin: 0.8rem 0; display: flex; align-items: center; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
-        .match-label { font-weight: 600; color: #2c7a4d; }
-        .match-value { color: #2c2b2a; }
-        .contact-details { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
-        .contact-item { display: flex; flex-wrap: wrap; padding: 0.8rem 0; border-bottom: 1px solid #f0e2d2; }
-        .contact-label { font-weight: 700; width: 200px; color: #1f5e3a; }
-        .contact-value { flex: 1; }
-        .phone-line { margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
-        .phone-line:last-child { margin-bottom: 0; }
-        .phone-number { white-space: nowrap; font-family: monospace; letter-spacing: 0.5px; }
-        .footer { text-align: center; margin-top: 3rem; padding: 2rem; border-top: 1px solid #e8ddcf; font-size: 0.8rem; }
-        .social-link, .telegram-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #010101; color: white; text-decoration: none; padding: 0.4rem 1rem; border-radius: 40px; font-size: 0.85rem; margin-top: 0.5rem; }
-        .telegram-link { background: #0088cc; }
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 1.4rem; }
-            .contact-label { width: 100%; }
-            .main-logo { width: 45px; height: 45px; }
-            .site-header { padding: 0.5rem 1rem; }
-            .main-content { margin-top: 75px; }
-            .phone-number { white-space: normal; }
-            .match-title { font-size: 1.3rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2eb;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1e2a2e;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1050;
+            padding: 0.7rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .main-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #1f5e3a;
+            background: #1f5e3a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .main-logo:hover {
+            transform: scale(1.02);
+        }
+
+        .site-title h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f5e3a;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .site-title p {
+            font-size: 0.75rem;
+            color: #b8860b;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .toggle-btn {
+            background: #1f5e3a;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .toggle-btn:hover {
+            background: #2c7a4d;
+            transform: translateY(-1px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: #1f5e3a;
+            z-index: 1100;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform: translateX(-100%);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-logo-wrapper {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-logo-wrapper img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f5b042;
+            background: #fff;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-logo {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar-logo span {
+            color: #f5b042;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.7rem 1rem;
+            border-radius: 1rem;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.2);
+            color: #fff3e0;
+            padding-left: 1.2rem;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 1055;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .main-content {
+            margin-top: 85px;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1.8rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            background: linear-gradient(125deg, #1f5e3a 0%, #2c7a4d 100%);
+            color: white;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 24px -12px rgba(0,0,0,0.2);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero .tagline {
+            font-size: 1rem;
+            border-left: 4px solid #f5b042;
+            padding-left: 1rem;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 2.2rem 0 1.2rem 0;
+            border-left: 5px solid #e6b422;
+            padding-left: 1rem;
+            color: #1e3a2f;
+            letter-spacing: -0.3px;
+        }
+
+        .values-list {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.8rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #ede5d6;
+        }
+
+        .values-list li {
+            margin: 0.9rem 0;
+            margin-left: 1.5rem;
+            line-height: 1.45;
+        }
+
+        .activity-block {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.6rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+            border: 1px solid #efe4d6;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .activity-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 28px -12px rgba(0,0,0,0.1);
+        }
+
+        .activity-block h3 {
+            color: #1f5e3a;
+            margin-bottom: 1rem;
+            border-left: 4px solid #f5b042;
+            padding-left: 0.8rem;
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+
+        .activity-block ul {
+            margin-left: 1.5rem;
+        }
+
+        .activity-block li {
+            margin: 0.6rem 0;
+        }
+
+        .donate-box {
+            background: linear-gradient(135deg, #fff6e8, #fff9f0);
+            border-radius: 1.8rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid #f0e2d0;
+            box-shadow: 0 12px 28px -12px rgba(0,0,0,0.1);
+        }
+
+        .single-bank {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.6rem;
+            max-width: 520px;
+            margin: 1.8rem auto 0;
+            text-align: left;
+            border-left: 5px solid #e6b422;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .copy-btn {
+            background: #1f5e3a;
+            color: white;
+            border: none;
+            padding: 0.2rem 0.9rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 0.6rem;
+            transition: 0.15s;
+            font-weight: 500;
+        }
+
+        .copy-btn:hover {
+            background: #0f4429;
+        }
+
+        .prayer-table {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.6rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+        }
+
+        .prayer-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f0e2d2;
+            font-weight: 500;
+        }
+
+        .countdown-box {
+            background: #1f5e3a;
+            color: white;
+            text-align: center;
+            padding: 1.2rem;
+            border-radius: 1.25rem;
+            margin-top: 1.2rem;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        #countdownTimer {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .match-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 12px 24px -12px rgba(0,0,0,0.1);
+            border-left: 6px solid #e6b422;
+            transition: transform 0.2s;
+        }
+
+        .match-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .match-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f5e3a;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .match-detail {
+            font-size: 1rem;
+            margin: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            background: #fefaf5;
+            padding: 0.5rem;
+            border-radius: 2rem;
+        }
+
+        .match-label {
+            font-weight: 700;
+            color: #2c7a4d;
+        }
+
+        .contact-details {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.8rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+        }
+
+        .contact-item {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f0e2d2;
+        }
+
+        .contact-label {
+            font-weight: 700;
+            width: 200px;
+            color: #1f5e3a;
+        }
+
+        .contact-value {
+            flex: 1;
+            color: #2c3e2f;
+        }
+
+        .phone-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .phone-number {
+            font-family: monospace;
+            letter-spacing: 0.5px;
+            background: #f3efea;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid #e0d5c8;
+            font-size: 0.8rem;
+            color: #4a5b52;
+        }
+
+        .social-link, .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1e2a2e;
+            color: white;
+            text-decoration: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .telegram-link {
+            background: #0088cc;
+        }
+
+        .social-link:hover, .telegram-link:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        @media (max-width: 680px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .contact-label {
+                width: 100%;
+                margin-bottom: 0.3rem;
+            }
+            .main-logo {
+                width: 48px;
+                height: 48px;
+            }
+            .site-header {
+                padding: 0.5rem 1rem;
+            }
+            .main-content {
+                margin-top: 75px;
+            }
+            .container {
+                padding: 0.8rem 1rem;
+            }
+            .section-title {
+                font-size: 1.4rem;
+            }
+            .match-title {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -79,10 +521,10 @@
 <header class="site-header">
     <div class="logo-wrapper">
         <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አወሊያ መስጂድ ወጣቶች ጀምዐ አርማ" class="main-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; font-size: 28px; color: white;">🕌</div>
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; font-size: 28px; color: white;">🕌</div>
         <div class="site-title"><h1>አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><p>Awolia Mosque Youth Association</p></div>
     </div>
-    <button class="toggle-btn" id="toggleSidebarBtn">☰</button>
+    <button class="toggle-btn" id="toggleSidebarBtn">☰ ምናሌ</button>
 </header>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
@@ -106,11 +548,11 @@
         <div id="home-page" class="page active-page">
             <div class="hero"><h1>🌙 አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><div class="tagline">تكوين مجتمع شباب مسلم يقظ، واعٍ، ونشط</div></div>
             <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2><p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
-            <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
-            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
+            <h2 class="section-title">👁️ ራዕይ (Vision)</h2><p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
             <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
             <div class="values-list"><ul><li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li><li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li><li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li><li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li><li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li><li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li><li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li></ul></div>
         </div>
+
         <div id="community-page" class="page">
             <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
             <div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል።</li><li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት።</li><li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት።</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ።</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li></ul></div>
@@ -118,9 +560,11 @@
             <div class="activity-block"><h3>👩 የሴቶች ዘርፍ ተግባራት</h3><ul><li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li><li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች።</li><li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት።</li><li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li></ul></div>
             <div class="activity-block"><h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3><ul><li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li><li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li><li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ እና ሌሎች ስፖርቶች።</li></ul></div>
         </div>
+
         <div id="donate-page" class="page">
-            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p><div class="single-bank"><h4 style="color:#1f5e3a; margin-bottom:0.8rem;">🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4><p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p><p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span style="font-size:0.8rem;">(አጭር ቁጥር / አጭር ቁጥር፦ 9733)</span></p><p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p><p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p class="donate-note">🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ። እናመሰግናለን!<br>🙏 እባክዎ ማጣቀሻ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" ብለው ይጠቀሙ። እናመሰግናለን!<br>📱 ቴሌብር / ቴሌብር፦ 09XX XXX XXX (ከዚህ በታች ይመልከቱ)</p></div>
+            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p><div class="single-bank"><h4 style="color:#1f5e3a; margin-bottom:0.8rem;">🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4><p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p><p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span style="font-size:0.8rem;">(አጭር ቁጥር / አጭር ቁጥር፦ 9733)</span></p><p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p><p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p class="donate-note">🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ። እናመሰግናለን!<br>📱 ቴሌብር / ቴሌብር፦ 09XX XXX XXX (ከዚህ በታች ይመልከቱ)</p></div>
         </div>
+
         <div id="prayer-page" class="page">
             <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2><p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
             <div class="prayer-table">
@@ -134,11 +578,48 @@
             <div class="countdown-box"><h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4><div id="countdownTimer">-- : -- : --</div><p style="margin-top: 0.5rem; font-size: 0.8rem;">ቀጣይ ሶላት፦ <span id="nextPrayerName">--</span></p></div>
             <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 1:00 ላይ ነው። የወጣቶች ጀምዐ ከጁሙዓ በኋላ ለሳምንታዊ ሀላቃ ይሰበሰባል።</p>
         </div>
+
+        <!-- NEWS PAGE - TWO MATCHES AS REQUESTED -->
         <div id="news-page" class="page">
-            <h2 class="section-title">⚽ ቀጣይ ግጥሚያ (Next Match)</h2>
-            <div class="match-card"><div class="match-title">🏆 አቡበከር ሲዲቅ vs. ጃዕፈር ኢብኑ አቢ ጠሊብ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">4ኛ ሚያዝያ 2018</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After Fajir (ከፋጅር በኋላ)</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area (በትንሹ ሜዳ)</span></div></div>
+            <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች (Upcoming Matches)</h2>
+            
+            <!-- Match 1 -->
+            <div class="match-card">
+                <div class="match-title">🏆 የመጀመሪያ ግጥሚያ (1st Match)<br>ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div>
+                <div class="match-detail">
+                    <span class="match-label">📅 ቀን / Date:</span>
+                    <span class="match-value">ሚያዝያ 8, 2018</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">⏰ ሰዓት / Time:</span>
+                    <span class="match-value">After Fajir (ከፋጅር በኋላ)</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">📍 ቦታ / Location:</span>
+                    <span class="match-value">in the small area (በትንሹ ሜዳ)</span>
+                </div>
+            </div>
+
+            <!-- Match 2 -->
+            <div class="match-card">
+                <div class="match-title">🏆 ሁለተኛ ግጥሚያ (2nd Match)<br>ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div>
+                <div class="match-detail">
+                    <span class="match-label">📅 ቀን / Date:</span>
+                    <span class="match-value">ሚያዝያ 8, 2018</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">⏰ ሰዓት / Time:</span>
+                    <span class="match-value">After 1st match (ከመጀመሪያው ግጥሚያ በኋላ)</span>
+                </div>
+                <div class="match-detail">
+                    <span class="match-label">📍 ቦታ / Location:</span>
+                    <span class="match-value">in the small area (በትንሹ ሜዳ)</span>
+                </div>
+            </div>
+            
             <p style="margin-top: 0.5rem; font-size: 0.9rem; text-align: center; color: #1f5e3a;">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
         </div>
+
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አወሊያ መስጂድ ወጣቶች ጀምዐን ያግኙ</h2>
             <div class="contact-details">
