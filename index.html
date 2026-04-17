@@ -603,15 +603,16 @@
                 <h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4>
                 <div id="countdownTimer">-- : -- : --</div>
                 <p style="margin-top: 0.5rem; font-size: 0.8rem;">ቀጣይ ሶላት፦ <span id="nextPrayerName">--</span></p>
-                <button id="enableNotificationsBtn" class="alert-btn">🔔 ማንቂያ አንቃ / Enable Alerts</button>
+                <button id="enableNotificationsBtn" class="alert-btn">🔔 ማንቂያ አንቃ / Enable Alerts & Sound</button>
+                <button id="testAlarmBtn" class="alert-btn" style="margin-left:8px;">🔊 የሙከራ ድምፅ / Test Alarm</button>
             </div>
-            <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 (12:24 ቀትር) ላይ ነው።</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 (12:24 ቀትር) ላይ ነው።</p>
         </div>
 
         <div id="news-page" class="page">
             <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች (Upcoming Matches)</h2>
-            <div class="match-card"><div class="match-title">🏆 የመጀመሪያ ግጥሚያ (1st Match)<br>ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">ሚያዝያ 10, 2018</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After Fajir (ከፋጅር በኋላ)</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area (በትንሹ ሜዳ)</span></div></div>
-            <div class="match-card"><div class="match-title">🏆 ሁለተኛ ግጥሚያ (2nd Match)<br>ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">ሚያዝያ 10, 2018</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After 1st match (ከመጀመሪያው ግጥሚያ በኋላ)</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area (በትንሹ ሜዳ)</span></div></div>
+            <div class="match-card"><div class="match-title">🏆 የመጀመሪያ ግጥሚያ (1st Match)<br>ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">ሚያዝያ 10, 2018 (ኤ.ኤ.አ. ኤፕሪል 18, 2026)</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After Fajr (~5:15 AM)</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area</span></div></div>
+            <div class="match-card"><div class="match-title">🏆 ሁለተኛ ግጥሚያ (2nd Match)<br>ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div><div class="match-detail"><span class="match-label">📅 ቀን / Date:</span><span class="match-value">ሚያዝያ 10, 2018</span></div><div class="match-detail"><span class="match-label">⏰ ሰዓት / Time:</span><span class="match-value">After 1st match</span></div><div class="match-detail"><span class="match-label">📍 ቦታ / Location:</span><span class="match-value">in the small area</span></div></div>
             <p style="margin-top: 0.5rem; font-size: 0.9rem; text-align: center; color: #1f5e3a;">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
         </div>
 
@@ -631,103 +632,51 @@
 </div>
 <script>
     (function() {
-        // ----- SIDEBAR TOGGLE (FIXED) -----
+        // ----- SIDEBAR TOGGLE -----
         const sidebarElem = document.getElementById('sidebar');
         const overlayElem = document.getElementById('sidebarOverlay');
         const toggleBtnElem = document.getElementById('toggleSidebarBtn');
-        
-        function openSidebar() {
-            if (sidebarElem) sidebarElem.classList.add('open');
-            if (overlayElem) overlayElem.classList.add('active');
-        }
-        function closeSidebar() {
-            if (sidebarElem) sidebarElem.classList.remove('open');
-            if (overlayElem) overlayElem.classList.remove('active');
-        }
-        if (toggleBtnElem) {
-            toggleBtnElem.addEventListener('click', openSidebar);
-        }
-        if (overlayElem) {
-            overlayElem.addEventListener('click', closeSidebar);
-        }
+        function openSidebar() { sidebarElem.classList.add('open'); overlayElem.classList.add('active'); }
+        function closeSidebar() { sidebarElem.classList.remove('open'); overlayElem.classList.remove('active'); }
+        if (toggleBtnElem) toggleBtnElem.addEventListener('click', openSidebar);
+        if (overlayElem) overlayElem.addEventListener('click', closeSidebar);
 
         // ----- PAGE SWITCHING -----
-        const pages = {
-            home: document.getElementById('home-page'),
-            community: document.getElementById('community-page'),
-            donate: document.getElementById('donate-page'),
-            prayer: document.getElementById('prayer-page'),
-            news: document.getElementById('news-page'),
-            contact: document.getElementById('contact-page')
-        };
+        const pages = { home: document.getElementById('home-page'), community: document.getElementById('community-page'), donate: document.getElementById('donate-page'), prayer: document.getElementById('prayer-page'), news: document.getElementById('news-page'), contact: document.getElementById('contact-page') };
         const navLinks = document.querySelectorAll('.sidebar-nav a');
         function switchPage(pageId) {
             Object.values(pages).forEach(page => page.classList.remove('active-page'));
             pages[pageId].classList.add('active-page');
-            navLinks.forEach(link => {
-                if (link.getAttribute('data-page') === pageId) link.classList.add('active');
-                else link.classList.remove('active');
-            });
-            closeSidebar();
-            window.scrollTo(0, 0);
+            navLinks.forEach(link => { if (link.getAttribute('data-page') === pageId) link.classList.add('active'); else link.classList.remove('active'); });
+            closeSidebar(); window.scrollTo(0, 0);
         }
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                if (pageId && pages[pageId]) switchPage(pageId);
-            });
-        });
+        navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); const pageId = link.getAttribute('data-page'); if (pageId && pages[pageId]) switchPage(pageId); }));
 
         // ----- COPY BUTTONS -----
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const text = this.getAttribute('data-text');
-                navigator.clipboard.writeText(text).then(() => {
-                    const original = this.innerText;
-                    this.innerText = 'ተቀድቷል!';
-                    setTimeout(() => this.innerText = original, 1500);
-                });
-            });
-        });
+        document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', function() { navigator.clipboard.writeText(this.getAttribute('data-text')).then(() => { const orig = this.innerText; this.innerText = 'ተቀድቷል!'; setTimeout(() => this.innerText = orig, 1500); }); }));
 
-        // ----- PRAYER ALARM & NOTIFICATION SYSTEM (fully functional) -----
+        // ========== PRAYER ALARM & NOTIFICATION SYSTEM (FULLY FUNCTIONAL) ==========
         let audioCtx = null;
         let lastAlertedPrayer = null;
         let lastTotalSeconds = -1;
 
-        // create a silent AudioContext on first user interaction to enable sound later
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                // keep it suspended until we actually play a beep
-            }
-            return audioCtx;
-        }
+        // Initialize AudioContext on user gesture only
+        function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } return audioCtx; }
 
         function playBeep() {
             try {
                 let ctx = initAudio();
-                if (ctx.state === 'suspended') {
-                    ctx.resume().then(() => {
-                        beepNow(ctx);
-                    }).catch(e => console.warn("resume failed", e));
-                } else {
-                    beepNow(ctx);
-                }
+                const playSound = () => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.frequency.value = 880; gain.gain.value = 0.2;
+                    osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
+                    osc.stop(ctx.currentTime + 0.8);
+                };
+                if (ctx.state === 'suspended') { ctx.resume().then(() => playSound()).catch(e=>console.warn); }
+                else { playSound(); }
             } catch(e) { console.warn("Beep error", e); }
-        }
-
-        function beepNow(ctx) {
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            oscillator.frequency.value = 880;
-            gainNode.gain.value = 0.2;
-            oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
-            oscillator.stop(ctx.currentTime + 0.8);
         }
 
         function showPrayerNotification(prayerName) {
@@ -741,7 +690,6 @@
         }
 
         function requestNotificationAndAudio() {
-            // request notification permission
             if ("Notification" in window) {
                 if (Notification.permission === 'granted') {
                     alert("ማንቂያዎች ቀድሞውንም ነቅተዋል! / Notifications already enabled.");
@@ -755,18 +703,18 @@
             } else {
                 alert("ይህ አሳሽ ማንቂያዎችን አይደግፍም / This browser does not support notifications.");
             }
-            // pre-initialize audio context so that later beep works (user gesture)
+            // Pre-initialize and resume audio context for later beep
             initAudio();
-            // also resume it silently to allow autoplay later
             if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume().catch(e=>console.log);
             }
         }
 
         const notifBtn = document.getElementById('enableNotificationsBtn');
-        if (notifBtn) {
-            notifBtn.addEventListener('click', requestNotificationAndAudio);
-        }
+        if (notifBtn) notifBtn.addEventListener('click', requestNotificationAndAudio);
+        
+        const testBtn = document.getElementById('testAlarmBtn');
+        if (testBtn) testBtn.addEventListener('click', () => { playBeep(); showPrayerNotification("ሙከራ"); });
 
         function getNextPrayer() {
             const times = { Fajr: "05:04", Dhuhr: "12:25", Asr: "15:31", Maghrib: "18:36", Isha: "19:43" };
@@ -774,7 +722,7 @@
             const currentTotal = now.getHours() * 60 + now.getMinutes();
             let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity;
             for (const [name, timeStr] of Object.entries(times)) {
-                const [hours, minutes] = timeStr.split(":").map(Number);
+                let [hours, minutes] = timeStr.split(":").map(Number);
                 let total = hours * 60 + minutes;
                 if (total < currentTotal) total += 24 * 60;
                 const diff = total - currentTotal;
@@ -783,8 +731,8 @@
             const hoursLeft = Math.floor(nextDiff / 60);
             const minutesLeft = nextDiff % 60;
             const secondsLeft = 60 - now.getSeconds();
-            let prayerNameAmh = nextPrayer === "Fajr" ? "ፋጅር" : nextPrayer === "Dhuhr" ? "ዙህር" : nextPrayer === "Asr" ? "ዐስር" : nextPrayer === "Maghrib" ? "መግሪብ" : "ዒሻ";
-            return { name: prayerNameAmh, time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft, totalSeconds: nextDiff * 60 + (60 - now.getSeconds()) };
+            const nameMap = { Fajr: "ፋጅር", Dhuhr: "ዙህር", Asr: "ዐስር", Maghrib: "መግሪብ", Isha: "ዒሻ" };
+            return { name: nameMap[nextPrayer], time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft, totalSeconds: nextDiff * 60 + (60 - now.getSeconds()) };
         }
 
         function updateCountdown() {
@@ -795,10 +743,9 @@
             if (timerDiv && nextNameSpan) {
                 timerDiv.innerHTML = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
                 nextNameSpan.innerText = `${next.name} (${next.time})`;
-                
                 const totalSecs = next.totalSeconds;
-                // trigger when countdown reaches exactly 0 or crosses below 0 (prayer time arrived)
-                if (totalSecs <= 0 && lastTotalSeconds > 0 && lastAlertedPrayer !== next.name) {
+                // Trigger when countdown reaches exactly 0 (prayer time arrived) and prevent duplicate alerts
+                if (totalSecs <= 0 && lastAlertedPrayer !== next.name) {
                     playBeep();
                     showPrayerNotification(next.name);
                     lastAlertedPrayer = next.name;
@@ -807,7 +754,7 @@
                         setTimeout(() => countdownBox.classList.remove('flash'), 600);
                     }
                 } else if (totalSecs > 0 && lastAlertedPrayer !== next.name) {
-                    // reset alert flag when a new prayer becomes next
+                    // Reset alert flag when a new prayer becomes next
                     lastAlertedPrayer = null;
                 }
                 lastTotalSeconds = totalSecs;
