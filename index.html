@@ -524,7 +524,8 @@
         <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #1f5e3a, #f5b042); display: none; align-items: center; justify-content: center; font-size: 28px; color: white;">🕌</div>
         <div class="site-title"><h1>አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><p>Awolia Mosque Youth Association</p></div>
     </div>
-    <button class="toggle-btn" id="toggleSidebarBtn">☰ ምናሌ</button>
+    <!-- Removed "ምናሌ" text, only ☰ icon remains -->
+    <button class="toggle-btn" id="toggleSidebarBtn">☰</button>
 </header>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
@@ -568,15 +569,16 @@
         <div id="prayer-page" class="page">
             <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2><p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
             <div class="prayer-table">
-                <div class="prayer-row"><span>ፋጅር (ንጋት)</span><span>05:06 ጠዋት</span></div>
-                <div class="prayer-row"><span>ፀሐይ መውጣት</span><span>06:16 ጠዋት</span></div>
-                <div class="prayer-row"><span>ዙህር (ቀትር)</span><span>12:26 ቀትር</span></div>
-                <div class="prayer-row"><span>ዐስር (ከሰዓት)</span><span>15:29 ከሰዓት</span></div>
-                <div class="prayer-row"><span>መግሪብ (ምሽት)</span><span>18:36 ከሰዓት</span></div>
-                <div class="prayer-row"><span>ዒሻ (ሌሊት)</span><span>19:42 ማታ</span></div>
+                <div class="prayer-row"><span>ፋጅር (ንጋት)</span><span>5:04 ጠዋት</span></div>
+                <div class="prayer-row"><span>ፀሐይ መውጣት</span><span>6:14 ጠዋት</span></div>
+                <div class="prayer-row"><span>ዙህር (ቀትር)</span><span>12:25 ቀትር</span></div>
+                <div class="prayer-row"><span>ዐስር (ከሰዓት)</span><span>3:31 ከሰዓት</span></div>
+                <div class="prayer-row"><span>መግሪብ (ምሽት)</span><span>6:36 ከሰዓት</span></div>
+                <div class="prayer-row"><span>ዒሻ (ሌሊት)</span><span>7:43 ማታ</span></div>
             </div>
             <div class="countdown-box"><h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4><div id="countdownTimer">-- : -- : --</div><p style="margin-top: 0.5rem; font-size: 0.8rem;">ቀጣይ ሶላት፦ <span id="nextPrayerName">--</span></p></div>
-            <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 1:00 ላይ ነው። የወጣቶች ጀምዐ ከጁሙዓ በኋላ ለሳምንታዊ ሀላቃ ይሰበሰባል።</p>
+            <!-- Removed the sentence about weekly halaqah -->
+            <p style="margin-top: 1rem; font-size: 0.85rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 (12:24 ቀትር) ላይ ነው።</p>
         </div>
 
         <!-- NEWS PAGE - BOTH MATCH DATES UPDATED TO ሚያዝያ 10, 2018 -->
@@ -648,7 +650,7 @@
     navLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const pageId = link.getAttribute('data-page'); if (pageId && pages[pageId]) switchPage(pageId); }); });
     document.querySelectorAll('.copy-btn').forEach(btn => { btn.addEventListener('click', function() { const text = this.getAttribute('data-text'); navigator.clipboard.writeText(text).then(() => { const original = this.innerText; this.innerText = 'ተቀድቷል!'; setTimeout(() => this.innerText = original, 1500); }); }); });
     function getNextPrayer() {
-        const times = { Fajr: "05:06", Dhuhr: "12:26", Asr: "15:29", Maghrib: "18:36", Isha: "19:42" };
+        const times = { Fajr: "05:04", Dhuhr: "12:25", Asr: "15:31", Maghrib: "18:36", Isha: "19:43" };
         const now = new Date();
         const currentTotal = now.getHours() * 60 + now.getMinutes();
         let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity;
@@ -670,4 +672,3 @@
 </script>
 </body>
 </html>
-
