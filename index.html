@@ -630,169 +630,193 @@
     </div>
 </div>
 <script>
-    // --- Sidebar Toggle (fixed and robust) ---
-    const sidebarElem = document.getElementById('sidebar');
-    const overlayElem = document.getElementById('sidebarOverlay');
-    const toggleBtnElem = document.getElementById('toggleSidebarBtn');
-    
-    function openSidebar() {
-        if (sidebarElem) sidebarElem.classList.add('open');
-        if (overlayElem) overlayElem.classList.add('active');
-    }
-    function closeSidebar() {
-        if (sidebarElem) sidebarElem.classList.remove('open');
-        if (overlayElem) overlayElem.classList.remove('active');
-    }
-    if (toggleBtnElem) {
-        toggleBtnElem.addEventListener('click', openSidebar);
-    } else {
-        console.error("Toggle button not found");
-    }
-    if (overlayElem) {
-        overlayElem.addEventListener('click', closeSidebar);
-    }
+    (function() {
+        // ----- SIDEBAR TOGGLE (FIXED) -----
+        const sidebarElem = document.getElementById('sidebar');
+        const overlayElem = document.getElementById('sidebarOverlay');
+        const toggleBtnElem = document.getElementById('toggleSidebarBtn');
+        
+        function openSidebar() {
+            if (sidebarElem) sidebarElem.classList.add('open');
+            if (overlayElem) overlayElem.classList.add('active');
+        }
+        function closeSidebar() {
+            if (sidebarElem) sidebarElem.classList.remove('open');
+            if (overlayElem) overlayElem.classList.remove('active');
+        }
+        if (toggleBtnElem) {
+            toggleBtnElem.addEventListener('click', openSidebar);
+        }
+        if (overlayElem) {
+            overlayElem.addEventListener('click', closeSidebar);
+        }
 
-    // --- Page switching ---
-    const pages = {
-        home: document.getElementById('home-page'),
-        community: document.getElementById('community-page'),
-        donate: document.getElementById('donate-page'),
-        prayer: document.getElementById('prayer-page'),
-        news: document.getElementById('news-page'),
-        contact: document.getElementById('contact-page')
-    };
-    const navLinks = document.querySelectorAll('.sidebar-nav a');
-    function switchPage(pageId) {
-        Object.values(pages).forEach(page => page.classList.remove('active-page'));
-        pages[pageId].classList.add('active-page');
+        // ----- PAGE SWITCHING -----
+        const pages = {
+            home: document.getElementById('home-page'),
+            community: document.getElementById('community-page'),
+            donate: document.getElementById('donate-page'),
+            prayer: document.getElementById('prayer-page'),
+            news: document.getElementById('news-page'),
+            contact: document.getElementById('contact-page')
+        };
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        function switchPage(pageId) {
+            Object.values(pages).forEach(page => page.classList.remove('active-page'));
+            pages[pageId].classList.add('active-page');
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === pageId) link.classList.add('active');
+                else link.classList.remove('active');
+            });
+            closeSidebar();
+            window.scrollTo(0, 0);
+        }
         navLinks.forEach(link => {
-            if (link.getAttribute('data-page') === pageId) link.classList.add('active');
-            else link.classList.remove('active');
-        });
-        closeSidebar();
-        window.scrollTo(0, 0);
-    }
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const pageId = link.getAttribute('data-page');
-            if (pageId && pages[pageId]) switchPage(pageId);
-        });
-    });
-
-    // --- Copy buttons ---
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const text = this.getAttribute('data-text');
-            navigator.clipboard.writeText(text).then(() => {
-                const original = this.innerText;
-                this.innerText = 'ተቀድቷል!';
-                setTimeout(() => this.innerText = original, 1500);
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                if (pageId && pages[pageId]) switchPage(pageId);
             });
         });
-    });
 
-    // --- Prayer Alarm & Notification System ---
-    let audioContext = null;
-    let lastAlertedPrayer = null;
-    let lastTotalSeconds = -1;
+        // ----- COPY BUTTONS -----
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const text = this.getAttribute('data-text');
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = this.innerText;
+                    this.innerText = 'ተቀድቷል!';
+                    setTimeout(() => this.innerText = original, 1500);
+                });
+            });
+        });
 
-    function playBeep() {
-        try {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // ----- PRAYER ALARM & NOTIFICATION SYSTEM (fully functional) -----
+        let audioCtx = null;
+        let lastAlertedPrayer = null;
+        let lastTotalSeconds = -1;
+
+        // create a silent AudioContext on first user interaction to enable sound later
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                // keep it suspended until we actually play a beep
             }
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            return audioCtx;
+        }
+
+        function playBeep() {
+            try {
+                let ctx = initAudio();
+                if (ctx.state === 'suspended') {
+                    ctx.resume().then(() => {
+                        beepNow(ctx);
+                    }).catch(e => console.warn("resume failed", e));
+                } else {
+                    beepNow(ctx);
+                }
+            } catch(e) { console.warn("Beep error", e); }
+        }
+
+        function beepNow(ctx) {
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
             oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            gainNode.connect(ctx.destination);
             oscillator.frequency.value = 880;
-            gainNode.gain.value = 0.25;
+            gainNode.gain.value = 0.2;
             oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.6);
-            oscillator.stop(audioContext.currentTime + 0.6);
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
+            oscillator.stop(ctx.currentTime + 0.8);
+        }
+
+        function showPrayerNotification(prayerName) {
+            if (Notification.permission === 'granted') {
+                new Notification("🕌 የሶላት ሰዓት ደረሰ - Prayer Time", {
+                    body: `ለ${prayerName} ሶላት ሰዓት ነው። It's time for ${prayerName} prayer.`,
+                    icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg",
+                    requireInteraction: true
+                });
             }
-        } catch(e) { console.warn("Beep error", e); }
-    }
+        }
 
-    function showPrayerNotification(prayerName) {
-        if (Notification.permission === 'granted') {
-            new Notification("🕌 የሶላት ሰዓት ደረሰ - Prayer Time", {
-                body: `ለ${prayerName} ሶላት ሰዓት ነው። It's time for ${prayerName} prayer.`,
-                icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg",
-                requireInteraction: true
-            });
-        }
-    }
-
-    function requestNotificationPermission() {
-        if (!("Notification" in window)) {
-            alert("ይህ አሳሽ ማንቂያዎችን አይደግፍም / This browser does not support notifications.");
-            return;
-        }
-        if (Notification.permission === 'granted') {
-            alert("ማንቂያዎች ቀድሞውንም ነቅተዋል! / Notifications already enabled.");
-            return;
-        }
-        if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    new Notification("✅ ማንቂያ ተንቅቷል", { body: "የሶላት ሰዓት ሲደርስ ድምፅ እና ማሳወቂያ ይደርሳል", icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" });
+        function requestNotificationAndAudio() {
+            // request notification permission
+            if ("Notification" in window) {
+                if (Notification.permission === 'granted') {
+                    alert("ማንቂያዎች ቀድሞውንም ነቅተዋል! / Notifications already enabled.");
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification("✅ ማንቂያ ተንቅቷል", { body: "የሶላት ሰዓት ሲደርስ ድምፅ እና ማሳወቂያ ይደርሳል", icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" });
+                        }
+                    });
                 }
-            });
-        }
-    }
-
-    const notifBtn = document.getElementById('enableNotificationsBtn');
-    if (notifBtn) notifBtn.addEventListener('click', requestNotificationPermission);
-
-    function getNextPrayer() {
-        const times = { Fajr: "05:04", Dhuhr: "12:25", Asr: "15:31", Maghrib: "18:36", Isha: "19:43" };
-        const now = new Date();
-        const currentTotal = now.getHours() * 60 + now.getMinutes();
-        let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity;
-        for (const [name, timeStr] of Object.entries(times)) {
-            const [hours, minutes] = timeStr.split(":").map(Number);
-            let total = hours * 60 + minutes;
-            if (total < currentTotal) total += 24 * 60;
-            const diff = total - currentTotal;
-            if (diff < nextDiff) { nextDiff = diff; nextPrayer = name; nextTimeStr = timeStr; }
-        }
-        const hoursLeft = Math.floor(nextDiff / 60);
-        const minutesLeft = nextDiff % 60;
-        const secondsLeft = 60 - now.getSeconds();
-        let prayerNameAmh = nextPrayer === "Fajr" ? "ፋጅር" : nextPrayer === "Dhuhr" ? "ዙህር" : nextPrayer === "Asr" ? "ዐስር" : nextPrayer === "Maghrib" ? "መግሪብ" : "ዒሻ";
-        return { name: prayerNameAmh, time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft, totalSeconds: nextDiff * 60 + (60 - now.getSeconds()) };
-    }
-
-    function updateCountdown() {
-        const next = getNextPrayer();
-        const timerDiv = document.getElementById('countdownTimer');
-        const nextNameSpan = document.getElementById('nextPrayerName');
-        const countdownBox = document.getElementById('countdownBox');
-        if (timerDiv && nextNameSpan) {
-            timerDiv.innerHTML = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
-            nextNameSpan.innerText = `${next.name} (${next.time})`;
-            
-            const totalSecs = next.totalSeconds;
-            if (totalSecs <= 0 && lastTotalSeconds > 0 && lastAlertedPrayer !== next.name) {
-                playBeep();
-                showPrayerNotification(next.name);
-                lastAlertedPrayer = next.name;
-                if (countdownBox) {
-                    countdownBox.classList.add('flash');
-                    setTimeout(() => countdownBox.classList.remove('flash'), 500);
-                }
-            } else if (totalSecs > 0 && lastAlertedPrayer !== next.name) {
-                lastAlertedPrayer = null;
+            } else {
+                alert("ይህ አሳሽ ማንቂያዎችን አይደግፍም / This browser does not support notifications.");
             }
-            lastTotalSeconds = totalSecs;
+            // pre-initialize audio context so that later beep works (user gesture)
+            initAudio();
+            // also resume it silently to allow autoplay later
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(e=>console.log);
+            }
         }
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+
+        const notifBtn = document.getElementById('enableNotificationsBtn');
+        if (notifBtn) {
+            notifBtn.addEventListener('click', requestNotificationAndAudio);
+        }
+
+        function getNextPrayer() {
+            const times = { Fajr: "05:04", Dhuhr: "12:25", Asr: "15:31", Maghrib: "18:36", Isha: "19:43" };
+            const now = new Date();
+            const currentTotal = now.getHours() * 60 + now.getMinutes();
+            let nextPrayer = null, nextTimeStr = null, nextDiff = Infinity;
+            for (const [name, timeStr] of Object.entries(times)) {
+                const [hours, minutes] = timeStr.split(":").map(Number);
+                let total = hours * 60 + minutes;
+                if (total < currentTotal) total += 24 * 60;
+                const diff = total - currentTotal;
+                if (diff < nextDiff) { nextDiff = diff; nextPrayer = name; nextTimeStr = timeStr; }
+            }
+            const hoursLeft = Math.floor(nextDiff / 60);
+            const minutesLeft = nextDiff % 60;
+            const secondsLeft = 60 - now.getSeconds();
+            let prayerNameAmh = nextPrayer === "Fajr" ? "ፋጅር" : nextPrayer === "Dhuhr" ? "ዙህር" : nextPrayer === "Asr" ? "ዐስር" : nextPrayer === "Maghrib" ? "መግሪብ" : "ዒሻ";
+            return { name: prayerNameAmh, time: nextTimeStr, hours: hoursLeft, minutes: minutesLeft, seconds: secondsLeft === 60 ? 0 : secondsLeft, totalSeconds: nextDiff * 60 + (60 - now.getSeconds()) };
+        }
+
+        function updateCountdown() {
+            const next = getNextPrayer();
+            const timerDiv = document.getElementById('countdownTimer');
+            const nextNameSpan = document.getElementById('nextPrayerName');
+            const countdownBox = document.getElementById('countdownBox');
+            if (timerDiv && nextNameSpan) {
+                timerDiv.innerHTML = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
+                nextNameSpan.innerText = `${next.name} (${next.time})`;
+                
+                const totalSecs = next.totalSeconds;
+                // trigger when countdown reaches exactly 0 or crosses below 0 (prayer time arrived)
+                if (totalSecs <= 0 && lastTotalSeconds > 0 && lastAlertedPrayer !== next.name) {
+                    playBeep();
+                    showPrayerNotification(next.name);
+                    lastAlertedPrayer = next.name;
+                    if (countdownBox) {
+                        countdownBox.classList.add('flash');
+                        setTimeout(() => countdownBox.classList.remove('flash'), 600);
+                    }
+                } else if (totalSecs > 0 && lastAlertedPrayer !== next.name) {
+                    // reset alert flag when a new prayer becomes next
+                    lastAlertedPrayer = null;
+                }
+                lastTotalSeconds = totalSecs;
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    })();
 </script>
 </body>
 </html>
