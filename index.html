@@ -3,444 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <link rel="manifest" href="data:application/manifest+json,{name:'አወሊያ መስጂድ ወጣቶች ጀምዐ',short_name:'AwoliaYouth',start_url:'/',display:'standalone',background_color:'#1f5e3a',theme_color:'#1f5e3a',icons:[{src:'https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg',sizes:'192x192',type:'image/jpeg'}]}">
-    <meta name="theme-color" content="#1f5e3a">
+    <title>አወሊያ መስጂድ ወጣቶች ጀምዐ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
-    <title>አወሊያ መስጂድ ወጣቶች ጀምዐ | ስለ እኛ እና ልገሳ + ማንቂያ</title>
+    <meta name="theme-color" content="#080d0f">
     <style>
-        /* ===== RESET & BASE (ORIGINAL STYLES - FULLY RESTORED) ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --white: #f8f8f2;
+            --green: #39ff9f;
+            --dark: #080d0f;
+            --dusk1: #1a0623;
+            --dusk2: #3b0f2f;
+            --dusk3: #742040;
+            --dusk4: #c94c62;
+            --dusk5: #f0875a;
+            --card-bg: rgba(57, 255, 159, 0.04);
+            --border-glow: rgba(57, 255, 159, 0.2);
         }
         body {
-            background: #f5f2eb;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            color: #1e2a2e;
-            line-height: 1.5;
+            font-family: 'Noto Sans Ethiopic', 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--white);
             overflow-x: hidden;
         }
-        html {
-            scroll-behavior: smooth;
-        }
-        .site-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(2px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            z-index: 1050;
-            padding: 0.7rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .main-logo {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #1f5e3a;
-            background: #1f5e3a;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .site-title h1 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1f5e3a;
-        }
-        .site-title p {
-            font-size: 0.75rem;
-            color: #b8860b;
-        }
-        .toggle-btn {
-            background: #1f5e3a;
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+        /* Sidebar */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100%;
-            background: #1f5e3a;
-            z-index: 1100;
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            transform: translateX(-100%);
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem 1rem;
-            overflow-y: auto;
+            position: fixed; top: 0; left: 0; width: 280px; height: 100%;
+            background: rgba(8,13,15,0.98); backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-glow); z-index: 1100;
+            transform: translateX(-100%); transition: transform 0.3s;
+            display: flex; flex-direction: column; padding: 2rem 1rem; overflow-y: auto;
         }
-        .sidebar.open {
-            transform: translateX(0);
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-logo { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-glow); }
+        .sidebar-logo img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); box-shadow: 0 0 20px rgba(57,255,159,0.3); }
+        .sidebar-logo h3 { margin-top: 1rem; font-size: 0.9rem; color: var(--green); }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 0.8rem; margin: 2rem 0; }
+        .sidebar-nav a { color: var(--white); text-decoration: none; padding: 0.7rem 1rem; border-radius: 1rem; font-size: 0.9rem; display: flex; align-items: center; gap: 0.8rem; transition: all 0.2s; cursor: pointer; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(57,255,159,0.1); color: var(--green); padding-left: 1.5rem; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1055; display: none; }
+        .sidebar-overlay.active { display: block; }
+
+        /* Top bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 2rem; background: rgba(8,13,15,0.8); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow); z-index: 1000;
         }
-        .sidebar-logo-wrapper {
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .logo-small { font-size: 1rem; font-weight: 700; color: var(--green); }
+        .menu-btn { background: none; border: none; color: var(--green); font-size: 1.8rem; cursor: pointer; }
+        .signin-btn {
+            background: var(--green); color: var(--dark); border: none;
+            padding: 0.4rem 1rem; border-radius: 30px; font-weight: 600; font-size: 0.8rem;
+            cursor: pointer; transition: 0.2s;
         }
-        .sidebar-logo-wrapper img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f5b042;
+        .signin-btn:hover { background: transparent; color: var(--green); border: 1px solid var(--green); }
+        .user-greeting { font-size: 0.8rem; color: rgba(248,248,242,0.7); margin-right: 0.8rem; }
+
+        /* Modal */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            visibility: hidden; opacity: 0; transition: visibility 0.2s, opacity 0.2s;
         }
-        .sidebar-logo {
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+        .modal.active { visibility: visible; opacity: 1; }
+        .modal-content {
+            background: rgba(8,13,15,0.95); border: 1px solid var(--border-glow);
+            border-radius: 24px; padding: 2rem; width: 90%; max-width: 400px; text-align: center;
         }
-        .sidebar-logo span {
-            color: #f5b042;
+        .modal-content input {
+            width: 100%; padding: 0.8rem; margin: 1rem 0;
+            background: rgba(57,255,159,0.1); border: 1px solid var(--border-glow);
+            border-radius: 40px; color: white; font-size: 1rem;
         }
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
+        .modal-content button {
+            background: var(--green); color: var(--dark); border: none;
+            padding: 0.6rem 1.5rem; border-radius: 30px; font-weight: bold; cursor: pointer;
+            margin: 0.5rem;
         }
-        .sidebar-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.7rem 1rem;
-            border-radius: 1rem;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            cursor: pointer;
+        .close-modal { background: transparent; border: 1px solid rgba(248,248,242,0.3); color: white; }
+
+        /* Main content */
+        .main-content { margin-top: 70px; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Hero */
+        #hero {
+            position: relative; min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; overflow: hidden; margin-bottom: 2rem;
         }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(255,255,255,0.2);
-            padding-left: 1.2rem;
+        .hero-sky {
+            position: absolute; inset: 0;
+            background: linear-gradient(175deg, #1a0623 0%, #3b0f2f 20%, #742040 45%, #c94c62 68%, #f0875a 88%, #f5c08a 100%);
+            z-index: -2;
         }
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            z-index: 1055;
-            display: none;
+        .aurora { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+        .aurora span { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18; }
+        .aurora span:nth-child(1) { width: 600px; height: 600px; background: #ff6ea3; top: -100px; left: -100px; }
+        .aurora span:nth-child(2) { width: 500px; height: 500px; background: #39ff9f; bottom: 0; right: -80px; }
+        .aurora span:nth-child(3) { width: 400px; height: 400px; background: #ff8c69; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .hero-content { position: relative; z-index: 3; text-align: center; padding: 0 1.5rem; margin-bottom: 0; }
+        .hero-arabic { font-family: 'Scheherazade New', serif; font-size: clamp(2.2rem, 6vw, 5rem); color: #39ff9f; text-shadow: 0 0 30px rgba(57,255,159,0.6); margin-bottom: 0.5rem; }
+        .hero-subtitle { font-size: clamp(0.85rem, 2.2vw, 1.2rem); color: rgba(248,248,242,0.65); }
+        .hero-title { font-size: clamp(2.2rem, 7vw, 6rem); font-weight: 700; color: #f8f8f2; margin: 0.6rem 0; }
+        .hero-title span { color: #39ff9f; text-shadow: 0 0 25px rgba(57,255,159,0.5); }
+        .hero-tagline { font-size: clamp(0.7rem, 1.5vw, 0.88rem); color: rgba(248,248,242,0.5); margin-top: 1rem; }
+        .hero-cta { display: flex; gap: 1.2rem; justify-content: center; margin-top: 2.4rem; flex-wrap: wrap; }
+        .btn { padding: 0.85rem 2.2rem; font-size: 0.82rem; font-weight: 600; text-decoration: none; border-radius: 2px; transition: 0.35s; }
+        .btn-primary { background: #39ff9f; color: #080d0f; border: 1px solid #39ff9f; }
+        .btn-primary:hover { background: transparent; color: #39ff9f; box-shadow: 0 0 15px #39ff9f; }
+        .btn-outline { background: transparent; border: 1px solid rgba(248,248,242,0.3); color: #f8f8f2; }
+        .btn-outline:hover { border-color: #39ff9f; color: #39ff9f; }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem; z-index: 10;
         }
-        .sidebar-overlay.active {
-            display: block;
-        }
-        .main-content {
-            margin-top: 85px;
-            padding: 1rem;
-        }
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 1.8rem;
-        }
-        .page {
-            display: none;
-            animation: fadeInUp 0.4s ease;
-        }
-        .page.active-page {
-            display: block;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .hero {
-            background: linear-gradient(125deg, #1f5e3a 0%, #2c7a4d 100%);
-            color: white;
-            border-radius: 2rem;
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-        }
-        .hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .hero .tagline { font-size: 1rem; border-left: 4px solid #f5b042; padding-left: 1rem; }
-        .section-title {
-            font-size: 1.7rem;
-            font-weight: 700;
-            margin: 2.2rem 0 1.2rem 0;
-            border-left: 5px solid #e6b422;
-            padding-left: 1rem;
-            color: #1e3a2f;
-        }
-        .values-list {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.8rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            border: 1px solid #ede5d6;
-        }
-        .values-list li {
-            margin: 0.9rem 0 0.9rem 1.5rem;
-        }
-        .alarm-card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 12px 24px -10px rgba(0,0,0,0.08);
-            border: 1px solid #f0e2d0;
-        }
-        .alarm-card h3 {
-            color: #1f5e3a;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        .alarm-flex {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .alarm-group {
-            flex: 1;
-            min-width: 220px;
-            background: #fefaf5;
-            border-radius: 1.2rem;
-            padding: 1rem;
-        }
-        .alarm-group label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #2c7a4d;
-        }
-        .time-input-row {
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
-            margin-bottom: 0.8rem;
-        }
-        .time-input-row input {
-            padding: 0.5rem;
-            border-radius: 2rem;
-            border: 1px solid #ddd7cc;
-            text-align: center;
-        }
-        .btn-alarm {
-            background: #1f5e3a;
-            border: none;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.4rem;
-            margin-right: 0.5rem;
-        }
-        .btn-alarm.cancel {
-            background: #a12a2a;
-        }
-        .alarm-status {
-            background: #eef2ea;
-            border-radius: 1rem;
-            padding: 0.8rem;
-            margin-top: 1.2rem;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        .flash-alarm {
-            animation: pulse 0.4s ease-in-out 3;
-            background-color: #ffd966 !important;
-        }
-        @keyframes pulse {
-            0% { background-color: #ffd966; }
-            100% { background-color: transparent; }
-        }
-        .activity-block {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.6rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
-            border: 1px solid #efe4d6;
-        }
-        .activity-block h3 {
-            color: #1f5e3a;
-            margin-bottom: 1rem;
-            border-left: 4px solid #f5b042;
-            padding-left: 0.8rem;
-            font-size: 1.35rem;
-        }
-        .activity-block ul {
-            margin-left: 1.5rem;
-        }
-        .activity-block li {
-            margin: 0.6rem 0;
-        }
-        .donate-box {
-            background: linear-gradient(135deg, #fff6e8, #fff9f0);
-            border-radius: 1.8rem;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            border: 1px solid #f0e2d0;
-        }
-        .single-bank {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.6rem;
-            max-width: 520px;
-            margin: 1.8rem auto 0;
-            text-align: left;
-            border-left: 5px solid #e6b422;
-        }
-        .copy-btn {
-            background: #1f5e3a;
-            color: white;
-            border: none;
-            padding: 0.2rem 0.9rem;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            cursor: pointer;
-            margin-left: 0.6rem;
-        }
-        .prayer-table {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.6rem;
-            margin: 1.5rem 0;
-        }
-        .prayer-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.9rem 0;
-            border-bottom: 1px solid #f0e2d2;
-            font-weight: 500;
-        }
-        .countdown-box {
-            background: #1f5e3a;
-            color: white;
-            text-align: center;
-            padding: 1.2rem;
-            border-radius: 1.25rem;
-            margin-top: 1.2rem;
-        }
-        #countdownTimer {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        .alert-btn {
-            background: #fff3e0;
-            border: none;
-            border-radius: 2rem;
-            padding: 0.4rem 1rem;
-            margin-top: 0.8rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #1f5e3a;
-            cursor: pointer;
-        }
-        .match-card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.8rem;
-            border-left: 6px solid #e6b422;
-        }
-        .match-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1f5e3a;
-            text-align: center;
-        }
-        .match-detail {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            background: #fefaf5;
-            padding: 0.5rem;
-            border-radius: 2rem;
-            margin: 0.6rem 0;
-        }
-        .contact-details {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.8rem;
-            margin: 1.5rem 0;
-        }
-        .contact-item {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 0.9rem 0;
-            border-bottom: 1px solid #f0e2d2;
-        }
-        .contact-label {
-            font-weight: 700;
-            width: 200px;
-            color: #1f5e3a;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            border-top: 1px solid #e0d5c8;
-            font-size: 0.8rem;
-        }
-        .perm-btn {
-            background: #e6b422;
-            color: #1e3a2f;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            border: none;
-            cursor: pointer;
-        }
-        @media (max-width: 680px) {
-            .hero h1 { font-size: 1.5rem; }
-            .contact-label { width: 100%; }
-            .main-logo { width: 48px; height: 48px; }
-            .site-header { padding: 0.5rem 1rem; }
-            .container { padding: 0.8rem 1rem; }
-            .alarm-flex { flex-direction: column; gap: 1rem; }
+        .scroll-mouse { width: 22px; height: 36px; border: 1.5px solid rgba(57,255,159,0.5); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; }
+        .scroll-dot { width: 3px; height: 8px; background: #39ff9f; border-radius: 2px; animation: scrollDot 1.8s infinite; }
+        @keyframes scrollDot { 0% { opacity: 1; transform: translateY(0); } 80% { opacity: 0; transform: translateY(12px); } 100% { opacity: 0; transform: translateY(0); } }
+
+        /* Prayer ticker & cards */
+        .prayer-ticker { background: rgba(57,255,159,0.05); border-top: 1px solid var(--border-glow); border-bottom: 1px solid var(--border-glow); padding: 0.6rem; white-space: nowrap; overflow: hidden; }
+        .ticker-track { display: inline-flex; gap: 3rem; animation: ticker 25s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .ticker-item { display: inline-flex; align-items: center; gap: 0.8rem; font-size: 0.75rem; color: rgba(248,248,242,0.7); }
+        .ticker-item .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
+        .ticker-time { color: var(--green); font-weight: 600; }
+        .prayer-card, .activity-block { background: var(--card-bg); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.5rem; transition: 0.3s; }
+        .prayer-card:hover, .activity-block:hover { transform: translateY(-5px); border-color: rgba(57,255,159,0.5); }
+        .prayer-arabic { font-family: 'Scheherazade New', serif; font-size: 1.4rem; color: var(--green); }
+        .prayer-amharic { font-size: 0.85rem; color: rgba(248,248,242,0.6); margin-bottom: 0.5rem; }
+        .prayer-time { font-family: monospace; font-size: 1.8rem; font-weight: 600; color: var(--green); }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .section-title { font-size: 2rem; margin: 1rem 0; }
+        .donate-box { background: linear-gradient(135deg, #0a2017, #0d1a0d); border: 1px solid var(--border-glow); border-radius: 24px; padding: 2rem; text-align: center; }
+        .single-bank { background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 16px; max-width: 500px; margin: 1.5rem auto; text-align: left; }
+        .copy-btn { background: var(--green); border: none; padding: 0.2rem 0.7rem; border-radius: 20px; cursor: pointer; margin-left: 0.5rem; }
+        .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .contact-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .contact-label { min-width: 100px; color: var(--green); font-weight: 600; }
+        .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border-glow); margin-top: 3rem; }
+
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .container { padding: 1.5rem; }
+            .prayer-time { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
-<header class="site-header">
-    <div class="logo-wrapper">
-        <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አወሊያ መስጂድ ወጣቶች ጀምዐ አርማ" class="main-logo">
-        <div class="site-title"><h1>አወሊያ መስጂድ ወጣቶች ጀምዐ</h1><p>Awolia Mosque Youth Association</p></div>
-    </div>
-    <button class="toggle-btn" id="toggleSidebarBtn">☰</button>
-</header>
 
+<!-- Loading screen -->
+<div id="loader" style="position:fixed; inset:0; background:var(--dark); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem; transition:opacity 0.8s;">
+    <div class="loader-arabic" style="font-family:'Scheherazade New'; font-size:2.5rem; color:var(--green); opacity:0; transform:translateY(15px);">بِسْمِ اللَّهِ</div>
+    <div class="loader-amharic" style="font-size:1rem; color:rgba(248,248,242,0.5); opacity:0; transform:translateY(15px);">በአላህ ስም</div>
+    <div class="loader-bar-wrap" style="width:200px; height:1px; background:rgba(57,255,159,0.15); border-radius:1px; overflow:hidden; opacity:0;"><div id="loaderBar" style="height:100%; width:0%; background:var(--green);"></div></div>
+    <div class="loader-text" style="font-size:0.65rem; color:rgba(248,248,242,0.3); opacity:0;">ቅዱስ ቦታ በመጫን ላይ...</div>
+</div>
+
+<!-- Sign In Modal -->
+<div id="signinModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--green);">📝 ይግቡ / Sign In</h3>
+        <input type="text" id="loginUsername" placeholder="ስም / Username" autocomplete="off">
+        <div><button id="modalSigninBtn">ግባ / Sign In</button><button id="modalCloseBtn" class="close-modal">ዝጋ / Cancel</button></div>
+    </div>
+</div>
+
+<!-- Sidebar -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-logo-wrapper">
-        <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አርማ">
-    </div>
-    <div class="sidebar-logo">አወሊያ መስጂድ <span>ወጣቶች ጀምዐ</span></div>
+    <div class="sidebar-logo"><img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="አርማ"><h3>አወሊያ መስጂድ ወጣቶች ጀምዐ</h3></div>
     <div class="sidebar-nav">
         <a data-page="home" class="active">🏠 መነሻ</a>
         <a data-page="community">🤝 ዘርፎች</a>
@@ -449,87 +192,179 @@
         <a data-page="news">📰 ዜና እና ጨዋታዎች</a>
         <a data-page="contact">📞 ስለ እኛ</a>
     </div>
-    <div style="margin-top: auto; text-align: center; font-size: 0.7rem; color: rgba(255,255,255,0.5);">© 2025</div>
+    <div id="sidebarUserStatus" style="margin-top: auto; text-align: center; font-size: 0.7rem; opacity: 0.7; padding-top: 1rem;"></div>
+</div>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="logo-small">☽ አወሊያ መስጂድ ወጣቶች ጀምዐ</div>
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+        <span id="topBarUser" class="user-greeting"></span>
+        <button id="topBarSignBtn" class="signin-btn">ግባ / Sign In</button>
+    </div>
+    <button class="menu-btn" id="menuBtn">☰</button>
 </div>
 
 <main class="main-content">
-    <div class="container">
-        <!-- HOME PAGE (FULL ORIGINAL CONTENT + ALARM) -->
-        <div id="home-page" class="page active-page">
-            <div class="hero">
-                <h1>🌙 አወሊያ መስጂድ ወጣቶች ጀምዐ</h1>
-                <div class="tagline">تكوين مجتمع شباب مسلم يقظ، واعٍ، ونشط</div>
-            </div>
-            <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
-            <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
-            <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
-            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
-            <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
-            <div class="values-list">
-                <ul>
-                    <li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li>
-                    <li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li>
-                    <li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li>
-                    <li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li>
-                    <li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li>
-                    <li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li>
-                    <li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li>
-                </ul>
-            </div>
-            
-            <!-- CUSTOM ALARM (FULLY FUNCTIONAL ON ALL DEVICES) -->
-            <div class="alarm-card">
-                <h3>⏰ ማስጠንቀቂያ / Custom Alarm & Reminder</h3>
-                <!-- Explicit permission button -->
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    <button id="requestPermBtn" class="perm-btn">🔔 ማንቂያ ፈቃድ ስጡ / Enable Notifications</button>
-                </div>
-                <div class="alarm-flex">
-                    <div class="alarm-group">
-                        <label>🔔 በደቂቃ ማንቂያ (ደቂቃ ቆጣሪ) Timer (minutes)</label>
-                        <div class="time-input-row">
-                            <input type="number" id="alarmMinutesInput" min="1" max="720" value="5" style="width: 100px;">
-                            <span>ደቂቃ / Minutes</span>
-                        </div>
-                        <button id="setMinutesAlarmBtn" class="btn-alarm">⏲️ ማንቂያ አስጀምር (Set Timer)</button>
-                    </div>
-                    <div class="alarm-group">
-                        <label>⏱️ በተወሰነ ሰዓት ማንቂያ (Specific Time)</label>
-                        <div class="time-input-row">
-                            <input type="number" id="alarmHour" min="0" max="23" value="18" style="width: 70px;"> ሰዓት (Hour)
-                            <input type="number" id="alarmMinute" min="0" max="59" value="30" style="width: 70px;"> ደቂቃ (Min)
-                        </div>
-                        <button id="setTimeAlarmBtn" class="btn-alarm">📅 ማንቂያ አስጀምር (Set Alarm)</button>
-                    </div>
-                </div>
-                <div class="alarm-status" id="alarmStatusArea">
-                    📍 ምንም ንቁ ማንቂያ የለም · No active alarm
-                </div>
-                <div style="display: flex; gap: 0.8rem; justify-content: center; margin-top: 0.8rem;">
-                    <button id="cancelAlarmBtn" class="btn-alarm cancel">❌ ማንቂያ ሰርዝ (Cancel Alarm)</button>
-                    <button id="testCustomAlarmBtn" class="btn-alarm" style="background:#b8860b;">🔊 ሙከራ (Test sound + notif)</button>
-                </div>
-                <p style="font-size: 0.75rem; margin-top: 0.7rem; text-align: center;">💡 ማንቂያው ሲደርስ ድምፅ እና ማሳወቂያ ያሳያል (Sound + Notification). አስፈላጊ: ማንቂያ ከማስጀመርዎ በፊት ፈቃድ ይጠይቃል።</p>
-            </div>
-        </div>
-
-        <!-- COMMUNITY PAGE, DONATE PAGE, PRAYER PAGE, NEWS PAGE, CONTACT PAGE (identical to original, omitted for brevity but fully restored) -->
-        <!-- ... (all other page content is exactly the same as your original, but I'll include them fully in the final code) ... -->
+    <!-- HOME PAGE (simplified but complete) -->
+    <div id="home-page" class="page active-page">
+        <section id="hero"><div class="hero-sky"></div><div class="aurora"><span></span><span></span><span></span></div>
+        <div class="hero-content"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-subtitle">አወሊያ መስጂድ ወጣቶች ጀምዐ</div><h1 class="hero-title">የ<span>እምነት</span><br>ብርሃን</h1><p class="hero-tagline">ልቦች ሰላም የሚያገኙበት · ከ2022 ጀምሮ</p><div class="hero-cta"><a href="#prayer" class="btn btn-primary">የሶላት ሰዓቶች</a><a href="#community" class="btn btn-outline">ተጨማሪ ይወቁ</a></div></div><div class="scroll-indicator"><span>ታች ሸብልሉ</span><div class="scroll-mouse"><div class="scroll-dot"></div></div></div></section>
+        <div class="prayer-ticker"><div class="ticker-track" id="tickerTrack"></div></div>
+        <div class="container"><h2 class="section-title">🎯 ተልዕኮ</h2><p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ በእስላማዊ ትምህርቶች የሚመራ ንቁ የወጣቶች ማህበረሰብ ማፍራት ነው።</p><h2 class="section-title">👁️ ራዕይ</h2><p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው።</p><h2 class="section-title">💎 እሴቶች</h2><div class="activity-block"><ul><li>መንፈሳዊነት · አገልጋይ አመራር · ወንድማማችነት · ታማኝነት · ለዓላማ ቁርጠኝነት · ልቀት · እኩልነት እና ፍትሕ</li></ul></div></div>
     </div>
+
+    <!-- COMMUNITY -->
+    <div id="community-page" class="page"><div class="container"><h2 class="section-title">🤝 ዘርፎች</h2><div class="activity-grid"><div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን ምግብ ዕርዳታ</li><li>የዘካተ ፊጥር ስርጭት</li><li>ለታመሙ ጉብኝት</li></ul></div><div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li></ul></div><div class="activity-block"><h3>👩 የሴቶች ዘርፍ</h3><ul><li>የቁርአን ክፍለ ጊዜ</li><li>ሴት-ለ-ሴት ዳዕዋ</li></ul></div><div class="activity-block"><h3>🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li></ul></div></div></div></div>
+
+    <!-- DONATE -->
+    <div id="donate-page" class="page"><div class="container"><div class="donate-box"><h3>💚 ይደግፉን</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዱናል።</p><div class="single-bank"><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ይግለጹ።</p></div></div></div>
+
+    <!-- PRAYER PAGE -->
+    <div id="prayer-page" class="page"><div class="container"><h2 class="section-title">🕌 የሶላት ሰዓት</h2><div class="prayer-grid" id="prayerGrid"></div><div style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:20px; padding:1.5rem; text-align:center; margin-top:2rem;"><h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4><div id="countdownTimer" style="font-size:2rem; color:var(--green);">--:--:--</div><p>ቀጣይ: <span id="nextPrayerName">--</span></p><button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ</button><button id="testPrayerSound" class="btn btn-outline">🔊 ሙከራ</button></div><p style="margin-top:1rem;">*የጁሙዓ ሶላት ከምሽቱ 12:24 ላይ ነው።</p></div></div>
+
+    <!-- NEWS -->
+    <div id="news-page" class="page"><div class="container"><h2 class="section-title">⚽ ቀጣይ ጨዋታዎች</h2><div class="activity-grid"><div class="prayer-card"><div class="prayer-arabic">🏆 የመጀመሪያ ግጥሚያ</div><div class="prayer-amharic">ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div><div class="prayer-time">ሚያዝያ 10, 2018 ከፋጅር በኋላ</div></div><div class="prayer-card"><div class="prayer-arabic">🏆 ሁለተኛ ግጥሚያ</div><div class="prayer-amharic">ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div><div class="prayer-time">ሚያዝያ 10, 2018 ከመጀመሪያ ጨዋታ በኋላ</div></div></div></div></div>
+
+    <!-- CONTACT -->
+    <div id="contact-page" class="page"><div class="container"><h2 class="section-title">📞 አግኙን</h2><div class="contact-grid"><div><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div><div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div><div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com</div></div></div><div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank">t.me/+GdbodoOS7VQzYjk0</a></div></div><div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00<br>ዓርብ 10:00–12:00<br>ቅዳሜ 3:00–5:00</div></div><div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123">@awoliayouth123</a></div></div></div></div></div></div>
+
+    <footer class="footer"><p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ<br>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ</p></footer>
 </main>
 
 <script>
-    (function(){
-        // ----- SIDEBAR (FIXED FOR MOBILE) -----
+    (function() {
+        // Loading screen
+        const loader = document.getElementById('loader');
+        const loaderBar = document.getElementById('loaderBar');
+        setTimeout(() => { document.querySelector('.loader-arabic').style.opacity = '1'; document.querySelector('.loader-arabic').style.transform = 'translateY(0)'; }, 100);
+        setTimeout(() => { document.querySelector('.loader-amharic').style.opacity = '1'; document.querySelector('.loader-amharic').style.transform = 'translateY(0)'; }, 400);
+        setTimeout(() => { document.querySelector('.loader-bar-wrap').style.opacity = '1'; }, 700);
+        setTimeout(() => { loaderBar.style.width = '100%'; }, 800);
+        setTimeout(() => { document.querySelector('.loader-text').style.opacity = '1'; }, 900);
+        setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 800); }, 3000);
+
+        // ========== SIGN IN / OUT WITH LOGGING ==========
+        let currentUser = null;
+        const modal = document.getElementById('signinModal');
+        const topBarSignBtn = document.getElementById('topBarSignBtn');
+        const topBarUserSpan = document.getElementById('topBarUser');
+        const sidebarUserStatus = document.getElementById('sidebarUserStatus');
+        const enableNotifBtn = document.getElementById('enableNotifBtn');
+        const testPrayerSound = document.getElementById('testPrayerSound');
+
+        function getLog() {
+            const log = localStorage.getItem('awolia_activity_log');
+            return log ? JSON.parse(log) : [];
+        }
+
+        function addToLog(username, action) {
+            const log = getLog();
+            const device = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ሞባይል' : 'ኮምፒዩተር';
+            log.unshift({
+                username: username,
+                action: action,
+                timestamp: new Date().toLocaleString(),
+                device: device
+            });
+            if (log.length > 100) log.pop();
+            localStorage.setItem('awolia_activity_log', JSON.stringify(log));
+            // Also update active users list
+            updateActiveUsers(username, action);
+        }
+
+        function updateActiveUsers(username, action) {
+            let active = localStorage.getItem('awolia_active_users');
+            active = active ? JSON.parse(active) : [];
+            if (action === 'sign_in') {
+                if (!active.includes(username)) active.push(username);
+            } else if (action === 'sign_out') {
+                active = active.filter(u => u !== username);
+            }
+            localStorage.setItem('awolia_active_users', JSON.stringify(active));
+        }
+
+        function getActiveUsers() {
+            const active = localStorage.getItem('awolia_active_users');
+            return active ? JSON.parse(active) : [];
+        }
+
+        function updateUIForSignedIn() {
+            topBarUserSpan.innerText = `👤 ${currentUser}`;
+            topBarSignBtn.innerText = 'ውጣ / Sign Out';
+            sidebarUserStatus.innerHTML = `✅ ገብተዋል: ${currentUser}<br><button id="sidebarTestNotif" style="margin-top:8px; background:var(--green); color:var(--dark); border:none; padding:4px 12px; border-radius:20px; font-size:0.7rem; cursor:pointer;">🔔 Send Test Notification</button>`;
+            const testNotifBtn = document.getElementById('sidebarTestNotif');
+            if (testNotifBtn) {
+                testNotifBtn.onclick = () => {
+                    if (Notification.permission === 'granted') {
+                        new Notification("📢 ማስታወቂያ", { body: `ሰላም ${currentUser}! ይህ የሙከራ ማሳወቂያ ነው።`, icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" });
+                    } else alert("እባክዎ መጀመሪያ ማንቂያ ፈቃድ ይስጡ።");
+                };
+            }
+            if (enableNotifBtn) enableNotifBtn.classList.remove('disabled');
+            if (testPrayerSound) testPrayerSound.classList.remove('disabled');
+        }
+
+        function updateUIForSignedOut() {
+            topBarUserSpan.innerText = '';
+            topBarSignBtn.innerText = 'ግባ / Sign In';
+            sidebarUserStatus.innerHTML = `🔒 እባክዎ ይግቡ ማንቂያ ለማንቃት`;
+            if (enableNotifBtn) enableNotifBtn.classList.add('disabled');
+            if (testPrayerSound) testPrayerSound.classList.add('disabled');
+        }
+
+        function signIn(username) {
+            currentUser = username;
+            localStorage.setItem('awolia_user', currentUser);
+            addToLog(currentUser, 'sign_in');
+            updateUIForSignedIn();
+            modal.classList.remove('active');
+            if (Notification.permission === 'default') Notification.requestPermission();
+        }
+
+        function signOut() {
+            if (currentUser) {
+                addToLog(currentUser, 'sign_out');
+            }
+            currentUser = null;
+            localStorage.removeItem('awolia_user');
+            updateUIForSignedOut();
+        }
+
+        const savedUser = localStorage.getItem('awolia_user');
+        if (savedUser) {
+            currentUser = savedUser;
+            updateUIForSignedIn();
+        } else {
+            updateUIForSignedOut();
+        }
+
+        topBarSignBtn.addEventListener('click', () => {
+            if (currentUser) signOut();
+            else modal.classList.add('active');
+        });
+        document.getElementById('modalSigninBtn').addEventListener('click', () => {
+            const username = document.getElementById('loginUsername').value.trim();
+            if (username === "") { alert("እባክዎ ስም ያስገቡ"); return; }
+            signIn(username);
+            document.getElementById('loginUsername').value = '';
+        });
+        document.getElementById('modalCloseBtn').addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+        // ========== SIDEBAR ==========
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
-        const toggleBtn = document.getElementById('toggleSidebarBtn');
-        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-        function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
-        toggleBtn.addEventListener('click', openSidebar);
+        const menuBtn = document.getElementById('menuBtn');
+        function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+        menuBtn.addEventListener('click', openSidebar);
         overlay.addEventListener('click', closeSidebar);
-        
-        // ----- PAGE SWITCHING -----
+        window.addEventListener('click', function(e) {
+            if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuBtn) closeSidebar();
+        });
+
+        // Page switching
         const pages = {
             home: document.getElementById('home-page'),
             community: document.getElementById('community-page'),
@@ -539,108 +374,126 @@
             contact: document.getElementById('contact-page')
         };
         const navLinks = document.querySelectorAll('.sidebar-nav a');
+        function switchPage(pageId) {
+            Object.values(pages).forEach(p => p.classList.remove('active-page'));
+            pages[pageId].classList.add('active-page');
+            navLinks.forEach(link => link.classList.toggle('active', link.dataset.page === pageId));
+            closeSidebar();
+            window.scrollTo(0, 0);
+        }
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const pageId = link.dataset.page;
-                if(pageId && pages[pageId]) {
-                    Object.values(pages).forEach(p => p.classList.remove('active-page'));
-                    pages[pageId].classList.add('active-page');
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    closeSidebar();
-                    window.scrollTo(0,0);
-                }
+                if (pageId && pages[pageId]) switchPage(pageId);
             });
         });
-        
-        // ----- COPY BUTTONS -----
+        document.querySelector('.hero-cta .btn-primary')?.addEventListener('click', (e) => { e.preventDefault(); switchPage('prayer'); });
+        document.querySelector('.hero-cta .btn-outline')?.addEventListener('click', (e) => { e.preventDefault(); switchPage('community'); });
+
+        // Copy buttons
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 navigator.clipboard.writeText(this.dataset.text).then(() => {
-                    const orig = this.innerText;
+                    let orig = this.innerText;
                     this.innerText = 'ተቀድቷል!';
                     setTimeout(() => this.innerText = orig, 1500);
-                }).catch(() => alert('ቅዳ አልተሳካም'));
+                });
             });
         });
-        
-        // ----- PRAYER TIMES & COUNTDOWN (same as before) -----
-        const prayerNamesAm = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
-        let prayerTimesCache = null;
-        let lastAlertedPrayer = null;
+
+        // ========== PRAYER TIMES ==========
+        const prayerData = {
+            Fajr: { arabic: 'الFajr', amharic: 'ፋጅር' },
+            Dhuhr: { arabic: 'الDhuhr', amharic: 'ዙህር' },
+            Asr: { arabic: 'الAsr', amharic: 'ዐስር' },
+            Maghrib: { arabic: 'الMaghrib', amharic: 'መግሪብ' },
+            Isha: { arabic: 'الIsha', amharic: 'ዒሻ' }
+        };
+        const fallback = { Fajr: "04:58", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
+        let prayerCache = null;
         let audioCtx = null;
-        const fallbackTimes = { Fajr: "05:04", Dhuhr: "12:25", Asr: "15:31", Maghrib: "18:36", Isha: "19:43" };
-        
-        async function fetchPrayerTimes() {
+        let lastAlerted = null;
+
+        async function fetchTimes() {
             const today = new Date();
             const url = `https://api.aladhan.com/v1/calendar/${today.getFullYear()}/${today.getMonth()+1}?latitude=9.03&longitude=38.74&method=3`;
             try {
-                const res = await fetch(url);
-                const data = await res.json();
-                if(data.code===200 && data.data) {
-                    const dayData = data.data[today.getDate()-1];
-                    if(dayData && dayData.timings) {
+                let res = await fetch(url);
+                let data = await res.json();
+                if (data.code === 200 && data.data) {
+                    let day = data.data[today.getDate()-1];
+                    if (day && day.timings) {
                         return {
-                            Fajr: dayData.timings.Fajr.substring(0,5),
-                            Dhuhr: dayData.timings.Dhuhr.substring(0,5),
-                            Asr: dayData.timings.Asr.substring(0,5),
-                            Maghrib: dayData.timings.Maghrib.substring(0,5),
-                            Isha: dayData.timings.Isha.substring(0,5)
+                            Fajr: day.timings.Fajr.substring(0,5),
+                            Dhuhr: day.timings.Dhuhr.substring(0,5),
+                            Asr: day.timings.Asr.substring(0,5),
+                            Maghrib: day.timings.Maghrib.substring(0,5),
+                            Isha: day.timings.Isha.substring(0,5)
                         };
                     }
                 }
-            } catch(e) {}
-            return fallbackTimes;
+            } catch(e) { console.warn(e); }
+            return fallback;
         }
-        
+
         async function loadPrayerTimes() {
-            const container = document.getElementById('prayerTableContainer');
-            if(!container) return;
-            prayerTimesCache = await fetchPrayerTimes();
-            let html = '';
-            for(let key of ['Fajr','Dhuhr','Asr','Maghrib','Isha']) {
-                html += `<div class="prayer-row"><span>${prayerNamesAm[key]}</span><span>${prayerTimesCache[key]}</span></div>`;
+            prayerCache = await fetchTimes();
+            const grid = document.getElementById('prayerGrid');
+            if (grid) {
+                let html = '';
+                for (let [key, time] of Object.entries(prayerCache)) {
+                    html += `<div class="prayer-card"><div class="prayer-arabic">${prayerData[key].arabic}</div><div class="prayer-amharic">${prayerData[key].amharic}</div><div class="prayer-time">${time}</div></div>`;
+                }
+                grid.innerHTML = html;
             }
-            container.innerHTML = html;
+            const tickerTrack = document.getElementById('tickerTrack');
+            if (tickerTrack && prayerCache) {
+                let tickerHtml = '';
+                for (let [key, time] of Object.entries(prayerCache)) {
+                    tickerHtml += `<div class="ticker-item"><div class="dot"></div> ${prayerData[key].amharic} <span class="ticker-time">${time}</span></div>`;
+                }
+                tickerTrack.innerHTML = tickerHtml + tickerHtml;
+            }
+            startCountdown();
         }
         loadPrayerTimes();
-        
+
         function getNextPrayer() {
-            if(!prayerTimesCache) return null;
-            const now = new Date();
-            const currentTotal = now.getHours() * 60 + now.getMinutes();
-            let nextPrayer = null, nextTime = null, minDiff = Infinity;
-            for(let [name, timeStr] of Object.entries(prayerTimesCache)) {
-                let [h,m] = timeStr.split(':').map(Number);
-                let total = h*60 + m;
-                if(total < currentTotal) total += 1440;
-                let diff = total - currentTotal;
-                if(diff < minDiff) {
+            if (!prayerCache) return null;
+            let now = new Date();
+            let current = now.getHours() * 60 + now.getMinutes();
+            let next = null, minDiff = Infinity, nextTime = null;
+            for (let [name, time] of Object.entries(prayerCache)) {
+                let [h,m] = time.split(':');
+                let total = parseInt(h)*60 + parseInt(m);
+                if (total < current) total += 1440;
+                let diff = total - current;
+                if (diff < minDiff) {
                     minDiff = diff;
-                    nextPrayer = name;
-                    nextTime = timeStr;
+                    next = name;
+                    nextTime = time;
                 }
             }
-            const seconds = 60 - now.getSeconds();
+            let seconds = 60 - now.getSeconds();
             return {
-                name: prayerNamesAm[nextPrayer] || nextPrayer,
+                name: prayerData[next]?.amharic || next,
                 time: nextTime,
                 hours: Math.floor(minDiff/60),
                 minutes: minDiff % 60,
                 seconds: seconds === 60 ? 0 : seconds,
-                totalSeconds: minDiff*60 + seconds,
-                key: nextPrayer
+                totalSec: minDiff*60 + seconds,
+                key: next
             };
         }
-        
+
         function playBeep() {
             try {
-                const ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                let ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
                 audioCtx = ctx;
-                const play = () => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
+                let play = () => {
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
                     osc.connect(gain);
                     gain.connect(ctx.destination);
                     osc.frequency.value = 880;
@@ -649,195 +502,65 @@
                     gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
                     osc.stop(ctx.currentTime + 0.8);
                 };
-                if(ctx.state === 'suspended') {
-                    ctx.resume().then(play).catch(()=>{});
-                } else {
-                    play();
-                }
+                if (ctx.state === 'suspended') ctx.resume().then(play).catch(()=>{});
+                else play();
             } catch(e) {}
         }
-        
+
         function showNotification(title, body) {
-            // Ensure permission is granted before showing
             if (Notification.permission === 'granted') {
-                new Notification(title, {
-                    body: body,
-                    icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg",
-                    requireInteraction: true
-                });
-            } else if (Notification.permission === 'default') {
-                // If not yet decided, request now
-                Notification.requestPermission().then(perm => {
-                    if (perm === 'granted') {
-                        new Notification(title, { body: body, icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" });
-                    } else {
-                        console.warn("Notification permission denied");
-                    }
-                });
-            } else {
-                console.warn("Notification permission blocked");
-                // Optional: alert user to manually enable
-                alert("ማንቂያዎች ታግደዋል። እባክዎ በብራውዘር ቅንብሮች ውስጥ ፈቅደው ይጫኑ።");
+                new Notification(title, { body: body, icon: "https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" });
             }
         }
-        
-        function updateCountdown() {
-            if(!prayerTimesCache) return;
-            const next = getNextPrayer();
-            if(!next) return;
-            const timerDiv = document.getElementById('countdownTimer');
-            const nameSpan = document.getElementById('nextPrayerName');
-            if(timerDiv) timerDiv.innerText = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
-            if(nameSpan) nameSpan.innerText = `${next.name} (${next.time})`;
-            if(next.totalSeconds <= 0 && lastAlertedPrayer !== next.key) {
+
+        let countdownInterval = null;
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                if (!prayerCache) return;
+                let next = getNextPrayer();
+                if (!next) return;
+                let timerDiv = document.getElementById('countdownTimer');
+                let nameSpan = document.getElementById('nextPrayerName');
+                if (timerDiv) timerDiv.innerText = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
+                if (nameSpan) nameSpan.innerText = `${next.name} (${next.time})`;
+                if (next.totalSec <= 0.5 && lastAlerted !== next.key && currentUser) {
+                    playBeep();
+                    showNotification("🕌 የሶላት ሰዓት ደረሰ", `ለ${next.name} ሶላት ሰዓት ነው።`);
+                    lastAlerted = next.key;
+                } else if (next.totalSec > 60) {
+                    lastAlerted = null;
+                }
+            }, 500);
+        }
+
+        if (enableNotifBtn) {
+            enableNotifBtn.addEventListener('click', () => {
+                if (!currentUser) { alert("እባክዎ መጀመሪያ ይግቡ"); return; }
+                if (Notification.permission === 'granted') {
+                    playBeep();
+                    showNotification("✅ ማንቂያ ንቁ ነው", `እንኳን ደህና መጡ ${currentUser}!`);
+                } else if (Notification.permission === 'default') {
+                    Notification.requestPermission().then(perm => {
+                        if (perm === 'granted') {
+                            playBeep();
+                            showNotification("✅ ማንቂያ ተንቅቷል", `ሰላም ${currentUser}`);
+                        } else alert("ማንቂያ ፈቃድ አልሰጡም።");
+                    });
+                } else alert("ማንቂያ ታግዷል።");
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            });
+        }
+
+        if (testPrayerSound) {
+            testPrayerSound.addEventListener('click', () => {
+                if (!currentUser) { alert("እባክዎ መጀመሪያ ይግቡ"); return; }
                 playBeep();
-                showNotification("🕌 የሶላት ሰዓት ደረሰ", `ለ${next.name} ሶላት ሰዓት ነው።`);
-                lastAlertedPrayer = next.key;
-                const box = document.getElementById('countdownBox');
-                if(box) box.classList.add('flash');
-                setTimeout(() => box?.classList.remove('flash'), 600);
-            } else if(next.totalSeconds > 0) {
-                lastAlertedPrayer = null;
-            }
+                if (Notification.permission === 'granted') showNotification("🔊 ሙከራ", "ድምፅ እና ማሳወቂያ እየሰሩ ነው።");
+                else if (Notification.permission === 'default') Notification.requestPermission();
+                else alert("እባክዎ መጀመሪያ ማንቂያ ፈቃድ ይስጡ።");
+            });
         }
-        
-        setInterval(updateCountdown, 1000);
-        setTimeout(updateCountdown, 500);
-        
-        // Permission request buttons
-        function requestNotificationPermission() {
-            if (!("Notification" in window)) {
-                alert("ይህ አሳሽ ማሳወቂያዎችን አይደግፍም");
-                return;
-            }
-            if (Notification.permission === 'granted') {
-                alert("ማንቂያዎች ቀድሞውንም ነቅተዋል! ✓");
-            } else if (Notification.permission === 'denied') {
-                alert("ማንቂያዎች ታግደዋል። እባክዎ በአሳሽ ቅንብሮች ውስጥ ፍቀዱ።");
-            } else {
-                Notification.requestPermission().then(perm => {
-                    if (perm === 'granted') {
-                        alert("ማንቂያዎች ተነቅተዋል! አሁን ማንቂያ ማዘጋጀት ይችላሉ።");
-                        showNotification("ተሳክቷል ✓", "ማንቂያዎች ነቅተዋል!");
-                    } else {
-                        alert("ማንቂያ ፈቃድ አልተሰጠም።");
-                    }
-                });
-            }
-            // Also resume audio
-            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        }
-        
-        document.getElementById('requestPermBtn')?.addEventListener('click', requestNotificationPermission);
-        document.getElementById('enableNotificationsBtn')?.addEventListener('click', requestNotificationPermission);
-        document.getElementById('testAlarmBtn')?.addEventListener('click', () => {
-            playBeep();
-            showNotification("🔊 የሙከራ ማንቂያ", "ድምፅ እና ማሳወቂያ እየሰሩ ነው። Test notification!");
-        });
-        
-        // ----- CUSTOM ALARM (FULLY FUNCTIONAL) -----
-        let activeAlarmTimeout = null;
-        let alarmDisplayInterval = null;
-        let alarmTargetDate = null;
-        
-        function clearActiveAlarm() {
-            if(activeAlarmTimeout) clearTimeout(activeAlarmTimeout);
-            if(alarmDisplayInterval) clearInterval(alarmDisplayInterval);
-            alarmTargetDate = null;
-            const statusDiv = document.getElementById('alarmStatusArea');
-            if(statusDiv) statusDiv.innerHTML = "📍 ምንም ንቁ ማንቂያ የለም · No active alarm";
-        }
-        
-        function updateAlarmDisplay() {
-            const statusDiv = document.getElementById('alarmStatusArea');
-            if(!statusDiv) return;
-            if(!alarmTargetDate) {
-                statusDiv.innerHTML = "📍 ምንም ንቁ ማንቂያ የለም";
-                return;
-            }
-            const diff = alarmTargetDate - new Date();
-            if(diff <= 0) {
-                clearActiveAlarm();
-                statusDiv.innerHTML = "🔔 ማንቂያ ተቀስቅሷል! (Alarm rang)";
-                return;
-            }
-            const minutesLeft = Math.floor(diff / 60000);
-            const secondsLeft = Math.floor((diff % 60000) / 1000);
-            statusDiv.innerHTML = `⏰ ማንቂያ ተዘጋጅቷል! የሚቀረው ጊዜ: ${minutesLeft} ደቂቃ እና ${secondsLeft} ሰከንድ <br> 🕐 የሚቃጠርበት ሰዓት: ${alarmTargetDate.toLocaleTimeString()}`;
-        }
-        
-        function triggerCustomAlarm(message = "⏰ ማንቂያ! Custom Alarm!") {
-            playBeep();
-            showNotification("🔔 ማንቂያ ደረሰ / Alarm Triggered", message);
-            const alarmCard = document.querySelector('.alarm-card');
-            if(alarmCard) alarmCard.classList.add('flash-alarm');
-            setTimeout(() => alarmCard?.classList.remove('flash-alarm'), 1000);
-            clearActiveAlarm();
-        }
-        
-        function scheduleAlarm(targetDate) {
-            clearActiveAlarm();
-            const now = new Date();
-            if(targetDate <= now) {
-                alert("የወደፊት ሰዓት ይምረጡ (Set future time)");
-                return false;
-            }
-            alarmTargetDate = targetDate;
-            const delayMs = targetDate - now;
-            activeAlarmTimeout = setTimeout(() => triggerCustomAlarm(`ማንቂያዎ ደርሷል! የተዘጋጀው ሰዓት ${targetDate.toLocaleTimeString()}`), delayMs);
-            alarmDisplayInterval = setInterval(updateAlarmDisplay, 500);
-            updateAlarmDisplay();
-            // Request permission if not granted yet
-            if (Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            return true;
-        }
-        
-        document.getElementById('setMinutesAlarmBtn')?.addEventListener('click', () => {
-            const minutes = parseInt(document.getElementById('alarmMinutesInput').value, 10);
-            if(isNaN(minutes) || minutes < 1) { alert("እባክዎ ትክክለኛ ደቂቃ ያስገቡ"); return; }
-            const target = new Date(Date.now() + minutes * 60000);
-            if(scheduleAlarm(target)) alert(`ማንቂያ ከ ${minutes} ደቂቃ በኋላ ለማሰማት ተዘጋጅቷል!`);
-        });
-        
-        document.getElementById('setTimeAlarmBtn')?.addEventListener('click', () => {
-            let hour = parseInt(document.getElementById('alarmHour').value, 10);
-            let minute = parseInt(document.getElementById('alarmMinute').value, 10);
-            if(isNaN(hour)) hour = 18;
-            if(isNaN(minute)) minute = 30;
-            let target = new Date();
-            target.setHours(hour, minute, 0, 0);
-            if(target <= new Date()) target.setDate(target.getDate() + 1);
-            if(scheduleAlarm(target)) alert(`ማንቂያ ለ ${target.toLocaleTimeString()} ተዘጋጅቷል!`);
-        });
-        
-        document.getElementById('cancelAlarmBtn')?.addEventListener('click', () => {
-            clearActiveAlarm();
-            alert("ማንቂያ ተሰርዟል። Alarm cancelled.");
-        });
-        
-        document.getElementById('testCustomAlarmBtn')?.addEventListener('click', () => {
-            playBeep();
-            showNotification("🧪 የሙከራ ማንቂያ", "ድምፅ እና ማሳወቂያ እየሰሩ ነው።");
-            const card = document.querySelector('.alarm-card');
-            if(card) card.classList.add('flash-alarm');
-            setTimeout(() => card?.classList.remove('flash-alarm'), 600);
-        });
-        
-        // Also add a fallback: if the user clicks any alarm button and permissions not granted, request.
-        const allAlarmBtns = [document.getElementById('setMinutesAlarmBtn'), document.getElementById('setTimeAlarmBtn'), document.getElementById('testCustomAlarmBtn')];
-        allAlarmBtns.forEach(btn => {
-            if(btn) {
-                btn.addEventListener('click', () => {
-                    if (Notification.permission === 'default') {
-                        Notification.requestPermission();
-                    }
-                    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-                });
-            }
-        });
     })();
 </script>
 </body>
