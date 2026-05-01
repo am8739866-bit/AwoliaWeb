@@ -1,3 +1,4 @@
+<!-- FULL WORKING WEBSITE – includes all content, loading screen, sidebar, Firebase notifications -->
 <!DOCTYPE html>
 <html lang="am">
 <head>
@@ -22,7 +23,7 @@
             --border-glow: rgba(57, 255, 159, 0.2);
         }
         body {
-            font-family: 'Noto Sans Ethiopic', 'Inter', sans-serif;
+            font-family: 'Noto Sans Ethiopic', sans-serif;
             background: var(--dark);
             color: var(--white);
             overflow-x: hidden;
@@ -141,14 +142,14 @@
         .prayer-card, .activity-block { background: var(--card-bg); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.5rem; transition: 0.3s; }
         .prayer-card:hover, .activity-block:hover { transform: translateY(-5px); border-color: rgba(57,255,159,0.5); }
         .prayer-arabic { font-family: 'Scheherazade New', serif; font-size: 1.4rem; color: var(--green); }
-        .prayer-amharic { font-size: 0.85rem; color: rgba(248,248,242,0.6); margin-bottom: 0.5rem; }
+        .prayer-amharic { font-size: 0.85rem; color: rgab(248,248,242,0.6); margin-bottom: 0.5rem; }
         .prayer-time { font-family: monospace; font-size: 1.8rem; font-weight: 600; color: var(--green); }
         .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
         .section-title { font-size: 2rem; margin: 1rem 0; }
         .donate-box { background: linear-gradient(135deg, #0a2017, #0d1a0d); border: 1px solid var(--border-glow); border-radius: 24px; padding: 2rem; text-align: center; }
         .single-bank { background: rgba(0,0,0,0.3); padding: 1.2rem; border-radius: 16px; max-width: 500px; margin: 1.5rem auto; text-align: left; }
         .copy-btn { background: var(--green); border: none; padding: 0.2rem 0.7rem; border-radius: 20px; cursor: pointer; margin-left: 0.5rem; }
-        .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .contact-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; }
         .contact-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
         .contact-label { min-width: 100px; color: var(--green); font-weight: 600; }
         .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border-glow); margin-top: 3rem; }
@@ -175,7 +176,6 @@
             transform: translateY(15px);
         }
         .loader-amharic {
-            font-family: 'Noto Sans Ethiopic', sans-serif;
             font-size: 1rem;
             color: rgba(248,248,242,0.5);
             letter-spacing: 2px;
@@ -198,20 +198,36 @@
             box-shadow: 0 0 8px var(--green);
         }
         .loader-text {
-            font-family: 'Noto Sans Ethiopic', sans-serif;
             font-size: 0.65rem;
-            letter-spacing: 2px;
             color: rgba(248,248,242,0.3);
             opacity: 0;
         }
 
+        .message-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 350px;
+            background: var(--green);
+            color: var(--dark);
+            padding: 1rem;
+            border-radius: 16px;
+            z-index: 2000;
+            animation: slideUp 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
         @media (max-width: 768px) {
             .contact-grid { grid-template-columns: 1fr; }
             .hero-title { font-size: 2rem; }
             .container { padding: 1.5rem; }
             .prayer-time { font-size: 1.4rem; }
             .loader-arabic { font-size: 1.8rem; }
-            .loader-amharic { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -262,44 +278,106 @@
 </div>
 
 <main class="main-content">
-    <!-- HOME PAGE -->
+    <!-- HOME PAGE (FULL) -->
     <div id="home-page" class="page active-page">
         <section id="hero"><div class="hero-sky"></div><div class="aurora"><span></span><span></span><span></span></div>
         <div class="hero-content"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-subtitle">አወሊያ መስጂድ ወጣቶች ጀምዐ</div><h1 class="hero-title">የ<span>እምነት</span><br>ብርሃን</h1><p class="hero-tagline">ልቦች ሰላም የሚያገኙበት · ከ2022 ጀምሮ</p><div class="hero-cta"><a href="#prayer" class="btn btn-primary">የሶላት ሰዓቶች</a><a href="#community" class="btn btn-outline">ተጨማሪ ይወቁ</a></div></div><div class="scroll-indicator"><span>ታች ሸብልሉ</span><div class="scroll-mouse"><div class="scroll-dot"></div></div></div></section>
         <div class="prayer-ticker"><div class="ticker-track" id="tickerTrack"></div></div>
-        <div class="container"><h2 class="section-title">🎯 ተልዕኮ</h2><p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ በእስላማዊ ትምህርቶች የሚመራ ንቁ የወጣቶች ማህበረሰብ ማፍራት ነው።</p><h2 class="section-title">👁️ ራዕይ</h2><p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው።</p><h2 class="section-title">💎 እሴቶች</h2><div class="activity-block"><ul><li>መንፈሳዊነት · አገልጋይ አመራር · ወንድማማችነት · ታማኝነት · ለዓላማ ቁርጠኝነት · ልቀት · እኩልነት እና ፍትሕ</li></ul></div></div>
+        <div class="container">
+            <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
+            <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
+            <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
+            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
+            <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
+            <div class="activity-block"><ul><li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li><li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li><li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li><li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li><li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li><li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li><li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li></ul></div>
+        </div>
     </div>
 
-    <!-- COMMUNITY PAGE -->
-    <div id="community-page" class="page"><div class="container"><h2 class="section-title">🤝 ዘርፎች</h2><div class="activity-grid"><div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን ምግብ ዕርዳታ</li><li>የዘካተ ፊጥር ስርጭት</li><li>ለታመሙ ጉብኝት</li></ul></div><div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li></ul></div><div class="activity-block"><h3>👩 የሴቶች ዘርፍ</h3><ul><li>የቁርአን ክፍለ ጊዜ</li><li>ሴት-ለ-ሴት ዳዕዋ</li></ul></div><div class="activity-block"><h3>🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li></ul></div></div></div></div>
+    <!-- COMMUNITY PAGE (FULL) -->
+    <div id="community-page" class="page">
+        <div class="container">
+            <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
+            <div class="activity-grid">
+                <div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል።</li><li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት።</li><li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት።</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ።</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li></ul></div>
+                <div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን ጥናት ዘርፍ</h3><ul><li>ከመድረሳ ጋር በመተባበር በክረምት ወቅት የሸሪዓ ኮርሶችን በየጊዜው ማዘጋጀት።</li><li>ለማህበረሰቡ በዲን ላይ የተመሠረተ ጥያቄ እና መልስ ዝግጅቶችን ማዘጋጀት።</li><li>ትምህርታዊ የሃይማኖት መጣጥፎችን እና ጽሑፎችን መለጠፍ።</li><li>ከኢማሞች ጋር በመተባበር በመስጂዱ ውስጥ የሚካሄዱትን የቁርአን ቅራኣት እና የዳዕዋ ፕሮግራሞችን መከታተል እና መደገፍ።</li></ul></div>
+                <div class="activity-block"><h3>👩 የሴቶች ዘርፍ ተግባራት</h3><ul><li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li><li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች።</li><li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት።</li><li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li></ul></div>
+                <div class="activity-block"><h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3><ul><li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li><li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li><li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ እና ሌሎች ስፖርቶች።</li></ul></div>
+            </div>
+        </div>
+    </div>
 
-    <!-- DONATE PAGE -->
-    <div id="donate-page" class="page"><div class="container"><div class="donate-box"><h3>💚 ይደግፉን</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዱናል።</p><div class="single-bank"><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ይግለጹ።</p></div></div></div>
+    <!-- DONATE PAGE (FULL) -->
+    <div id="donate-page" class="page">
+        <div class="container">
+            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p><div class="single-bank"><h4>🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4><p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p><p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span>(አጭር ቁጥር / አጭር ቁጥር፦ 9733)</span></p><p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p><p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ።</p></div>
+        </div>
+    </div>
 
-    <!-- PRAYER PAGE (with fixed Enable Alerts button) -->
-    <div id="prayer-page" class="page"><div class="container"><h2 class="section-title">🕌 የሶላት ሰዓት</h2><div class="prayer-grid" id="prayerGrid"></div><div style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:20px; padding:1.5rem; text-align:center; margin-top:2rem;"><h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4><div id="countdownTimer" style="font-size:2rem; color:var(--green);">--:--:--</div><p>ቀጣይ: <span id="nextPrayerName">--</span></p><button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ / Enable Alerts</button><button id="testPrayerSound" class="btn btn-outline">🔊 ሙከራ / Test Sound</button></div><p style="margin-top:1rem;">*የጁሙዓ ሶላት ከምሽቱ 12:24 ላይ ነው።</p></div></div>
+    <!-- PRAYER PAGE -->
+    <div id="prayer-page" class="page">
+        <div class="container">
+            <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
+            <p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
+            <div class="prayer-grid" id="prayerGrid"></div>
+            <div class="countdown-box" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:20px; padding:1.5rem; text-align:center; margin-top:2rem;">
+                <h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4>
+                <div class="countdown-timer" id="countdownTimer" style="font-size:2rem; color:var(--green); font-family:monospace;">--:--:--</div>
+                <p>ቀጣይ: <span id="nextPrayerName">--</span></p>
+                <button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ / Enable Alerts</button>
+                <button id="testPrayerSound" class="btn btn-outline" style="margin-top:0.5rem;">🔊 የሙከራ ድምፅ / Test Sound</button>
+            </div>
+            <p style="margin-top:1rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 (12:24 ቀትር) ላይ ነው።</p>
+        </div>
+    </div>
 
-    <!-- NEWS & MATCHES -->
-    <div id="news-page" class="page"><div class="container"><h2 class="section-title">⚽ ቀጣይ ጨዋታዎች</h2><div class="activity-grid"><div class="prayer-card"><div class="prayer-arabic">🏆 የመጀመሪያ ግጥሚያ</div><div class="prayer-amharic">ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div><div class="prayer-time">ሚያዝያ 10, 2018 ከፋጅር በኋላ</div></div><div class="prayer-card"><div class="prayer-arabic">🏆 ሁለተኛ ግጥሚያ</div><div class="prayer-amharic">ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div><div class="prayer-time">ሚያዝያ 10, 2018 ከመጀመሪያ ጨዋታ በኋላ</div></div></div></div></div>
+    <!-- NEWS & MATCHES PAGE -->
+    <div id="news-page" class="page">
+        <div class="container">
+            <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች (Upcoming Matches)</h2>
+            <div class="activity-grid">
+                <div class="match-card" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:16px; padding:1.5rem;">
+                    <div class="match-title" style="font-size:1.3rem; font-weight:700; color:var(--green); text-align:center;">🏆 የመጀመሪያ ግጥሚያ (1st Match)<br>ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📅 ቀን / Date:</span><span>ሚያዝያ 10, 2018 (ኤ.ኤ.አ. ኤፕሪል 18, 2026)</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">⏰ ሰዓት / Time:</span><span>After Fajr (~5:15 AM)</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📍 ቦታ / Location:</span><span>in the small area</span></div>
+                </div>
+                <div class="match-card" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:16px; padding:1.5rem;">
+                    <div class="match-title" style="font-size:1.3rem; font-weight:700; color:var(--green); text-align:center;">🏆 ሁለተኛ ግጥሚያ (2nd Match)<br>ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📅 ቀን / Date:</span><span>ሚያዝያ 10, 2018</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">⏰ ሰዓት / Time:</span><span>After 1st match</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📍 ቦታ / Location:</span><span>in the small area</span></div>
+                </div>
+            </div>
+            <p style="text-align:center; margin-top:2rem; color:var(--green);">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
+        </div>
+    </div>
 
-    <!-- CONTACT PAGE -->
-    <div id="contact-page" class="page"><div class="container"><h2 class="section-title">📞 አግኙን</h2><div class="contact-grid"><div><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div><div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div><div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com</div></div></div><div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank">t.me/+GdbodoOS7VQzYjk0</a></div></div><div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00<br>ዓርብ 10:00–12:00<br>ቅዳሜ 3:00–5:00</div></div><div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123">@awoliayouth123</a></div></div></div></div></div></div>
+    <!-- CONTACT PAGE (FULL) -->
+    <div id="contact-page" class="page">
+        <div class="container">
+            <h2 class="section-title">📞 አወሊያ መስጂድ ወጣቶች ጀምዐን ያግኙ</h2>
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div class="contact-value">በአዲስ አበባ ከተማ አስተዳደር ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div>
+                    <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div class="contact-value"><div class="phone-line"><span class="phone-number">+251 910 518 948</span><button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div class="phone-line"><span class="phone-number">+251 922 957 451</span><button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div>
+                    <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div class="contact-value">aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
+                    <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div class="contact-value"><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:var(--green);">💬 t.me/+GdbodoOS7VQzYjk0</a> <button class="copy-btn" data-text="https://t.me/+GdbodoOS7VQzYjk0">ሊንክ ቅዳ</button></div></div>
+                </div>
+                <div>
+                    <div class="contact-item"><div class="contact-label">🕹️ የወጣቶች ቢሮ ሰዓት</div><div class="contact-value">ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)<br>ዓርብ 10:00–12:00 ጠዋት (ከእያንዳንዱ ሶላት በኋላ)<br>ቅዳሜ 3:00–5:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)</div></div>
+                    <div class="contact-item"><div class="contact-label">🎵 ማህበራዊ ትስስር</div><div class="contact-value"><a href="https://www.tiktok.com/@awoliayouth123" target="_blank" style="color:var(--green);">📱 ቲክቶክ @awoliayouth123</a></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <footer class="footer"><p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ<br>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ</p></footer>
+    <footer class="footer">
+        <p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ - Keep your faith in Allah<br>ኢሜይል፦ aweliyamesjidyouth@gmail.com | +251 910 518 948 | +251 922 957 451<br>📢 ቴሌግራም፦ <a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:var(--green);">t.me/+GdbodoOS7VQzYjk0</a><br>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ</p>
+    </footer>
 </main>
 
-<script>
-    // ========== LOADING SCREEN ANIMATION ==========
-    const loader = document.getElementById('loader');
-    const loaderBar = document.getElementById('loaderBar');
-    setTimeout(() => { document.querySelector('.loader-arabic').style.opacity = '1'; document.querySelector('.loader-arabic').style.transform = 'translateY(0)'; }, 100);
-    setTimeout(() => { document.querySelector('.loader-amharic').style.opacity = '1'; document.querySelector('.loader-amharic').style.transform = 'translateY(0)'; }, 400);
-    setTimeout(() => { document.querySelector('.loader-bar-wrap').style.opacity = '1'; }, 700);
-    setTimeout(() => { loaderBar.style.width = '100%'; }, 800);
-    setTimeout(() => { document.querySelector('.loader-text').style.opacity = '1'; }, 900);
-    setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 800); }, 3000);
-
-    // ========== FIREBASE CONFIG (your existing project) ==========
+<script type="module">
+    // Firebase configuration (your project)
     const firebaseConfig = {
         apiKey: "AIzaSyBoUQ_-Gt7PJfWhI6Jh6Xgx1-x8RjYPKCU",
         authDomain: "mosquenotif.firebaseapp.com",
@@ -321,7 +399,7 @@
     let notificationPermission = false;
     let audioCtx = null;
 
-    signInAnonymously(auth).catch(err => console.error(err));
+    signInAnonymously(auth).catch(err => console.error("Sign-in error:", err));
     onAuthStateChanged(auth, (user) => {
         if (user) {
             firebaseUserId = user.uid;
@@ -329,7 +407,7 @@
             addDoc(collection(db, "signins"), {
                 uid: firebaseUserId,
                 timestamp: new Date().toISOString(),
-                device: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? "ሞባይል" : "ኮምፒዩተር"
+                device: /Mobi/i.test(navigator.userAgent) ? "ሞባይል" : "ኮምፒዩተር"
             }).catch(e => console.warn(e));
         }
     });
@@ -342,16 +420,25 @@
                 const msg = change.doc.data();
                 if (msg.to === "all" || (firebaseUserId && msg.to === firebaseUserId)) {
                     showPopup(msg.title, msg.body);
-                    if (notificationPermission) new Notification(msg.title, { body: msg.body });
+                    if (notificationPermission) {
+                        new Notification(msg.title, { body: msg.body });
+                    }
                 }
             }
         });
+    }, (err) => {
+        console.error("Firestore listener error:", err);
+        alert("Firestore error: " + err.message + "\nCheck Firestore rules (allow read/write: if true)");
     });
 
     function showPopup(title, message) {
-        const container = document.getElementById("messageContainer");
-        if (!container) return;
-        let popup = document.createElement("div");
+        let container = document.getElementById("messageContainer");
+        if (!container) {
+            container = document.createElement("div");
+            container.id = "messageContainer";
+            document.body.appendChild(container);
+        }
+        const popup = document.createElement("div");
         popup.className = "message-popup";
         popup.innerHTML = `<strong>📢 ${title}</strong><br>${message}<br><small>Click to dismiss</small>`;
         popup.onclick = () => popup.remove();
@@ -359,37 +446,36 @@
         setTimeout(() => popup.remove(), 10000);
     }
 
-    // ========== ENABLE ALERTS BUTTON (FIXED) ==========
+    // Enable alerts button
     const enableBtn = document.getElementById('enableNotifBtn');
-    const testSoundBtn = document.getElementById('testPrayerSound');
-
     if (enableBtn) {
         enableBtn.addEventListener('click', async () => {
             const localUser = localStorage.getItem("localUsername");
             if (!localUser) {
-                alert("እባክዎ መጀመሪያ ይግቡ / Please sign in first");
+                alert("እባክዎ መጀመሪያ ይግቡ");
                 return;
             }
             if (Notification.permission === 'granted') {
                 notificationPermission = true;
-                playBeep();
                 new Notification("✅ ማንቂያ ንቁ ነው", { body: `እንኳን ደህና መጡ ${localUser}!` });
+                playBeep();
             } else if (Notification.permission === 'default') {
                 const perm = await Notification.requestPermission();
                 notificationPermission = perm === 'granted';
                 if (notificationPermission) {
-                    playBeep();
                     new Notification("✅ ማንቂያ ተንቅቷል", { body: `ሰላም ${localUser}` });
+                    playBeep();
                 } else {
                     alert("ማንቂያ ፈቃድ አልሰጡም።");
                 }
             } else {
-                alert("ማንቂያ ታግዷል። እባክዎ የአሳሽ ቅንብሮችን ይፈትሹ።");
+                alert("ማንቂያ ታግዷል። እባክዎ ቅንብሮችን ይፈትሹ።");
             }
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         });
     }
 
+    const testSoundBtn = document.getElementById('testPrayerSound');
     if (testSoundBtn) {
         testSoundBtn.addEventListener('click', () => {
             const localUser = localStorage.getItem("localUsername");
@@ -423,86 +509,60 @@
                 gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
                 osc.stop(ctx.currentTime + 0.8);
             };
-            if (ctx.state === 'suspended') ctx.resume().then(play).catch(()=>{});
+            if (ctx.state === 'suspended') ctx.resume().then(play);
             else play();
         } catch(e) {}
     }
 
-    // Admin panel (triple tap on logo)
-    let isAdmin = false;
-    function checkAdmin() {
-        const pwd = prompt("Enter admin password to send notifications:");
-        if (pwd === "admin123") {
-            isAdmin = true;
-            const adminPanel = document.getElementById("adminPanel");
-            if (adminPanel) adminPanel.style.display = "block";
-            const msgText = document.getElementById("adminMessageText");
-            if (msgText) msgText.focus();
-        } else {
-            alert("Wrong password");
-        }
-    }
-
+    // Admin panel (send to all)
     const adminDiv = document.createElement("div");
-    adminDiv.id = "adminPanel";
-    adminDiv.style.display = "none";
     adminDiv.style.position = "fixed";
     adminDiv.style.bottom = "10px";
     adminDiv.style.right = "10px";
-    adminDiv.style.left = "10px";
     adminDiv.style.backgroundColor = "var(--card-bg)";
     adminDiv.style.border = "1px solid var(--border-glow)";
     adminDiv.style.borderRadius = "16px";
     adminDiv.style.padding = "1rem";
     adminDiv.style.zIndex = "2000";
-    adminDiv.style.maxWidth = "400px";
-    adminDiv.style.margin = "0 auto";
+    adminDiv.style.maxWidth = "300px";
     adminDiv.innerHTML = `
-        <h4 style="color:var(--green); margin-bottom:8px;">👑 Admin Panel</h4>
-        <textarea id="adminMessageText" placeholder="Type message to all users..." style="width:100%; padding:8px; border-radius:12px; border:none; background:rgba(255,255,255,0.1); color:white;"></textarea>
-        <button id="sendAdminMsg" style="margin-top:8px; background:var(--green); color:var(--dark); border:none; padding:6px 15px; border-radius:30px;">📢 Send Notification</button>
-        <button id="closeAdminBtn" style="margin-top:8px; margin-left:8px; background:#a12a2a; color:white; border:none; padding:6px 15px; border-radius:30px;">Close</button>
+        <h4 style="color:var(--green); margin:0 0 8px 0;">👑 Admin</h4>
+        <textarea id="adminMsg" placeholder="Message to all users" style="width:100%; padding:6px; border-radius:8px; background:#222; color:white; border:none;"></textarea>
+        <button id="sendAdminMsg" style="margin-top:6px; background:var(--green); color:#000; border:none; padding:4px 12px; border-radius:30px;">📢 Send</button>
     `;
     document.body.appendChild(adminDiv);
-
-    document.getElementById("sendAdminMsg")?.addEventListener("click", async () => {
-        const body = document.getElementById("adminMessageText").value;
-        if (!body) return;
-        const title = "📢 ማስታወቂያ ከአስተዳዳሪ";
-        await addDoc(collection(db, "messages"), {
-            title: title,
-            body: body,
-            to: "all",
-            timestamp: new Date().toISOString(),
-            from: "admin"
-        });
-        document.getElementById("adminMessageText").value = "";
-        alert("Message sent to all active users!");
-    });
-    document.getElementById("closeAdminBtn")?.addEventListener("click", () => {
-        adminDiv.style.display = "none";
-        isAdmin = false;
+    document.getElementById("sendAdminMsg").addEventListener("click", async () => {
+        const msg = document.getElementById("adminMsg").value;
+        if (!msg) return;
+        try {
+            await addDoc(collection(db, "messages"), {
+                title: "📢 ማስታወቂያ ከአስተዳዳሪ",
+                body: msg,
+                to: "all",
+                timestamp: new Date().toISOString(),
+                from: "admin"
+            });
+            alert("Message sent!");
+            document.getElementById("adminMsg").value = "";
+        } catch (err) {
+            alert("Error: " + err.message + "\nCheck Firestore rules!");
+        }
     });
 
-    const logo = document.querySelector(".sidebar-logo h3");
-    if (logo) {
-        let tapCount = 0;
-        logo.addEventListener("click", () => {
-            tapCount++;
-            setTimeout(() => { tapCount = 0; }, 500);
-            if (tapCount === 3) {
-                checkAdmin();
-                tapCount = 0;
-            }
-        });
-    }
+    // Loading screen removal
+    const loader = document.getElementById('loader');
+    const loaderBar = document.getElementById('loaderBar');
+    setTimeout(() => { document.querySelector('.loader-arabic')?.style.setProperty('opacity', '1'); document.querySelector('.loader-arabic')?.style.setProperty('transform', 'translateY(0)'); }, 100);
+    setTimeout(() => { document.querySelector('.loader-amharic')?.style.setProperty('opacity', '1'); document.querySelector('.loader-amharic')?.style.setProperty('transform', 'translateY(0)'); }, 400);
+    setTimeout(() => { document.querySelector('.loader-bar-wrap')?.style.setProperty('opacity', '1'); }, 700);
+    setTimeout(() => { loaderBar.style.width = '100%'; }, 800);
+    setTimeout(() => { document.querySelector('.loader-text')?.style.setProperty('opacity', '1'); }, 900);
+    setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 800); }, 3000);
 
-    // ========== PRAYER TIMES ==========
+    // Prayer times
     const prayerData = { Fajr: { arabic: 'الFajr', amharic: 'ፋጅር' }, Dhuhr: { arabic: 'الDhuhr', amharic: 'ዙህር' }, Asr: { arabic: 'الAsr', amharic: 'ዐስር' }, Maghrib: { arabic: 'الMaghrib', amharic: 'መግሪብ' }, Isha: { arabic: 'الIsha', amharic: 'ዒሻ' } };
     const fallback = { Fajr: "04:58", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
     let prayerCache = null;
-    let lastAlerted = null;
-
     async function fetchTimes() {
         const today = new Date();
         const url = `https://api.aladhan.com/v1/calendar/${today.getFullYear()}/${today.getMonth()+1}?latitude=9.03&longitude=38.74&method=3`;
@@ -521,10 +581,9 @@
                     };
                 }
             }
-        } catch(e) { console.warn(e); }
+        } catch(e) {}
         return fallback;
     }
-
     async function loadPrayerTimes() {
         prayerCache = await fetchTimes();
         const grid = document.getElementById('prayerGrid');
@@ -545,7 +604,6 @@
         }
         startCountdown();
     }
-
     function getNextPrayer() {
         if (!prayerCache) return null;
         const now = new Date();
@@ -573,7 +631,6 @@
             key: next
         };
     }
-
     function startCountdown() {
         setInterval(() => {
             if (!prayerCache) return;
@@ -583,18 +640,24 @@
             const nameSpan = document.getElementById('nextPrayerName');
             if (timerDiv) timerDiv.innerText = `${String(next.hours).padStart(2,'0')}:${String(next.minutes).padStart(2,'0')}:${String(next.seconds).padStart(2,'0')}`;
             if (nameSpan) nameSpan.innerText = `${next.name} (${next.time})`;
-            if (next.totalSec <= 0.5 && lastAlerted !== next.key && notificationPermission && firebaseUserId) {
+            if (next.totalSec <= 1 && notificationPermission && firebaseUserId) {
                 playBeep();
                 new Notification("🕌 የሶላት ሰዓት ደረሰ", { body: `ለ${next.name} ሶላት ሰዓት ነው።` });
-                lastAlerted = next.key;
-            } else if (next.totalSec > 60) {
-                lastAlerted = null;
             }
         }, 500);
     }
     loadPrayerTimes();
 
-    // ========== LOCAL SIGN IN UI (display name) ==========
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            navigator.clipboard.writeText(this.dataset.text);
+            this.innerText = 'ተቀድቷል!';
+            setTimeout(() => this.innerText = 'ቅዳ', 1500);
+        });
+    });
+
+    // Local sign-in UI
     let localUser = localStorage.getItem("localUsername");
     const topBarUserSpan = document.getElementById('topBarUser');
     const topBarSignBtn = document.getElementById('topBarSignBtn');
@@ -684,15 +747,6 @@
             e.preventDefault();
             const target = btn.innerText.includes('ሰዓት') ? 'prayer' : 'community';
             if (pages[target]) switchPage(target);
-        });
-    });
-
-    // Copy buttons
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            navigator.clipboard.writeText(this.dataset.text);
-            this.innerText = 'ተቀድቷል!';
-            setTimeout(() => this.innerText = 'ቅዳ', 1500);
         });
     });
 </script>
