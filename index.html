@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
+        /* ===== FULL STYLES (same as original, but with added clear button) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --white: #f8f8f2;
@@ -106,7 +107,7 @@
         .page.active-page { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Hero */
+        /* Hero (unchanged) */
         #hero {
             position: relative; min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden; margin-bottom: 2rem;
@@ -137,7 +138,7 @@
         .scroll-mouse { width: 22px; height: 36px; border: 1.5px solid rgba(57,255,159,0.5); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; }
         .scroll-dot { width: 3px; height: 8px; background: #39ff9f; border-radius: 2px; animation: scrollDot 1.8s infinite; }
 
-        /* PRAYER TICKER - HORIZONTAL MOVING (RIGHT TO LEFT) */
+        /* PRAYER TICKER (moving right-to-left) */
         .prayer-ticker {
             background: rgba(57,255,159,0.05);
             border-top: 1px solid var(--border-glow);
@@ -178,7 +179,6 @@
             font-family: monospace;
         }
 
-        /* Other components */
         .prayer-card, .activity-block {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
@@ -234,6 +234,17 @@
         .notif-title { font-weight: bold; color: var(--green); }
         .notif-body { font-size: 0.85rem; margin-top: 0.2rem; }
         .notif-time { font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem; }
+
+        .clear-history-btn {
+            background: #a12a2a;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-left: 1rem;
+        }
 
         /* LOADING SCREEN */
         #loader {
@@ -367,7 +378,7 @@
 </div>
 
 <main class="main-content">
-    <!-- HOME PAGE -->
+    <!-- HOME PAGE (full) -->
     <div id="home-page" class="page active-page">
         <section id="hero"><div class="hero-sky"></div><div class="aurora"><span></span><span></span><span></span></div>
         <div class="hero-content"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-subtitle">አወሊያ መስጂድ ወጣቶች ጀምዐ</div><h1 class="hero-title">የ<span>እምነት</span><br>ብርሃን</h1><p class="hero-tagline">ልቦች ሰላም የሚያገኙበት · ከ2022 ጀምሮ</p>
@@ -376,11 +387,9 @@
             <a href="#" data-page-target="community" class="btn btn-outline hero-nav">ተጨማሪ ይወቁ</a>
         </div></div><div class="scroll-indicator"><span>ታች ሸብልሉ</span><div class="scroll-mouse"><div class="scroll-dot"></div></div></div></section>
         
-        <!-- MOVING PRAYER TICKER (continuous right-to-left scroll) -->
+        <!-- MOVING PRAYER TICKER -->
         <div class="prayer-ticker">
-            <div class="ticker-track" id="tickerTrack">
-                <!-- Content will be filled with prayer times and duplicated for seamless scrolling -->
-            </div>
+            <div class="ticker-track" id="tickerTrack"></div>
         </div>
         
         <div class="container">
@@ -401,7 +410,7 @@
         </div>
     </div>
 
-    <!-- COMMUNITY PAGE (full original, same as before) -->
+    <!-- COMMUNITY PAGE (full) -->
     <div id="community-page" class="page">
         <div class="container">
             <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
@@ -421,7 +430,7 @@
         </div>
     </div>
 
-    <!-- PRAYER PAGE -->
+    <!-- PRAYER PAGE (with notification history that marks as read) -->
     <div id="prayer-page" class="page">
         <div class="container">
             <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
@@ -435,14 +444,17 @@
                 <button id="testPrayerSound" class="btn btn-outline" style="margin-top:0.5rem;">🔊 የሙከራ ድምፅ / Test Sound</button>
             </div>
             <div class="notif-history">
-                <h3>📬 የቀደሙ ማስታወቂያዎች / Past Notifications</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>📬 አዲስ ማስታወቂያዎች / New Notifications</h3>
+                    <button id="clearAllNotifs" class="clear-history-btn" style="display:none;">🗑 ሁሉንም ሰርዝ / Clear All</button>
+                </div>
                 <div id="notifList">Loading...</div>
             </div>
             <p style="margin-top:1rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 ላይ ነው።</p>
         </div>
     </div>
 
-    <!-- NEWS & MATCHES -->
+    <!-- NEWS & MATCHES (full) -->
     <div id="news-page" class="page">
         <div class="container">
             <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች</h2>
@@ -453,7 +465,7 @@
         </div>
     </div>
 
-    <!-- CONTACT PAGE -->
+    <!-- CONTACT PAGE (full) -->
     <div id="contact-page" class="page">
         <div class="container">
             <h2 class="section-title">📞 አግኙን</h2>
@@ -504,7 +516,7 @@
     let currentUserId = null;
     let currentDisplayName = "";
 
-    // Auth modal logic
+    // Auth modal logic (same as before)
     const authModal = document.getElementById('authModal');
     const authModalTitle = document.getElementById('authModalTitle');
     const authName = document.getElementById('authName');
@@ -579,7 +591,8 @@
                     playBeep();
                 } else { alert("እባክዎ መጀመሪያ ማንቂያ አንቃ"); }
             });
-            loadUserNotifications();
+            loadUnreadNotifications();
+            // Show clear button if there are any notifications (will be updated later)
         } else {
             currentUser = null;
             currentUserId = null;
@@ -588,28 +601,65 @@
             document.getElementById('topBarSignBtn').innerText = 'ግባ / Sign In';
             document.getElementById('sidebarUserStatus').innerHTML = `🔒 እባክዎ ይግቡ / Please sign in`;
             document.getElementById('notifList').innerHTML = '<div style="opacity:0.6;">እባክዎ ይግቡ ማሳወቂያዎችን ለማየት / Please sign in to see notifications</div>';
+            document.getElementById('clearAllNotifs').style.display = 'none';
         }
     });
 
-    async function loadUserNotifications() {
+    // Load UNREAD notifications only, then mark them as read
+    async function loadUnreadNotifications() {
         if (!currentUserId) return;
         const notifListDiv = document.getElementById('notifList');
         notifListDiv.innerHTML = 'Loading...';
         try {
             const snapshot = await db.collection('users').doc(currentUserId).collection('notifications')
-                .orderBy('timestamp', 'desc').limit(100).get();
+                .where('read', '==', false)
+                .orderBy('timestamp', 'desc')
+                .get();
             if (snapshot.empty) {
-                notifListDiv.innerHTML = '<div style="opacity:0.6;">ምንም ማሳወቂያ የለም / No notifications yet</div>';
+                notifListDiv.innerHTML = '<div style="opacity:0.6;">ምንም አዲስ ማሳወቂያ የለም / No new notifications</div>';
+                document.getElementById('clearAllNotifs').style.display = 'none';
                 return;
             }
             let html = '';
+            const batch = db.batch();
             snapshot.forEach(doc => {
                 const data = doc.data();
                 html += `<div class="notif-item"><div class="notif-title">${escapeHtml(data.title)}</div><div class="notif-body">${escapeHtml(data.body)}</div><div class="notif-time">${data.timestamp ? new Date(data.timestamp).toLocaleString() : ''}</div></div>`;
+                // Mark as read
+                const notifRef = db.collection('users').doc(currentUserId).collection('notifications').doc(doc.id);
+                batch.update(notifRef, { read: true });
             });
+            await batch.commit();
             notifListDiv.innerHTML = html;
+            document.getElementById('clearAllNotifs').style.display = 'block';
+            
+            // Also show popup for each new notification (only if user is online and has permission)
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                showPopup(data.title, data.body);
+                if (notificationPermission) {
+                    new Notification(data.title, { body: data.body });
+                }
+            });
         } catch(e) { console.error(e); notifListDiv.innerHTML = 'ስህተት / Error loading notifications'; }
     }
+
+    // Real-time listener for new unread notifications (while user is online)
+    let unsubscribeNotifications = null;
+    auth.onAuthStateChanged(user => {
+        if (unsubscribeNotifications) unsubscribeNotifications();
+        if (user) {
+            unsubscribeNotifications = db.collection('users').doc(user.uid).collection('notifications')
+                .where('read', '==', false)
+                .orderBy('timestamp', 'desc')
+                .onSnapshot(snapshot => {
+                    // Reload only if there are changes (new unread notifications)
+                    if (snapshot.docChanges().length > 0) {
+                        loadUnreadNotifications();
+                    }
+                }, err => console.error(err));
+        }
+    });
 
     async function sendNotificationToAllUsers(title, body) {
         if (!currentUserId) { alert("You must be signed in as admin to use this."); return false; }
@@ -623,26 +673,18 @@
         return true;
     }
 
-    let unsubscribeNotifications = null;
-    auth.onAuthStateChanged(user => {
-        if (unsubscribeNotifications) unsubscribeNotifications();
-        if (user) {
-            unsubscribeNotifications = db.collection('users').doc(user.uid).collection('notifications')
-                .orderBy('timestamp', 'desc').limit(50)
-                .onSnapshot(snapshot => {
-                    loadUserNotifications();
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added') {
-                            const data = change.doc.data();
-                            showPopup(data.title, data.body);
-                            if (notificationPermission) {
-                                new Notification(data.title, { body: data.body });
-                            }
-                        }
-                    });
-                }, err => console.error(err));
+    // Clear all notifications for current user (optional)
+    async function clearAllNotifications() {
+        if (!currentUserId) return;
+        if (confirm("ሁሉንም ማሳወቂያዎች መሰረዝ ይፈልጋሉ? This will delete all your notification history.")) {
+            const snapshot = await db.collection('users').doc(currentUserId).collection('notifications').get();
+            const batch = db.batch();
+            snapshot.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
+            loadUnreadNotifications();
         }
-    });
+    }
+    document.getElementById('clearAllNotifs')?.addEventListener('click', clearAllNotifications);
 
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
     function showPopup(title, message) {
@@ -693,7 +735,7 @@
         if (Notification.permission === 'granted') new Notification("🔊 ሙከራ", { body: "ድምፅ እየሰራ ነው" });
     });
 
-    // ========== PRAYER TIMES AND MOVING TICKER ==========
+    // ========== PRAYER TIMES AND MOVING TICKER (unchanged) ==========
     const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
     const prayerArabic = { Fajr: 'الFajr', Dhuhr: 'الDhuhr', Asr: 'الAsr', Maghrib: 'الMaghrib', Isha: 'الIsha' };
     const fallbackTimes = { Fajr: "04:58", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
@@ -722,7 +764,6 @@
 
     async function loadPrayerTimes() {
         prayerCache = await fetchPrayerTimes();
-        // Update prayer grid
         const grid = document.getElementById('prayerGrid');
         if (grid) {
             let html = '';
@@ -731,14 +772,12 @@
             }
             grid.innerHTML = html;
         }
-        // Update the moving ticker (duplicate content for seamless loop)
         const tickerTrack = document.getElementById('tickerTrack');
         if (tickerTrack && prayerCache) {
             let tickerHtml = '';
             for (let [key, time] of Object.entries(prayerCache)) {
                 tickerHtml += `<div class="ticker-item"><div class="dot"></div> ${prayerNames[key]} <span class="ticker-time">${time}</span></div>`;
             }
-            // Duplicate the content so the animation has enough length to scroll continuously
             tickerTrack.innerHTML = tickerHtml + tickerHtml;
         }
         startCountdown();
