@@ -7,12 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
     <meta name="theme-color" content="#080d0f">
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        /* ===== FULL STYLES (same as original, but with added clear button) ===== */
+        /* ===== FULL STYLES (unchanged) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --white: #f8f8f2;
@@ -36,7 +35,7 @@
         ::-webkit-scrollbar-track { background: var(--dark); }
         ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
 
-        /* Sidebar (unchanged) */
+        /* Sidebar, top-bar, auth modal, ticker etc. (unchanged) */
         .sidebar {
             position: fixed; top: 0; left: 0; width: 280px; height: 100%;
             background: rgba(8,13,15,0.98); backdrop-filter: blur(20px);
@@ -70,7 +69,6 @@
         .signin-btn:hover { background: transparent; color: var(--green); border: 1px solid var(--green); }
         .user-greeting { font-size: 0.8rem; color: rgba(248,248,242,0.7); margin-right: 0.8rem; font-weight: 500; }
 
-        /* Auth Modal */
         .auth-modal {
             position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);
             z-index: 3000; display: flex; align-items: center; justify-content: center;
@@ -100,14 +98,12 @@
         .auth-switch { margin-top: 1rem; font-size: 0.8rem; opacity: 0.7; cursor: pointer; }
         .auth-switch:hover { opacity: 1; color: var(--green); }
 
-        /* Main content */
         .main-content { margin-top: 70px; padding: 0; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active-page { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Hero (unchanged) */
         #hero {
             position: relative; min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden; margin-bottom: 2rem;
@@ -138,7 +134,6 @@
         .scroll-mouse { width: 22px; height: 36px; border: 1.5px solid rgba(57,255,159,0.5); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; }
         .scroll-dot { width: 3px; height: 8px; background: #39ff9f; border-radius: 2px; animation: scrollDot 1.8s infinite; }
 
-        /* PRAYER TICKER (moving right-to-left) */
         .prayer-ticker {
             background: rgba(57,255,159,0.05);
             border-top: 1px solid var(--border-glow);
@@ -146,7 +141,6 @@
             padding: 0.6rem 0;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
             width: 100%;
         }
         .ticker-track {
@@ -166,18 +160,8 @@
             font-size: 0.8rem;
             color: rgba(248,248,242,0.85);
         }
-        .ticker-item .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--green);
-        }
-        .ticker-time {
-            color: var(--green);
-            font-weight: 600;
-            font-family: monospace;
-        }
+        .ticker-item .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
+        .ticker-time { color: var(--green); font-weight: 600; font-family: monospace; }
 
         .prayer-card, .activity-block {
             background: var(--card-bg);
@@ -208,12 +192,7 @@
             text-align: center;
             margin-top: 2rem;
         }
-        .countdown-timer {
-            font-size: 2.5rem;
-            color: var(--green);
-            font-family: monospace;
-            margin: 1rem 0;
-        }
+        .countdown-timer { font-size: 2.5rem; color: var(--green); font-family: monospace; margin: 1rem 0; }
         .notif-history {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
@@ -234,7 +213,6 @@
         .notif-title { font-weight: bold; color: var(--green); }
         .notif-body { font-size: 0.85rem; margin-top: 0.2rem; }
         .notif-time { font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem; }
-
         .clear-history-btn {
             background: #a12a2a;
             color: white;
@@ -246,7 +224,6 @@
             margin-left: 1rem;
         }
 
-        /* LOADING SCREEN */
         #loader {
             position: fixed;
             inset: 0;
@@ -259,42 +236,11 @@
             gap: 1.5rem;
             transition: opacity 0.8s ease;
         }
-        .loader-arabic {
-            font-family: 'Scheherazade New', serif;
-            font-size: 2.5rem;
-            color: var(--green);
-            text-shadow: 0 0 30px var(--green);
-            opacity: 0;
-            transform: translateY(15px);
-        }
-        .loader-amharic {
-            font-size: 1rem;
-            color: rgba(248,248,242,0.5);
-            letter-spacing: 2px;
-            margin-top: -0.5rem;
-            opacity: 0;
-            transform: translateY(15px);
-        }
-        .loader-bar-wrap {
-            width: 200px;
-            height: 1px;
-            background: rgba(57,255,159,0.15);
-            border-radius: 1px;
-            overflow: hidden;
-            opacity: 0;
-        }
-        .loader-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--green);
-            box-shadow: 0 0 8px var(--green);
-        }
-        .loader-text {
-            font-size: 0.65rem;
-            color: rgba(248,248,242,0.3);
-            opacity: 0;
-        }
-
+        .loader-arabic { font-family: 'Scheherazade New', serif; font-size: 2.5rem; color: var(--green); text-shadow: 0 0 30px var(--green); opacity: 0; transform: translateY(15px); }
+        .loader-amharic { font-size: 1rem; color: rgba(248,248,242,0.5); letter-spacing: 2px; margin-top: -0.5rem; opacity: 0; transform: translateY(15px); }
+        .loader-bar-wrap { width: 200px; height: 1px; background: rgba(57,255,159,0.15); border-radius: 1px; overflow: hidden; opacity: 0; }
+        .loader-bar { height: 100%; width: 0%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .loader-text { font-size: 0.65rem; color: rgba(248,248,242,0.3); opacity: 0; }
         .message-popup {
             position: fixed;
             bottom: 20px;
@@ -310,10 +256,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             cursor: pointer;
         }
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         @media (max-width: 768px) {
             .contact-grid { grid-template-columns: 1fr; }
@@ -336,7 +279,7 @@
     <div class="loader-text">ቅዱስ ቦታ በመጫን ላይ...</div>
 </div>
 
-<!-- AUTH MODAL -->
+<!-- AUTH MODAL (email/password + Google) -->
 <div id="authModal" class="auth-modal">
     <div class="auth-modal-content">
         <h3 id="authModalTitle">📝 ይግቡ / Sign In</h3>
@@ -387,54 +330,28 @@
             <a href="#" data-page-target="community" class="btn btn-outline hero-nav">ተጨማሪ ይወቁ</a>
         </div></div><div class="scroll-indicator"><span>ታች ሸብልሉ</span><div class="scroll-mouse"><div class="scroll-dot"></div></div></div></section>
         
-        <!-- MOVING PRAYER TICKER -->
-        <div class="prayer-ticker">
-            <div class="ticker-track" id="tickerTrack"></div>
-        </div>
+        <div class="prayer-ticker"><div class="ticker-track" id="tickerTrack"></div></div>
         
         <div class="container">
             <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
             <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
             <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
-            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው።</p>
-            <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
-            <div class="activity-block"><ul>
-                <li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም።</li>
-                <li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት።</li>
-                <li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ።</li>
-                <li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን።</li>
-                <li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ።</li>
-                <li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን።</li>
-                <li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል።</li>
-            </ul></div>
+            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው።</p>
+            <h2 class="section-title">💎 መሠረታዊ እሴቶች</h2>
+            <div class="activity-block"><ul><li>መንፈሳዊነት · አገልጋይ አመራር · ወንድማማችነት · ታማኝነት · ለዓላማ ቁርጠኝነት · ልቀት · እኩልነት እና ፍትሕ</li></ul></div>
         </div>
     </div>
 
     <!-- COMMUNITY PAGE (full) -->
-    <div id="community-page" class="page">
-        <div class="container">
-            <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
-            <div class="activity-grid">
-                <div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል።</li><li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት።</li><li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት።</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ።</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት።</li></ul></div>
-                <div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን ጥናት ዘርፍ</h3><ul><li>ከመድረሳ ጋር በመተባበር በክረምት ወቅት የሸሪዓ ኮርሶችን በየጊዜው ማዘጋጀት።</li><li>ለማህበረሰቡ በዲን ላይ የተመሠረተ ጥያቄ እና መልስ ዝግጅቶችን ማዘጋጀት።</li><li>ትምህርታዊ የሃይማኖት መጣጥፎችን እና ጽሑፎችን መለጠፍ።</li><li>ከኢማሞች ጋር በመተባበር በመስጂዱ ውስጥ የሚካሄዱትን የቁርአን ቅራኣት እና የዳዕዋ ፕሮግራሞችን መከታተል እና መደገፍ።</li></ul></div>
-                <div class="activity-block"><h3>👩 የሴቶች ዘርፍ ተግባራት</h3><ul><li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ።</li><li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች።</li><li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት።</li><li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት።</li></ul></div>
-                <div class="activity-block"><h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3><ul><li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር።</li><li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች።</li><li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ እና ሌሎች ስፖርቶች።</li></ul></div>
-            </div>
-        </div>
-    </div>
+    <div id="community-page" class="page"><div class="container"><h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2><div class="activity-grid"><div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን ምግብ ዕርዳታ</li><li>የዘካተ ፊጥር ስርጭት</li><li>ለታመሙ ጉብኝት</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት</li></ul></div><div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li></ul></div><div class="activity-block"><h3>👩 የሴቶች ዘርፍ</h3><ul><li>የቁርአን ክፍለ ጊዜ</li><li>ሴት-ለ-ሴት ዳዕዋ</li></ul></div><div class="activity-block"><h3>🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li></ul></div></div></div></div>
 
     <!-- DONATE PAGE -->
-    <div id="donate-page" class="page">
-        <div class="container">
-            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል።</p><div class="single-bank"><h4>🏦 የባንክ ዝርዝሮች</h4><p><strong>የአካውንት ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span>(አጭር: 9733)</span></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ይግለጹ።</p></div>
-        </div>
-    </div>
+    <div id="donate-page" class="page"><div class="container"><div class="donate-box"><h3>💚 ይደግፉን</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዱናል።</p><div class="single-bank"><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ይግለጹ።</p></div></div></div>
 
-    <!-- PRAYER PAGE (with notification history that marks as read) -->
+    <!-- PRAYER PAGE -->
     <div id="prayer-page" class="page">
         <div class="container">
-            <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
-            <p>ለአወሊያ መስጂድ፣ አዲስ አበባ ትክክለኛ የሶላት መርሐግብር።</p>
+            <h2 class="section-title">🕌 የሶላት ሰዓት</h2>
             <div class="prayer-grid" id="prayerGrid"></div>
             <div class="countdown-box" id="countdownBox">
                 <h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4>
@@ -450,41 +367,34 @@
                 </div>
                 <div id="notifList">Loading...</div>
             </div>
-            <p style="margin-top:1rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 ላይ ነው።</p>
+            <p style="margin-top:1rem;">*የጁሙዓ ሶላት ከምሽቱ 12:24 ላይ ነው።</p>
         </div>
     </div>
 
-    <!-- NEWS & MATCHES (full) -->
+    <!-- NEWS & MATCHES (only one match, time changed to 12:30 ጠዋት) -->
     <div id="news-page" class="page">
         <div class="container">
-            <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች</h2>
+            <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች (Upcoming Matches)</h2>
             <div class="activity-grid">
-                <div class="match-card" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:16px; padding:1.5rem;"><div class="match-title" style="font-size:1.3rem; font-weight:700; color:var(--green); text-align:center;">🏆 የመጀመሪያ ግጥሚያ<br>ኡመር ኢብኑል ኸጣብ vs አቡበከር ሲዲቅ</div><div>ሚያዝያ 10, 2018 (ኤፕሪል 18, 2026) ከፋጅር በኋላ</div></div>
-                <div class="match-card" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:16px; padding:1.5rem;"><div class="match-title">🏆 ሁለተኛ ግጥሚያ<br>ኡስማን ኢብኑ አፋን vs ዘይድ ኢብን ሀሪሳ</div><div>ሚያዝያ 10, 2018 ከመጀመሪያ ጨዋታ በኋላ</div></div>
+                <div class="match-card" style="background:var(--card-bg); border:1px solid var(--border-glow); border-radius:16px; padding:1.5rem;">
+                    <div class="match-title" style="font-size:1.3rem; font-weight:700; color:var(--green); text-align:center;">🏆 ግጥሚያ (Match)<br>ዘይድ ኢብን ሀሪሳ vs ጃዕፈር ኢብኑ አ/ሙጠሊ</div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📅 ቀን / Date:</span><span>ግንቦት 2</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">⏰ ሰዓት / Time:</span><span>12:30 ጠዋት (Morning)</span></div>
+                    <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📍 ቦታ / Location:</span><span>in the small area</span></div>
+                </div>
             </div>
+            <p style="text-align:center; margin-top:2rem; color:var(--green);">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
         </div>
     </div>
 
     <!-- CONTACT PAGE (full) -->
-    <div id="contact-page" class="page">
-        <div class="container">
-            <h2 class="section-title">📞 አግኙን</h2>
-            <div class="contact-grid">
-                <div><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div>
-                <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div>
-                <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com</div></div></div>
-                <div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0">t.me/+GdbodoOS7VQzYjk0</a></div></div>
-                <div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00<br>ዓርብ 10:00–12:00<br>ቅዳሜ 3:00–5:00</div></div>
-                <div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123">@awoliayouth123</a></div></div></div>
-            </div>
-        </div>
-    </div>
+    <div id="contact-page" class="page"><div class="container"><h2 class="section-title">📞 አግኙን</h2><div class="contact-grid"><div><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div><div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div><div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com</div></div></div><div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0">t.me/+GdbodoOS7VQzYjk0</a></div></div><div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00<br>ዓርብ 10:00–12:00<br>ቅዳሜ 3:00–5:00</div></div><div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123">@awoliayouth123</a></div></div></div></div></div></div>
 
     <footer class="footer"><p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ<br>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ</p></footer>
 </main>
 
 <script>
-    // ========== LOADING SCREEN ==========
+    // LOADING SCREEN
     (function() {
         const loader = document.getElementById('loader');
         const loaderBar = document.getElementById('loaderBar');
@@ -516,7 +426,7 @@
     let currentUserId = null;
     let currentDisplayName = "";
 
-    // Auth modal logic (same as before)
+    // Auth modal (email/password + Google)
     const authModal = document.getElementById('authModal');
     const authModalTitle = document.getElementById('authModalTitle');
     const authName = document.getElementById('authName');
@@ -535,6 +445,7 @@
         authModal.classList.add('active');
     }
     function closeAuthModal() { authModal.classList.remove('active'); }
+
     authSubmitBtn.addEventListener('click', async () => {
         const email = authEmail.value.trim();
         const password = authPassword.value.trim();
@@ -553,6 +464,7 @@
             authEmail.value = ''; authPassword.value = ''; authName.value = '';
         } catch(err) { alert("ስህተት: " + err.message); }
     });
+
     authGoogleBtn.addEventListener('click', async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
         try {
@@ -567,16 +479,18 @@
             closeAuthModal();
         } catch(err) { alert("Google ምዝገባ አልተሳካም: " + err.message); }
     });
+
     authSwitch.addEventListener('click', () => {
         isLogin = !isLogin;
         authModalTitle.innerText = isLogin ? "📝 ይግቡ / Sign In" : "📝 ይመዝገቡ / Sign Up";
         authName.style.display = isLogin ? "none" : "block";
         authSubmitBtn.innerText = isLogin ? "ግባ / Sign In" : "መዝገብ / Sign Up";
     });
+
     document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
     authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
 
-    // Auth state listener
+    // Auth state listener (persistent login)
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
@@ -592,7 +506,6 @@
                 } else { alert("እባክዎ መጀመሪያ ማንቂያ አንቃ"); }
             });
             loadUnreadNotifications();
-            // Show clear button if there are any notifications (will be updated later)
         } else {
             currentUser = null;
             currentUserId = null;
@@ -605,13 +518,14 @@
         }
     });
 
-    // Load UNREAD notifications only, then mark them as read
+    // Load unread notifications
     async function loadUnreadNotifications() {
         if (!currentUserId) return;
         const notifListDiv = document.getElementById('notifList');
         notifListDiv.innerHTML = 'Loading...';
         try {
-            const snapshot = await db.collection('users').doc(currentUserId).collection('notifications')
+            const snapshot = await db.collection('notifications')
+                .where('userId', 'in', [currentUserId, 'all'])
                 .where('read', '==', false)
                 .orderBy('timestamp', 'desc')
                 .get();
@@ -625,15 +539,12 @@
             snapshot.forEach(doc => {
                 const data = doc.data();
                 html += `<div class="notif-item"><div class="notif-title">${escapeHtml(data.title)}</div><div class="notif-body">${escapeHtml(data.body)}</div><div class="notif-time">${data.timestamp ? new Date(data.timestamp).toLocaleString() : ''}</div></div>`;
-                // Mark as read
-                const notifRef = db.collection('users').doc(currentUserId).collection('notifications').doc(doc.id);
+                const notifRef = db.collection('notifications').doc(doc.id);
                 batch.update(notifRef, { read: true });
             });
             await batch.commit();
             notifListDiv.innerHTML = html;
             document.getElementById('clearAllNotifs').style.display = 'block';
-            
-            // Also show popup for each new notification (only if user is online and has permission)
             snapshot.forEach(doc => {
                 const data = doc.data();
                 showPopup(data.title, data.body);
@@ -644,16 +555,16 @@
         } catch(e) { console.error(e); notifListDiv.innerHTML = 'ስህተት / Error loading notifications'; }
     }
 
-    // Real-time listener for new unread notifications (while user is online)
+    // Real-time listener for new unread notifications
     let unsubscribeNotifications = null;
     auth.onAuthStateChanged(user => {
         if (unsubscribeNotifications) unsubscribeNotifications();
         if (user) {
-            unsubscribeNotifications = db.collection('users').doc(user.uid).collection('notifications')
+            unsubscribeNotifications = db.collection('notifications')
+                .where('userId', 'in', [user.uid, 'all'])
                 .where('read', '==', false)
                 .orderBy('timestamp', 'desc')
                 .onSnapshot(snapshot => {
-                    // Reload only if there are changes (new unread notifications)
                     if (snapshot.docChanges().length > 0) {
                         loadUnreadNotifications();
                     }
@@ -662,24 +573,28 @@
     });
 
     async function sendNotificationToAllUsers(title, body) {
-        if (!currentUserId) { alert("You must be signed in as admin to use this."); return false; }
-        const snapshot = await db.collection('users').get();
-        const batch = db.batch();
-        snapshot.forEach(doc => {
-            const notifRef = db.collection('users').doc(doc.id).collection('notifications').doc();
-            batch.set(notifRef, { title: title, body: body, timestamp: new Date().toISOString(), read: false });
-        });
-        await batch.commit();
-        return true;
+        if (!currentUserId) { alert("You must be signed in to send notifications."); return false; }
+        try {
+            await db.collection('notifications').add({
+                title: title,
+                body: body,
+                userId: 'all',
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+            return true;
+        } catch(err) { alert("Error sending: " + err.message); return false; }
     }
 
-    // Clear all notifications for current user (optional)
     async function clearAllNotifications() {
         if (!currentUserId) return;
-        if (confirm("ሁሉንም ማሳወቂያዎች መሰረዝ ይፈልጋሉ? This will delete all your notification history.")) {
-            const snapshot = await db.collection('users').doc(currentUserId).collection('notifications').get();
+        if (confirm("ሁሉንም አዲስ ማሳወቂያዎች መሰረዝ ይፈልጋሉ? This will mark all as read.")) {
+            const snapshot = await db.collection('notifications')
+                .where('userId', 'in', [currentUserId, 'all'])
+                .where('read', '==', false)
+                .get();
             const batch = db.batch();
-            snapshot.forEach(doc => batch.delete(doc.ref));
+            snapshot.forEach(doc => batch.update(doc.ref, { read: true }));
             await batch.commit();
             loadUnreadNotifications();
         }
@@ -735,7 +650,7 @@
         if (Notification.permission === 'granted') new Notification("🔊 ሙከራ", { body: "ድምፅ እየሰራ ነው" });
     });
 
-    // ========== PRAYER TIMES AND MOVING TICKER (unchanged) ==========
+    // Prayer times (identical to previous)
     const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
     const prayerArabic = { Fajr: 'الFajr', Dhuhr: 'الDhuhr', Asr: 'الAsr', Maghrib: 'الMaghrib', Isha: 'الIsha' };
     const fallbackTimes = { Fajr: "04:58", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
@@ -820,7 +735,7 @@
     }
     loadPrayerTimes();
 
-    // ========== ADMIN PANEL ==========
+    // Admin panel
     let isAdmin = false;
     function checkAdmin() {
         const pwd = prompt("Enter admin password to send notifications:");
@@ -889,7 +804,7 @@
         else showAuthModal(true);
     });
 
-    // Sidebar & page switching
+    // Sidebar and page switching
     const sidebarElem = document.getElementById('sidebar');
     const overlayElem = document.getElementById('sidebarOverlay');
     const menuBtnElem = document.getElementById('menuBtn');
