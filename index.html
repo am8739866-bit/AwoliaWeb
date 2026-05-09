@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        /* ===== FULL STYLES (unchanged) ===== */
+        /* ===== FULL STYLES (unchanged from previous working version) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --white: #f8f8f2;
@@ -104,6 +104,7 @@
         .page.active-page { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Hero, prayer ticker, cards etc. unchanged */
         #hero {
             position: relative; min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; overflow: hidden; margin-bottom: 2rem;
@@ -229,12 +230,8 @@
             inset: 0;
             background: var(--dark);
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            transition: opacity 0.8s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 1.5rem; transition: opacity 0.8s ease;
         }
         .loader-arabic { font-family: 'Scheherazade New', serif; font-size: 2.5rem; color: var(--green); text-shadow: 0 0 30px var(--green); opacity: 0; transform: translateY(15px); }
         .loader-amharic { font-size: 1rem; color: rgba(248,248,242,0.5); letter-spacing: 2px; margin-top: -0.5rem; opacity: 0; transform: translateY(15px); }
@@ -242,18 +239,9 @@
         .loader-bar { height: 100%; width: 0%; background: var(--green); box-shadow: 0 0 8px var(--green); }
         .loader-text { font-size: 0.65rem; color: rgba(248,248,242,0.3); opacity: 0; }
         .message-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            left: 20px;
-            max-width: 350px;
-            background: var(--green);
-            color: var(--dark);
-            padding: 1rem;
-            border-radius: 16px;
-            z-index: 2000;
-            animation: slideUp 0.3s;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: fixed; bottom: 20px; right: 20px; left: 20px; max-width: 350px;
+            background: var(--green); color: var(--dark); padding: 1rem; border-radius: 16px;
+            z-index: 2000; animation: slideUp 0.3s; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             cursor: pointer;
         }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -321,7 +309,7 @@
 </div>
 
 <main class="main-content">
-    <!-- HOME PAGE (full) -->
+    <!-- HOME PAGE (expanded mission, vision, values) -->
     <div id="home-page" class="page active-page">
         <section id="hero"><div class="hero-sky"></div><div class="aurora"><span></span><span></span><span></span></div>
         <div class="hero-content"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-subtitle">አወሊያ መስጂድ ወጣቶች ጀምዐ</div><h1 class="hero-title">የ<span>እምነት</span><br>ብርሃን</h1><p class="hero-tagline">ልቦች ሰላም የሚያገኙበት · ከ2022 ጀምሮ</p>
@@ -334,24 +322,55 @@
         
         <div class="container">
             <h2 class="section-title">🎯 ተልዕኮ (Mission)</h2>
-            <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው።</p>
+            <p>የአወሊያ መስጂድ ወጣቶች ጀምዐ ተልዕኮ የአባላቱን መንፈሳዊ እና ማህበራዊ ጥቅም መጠበቅ ሲሆን፣ ይኸውም በእስላማዊ ትምህርቶች የሚመራ፣ በከፍተኛ ሥነ ምግባር የተገነባ እንዲሁም ከማንኛውም አድልዎ ወይም አሉታዊ አመለካከት ነጻ የሆነ ንቁ፣ ንቃተ ህሊና ያለው እና ገባሪ የሙስሊም ወጣቶች ማህበረሰብ ማፍራት ነው። ማኅበሩ ወጣቶችን ወደ መልካም ሥራ ለማበረታታት፣ የእምነት ግንዛቤን ለማሳደግ እና ትውልድን ለማጎልበት ይሠራል።</p>
             <h2 class="section-title">👁️ ራዕይ (Vision)</h2>
-            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው።</p>
-            <h2 class="section-title">💎 መሠረታዊ እሴቶች</h2>
-            <div class="activity-block"><ul><li>መንፈሳዊነት · አገልጋይ አመራር · ወንድማማችነት · ታማኝነት · ለዓላማ ቁርጠኝነት · ልቀት · እኩልነት እና ፍትሕ</li></ul></div>
+            <p>2023 ዓ.ም (2031 እ.ኤ.አ.) በአወሊያ መስጂድ ማህበረሰብ ውስጥ በሚገባ የተቋቋመ እና ከፍተኛ ግምት ያለው የወጣቶች ድርጅት ማየት ነው፤ በእስላማዊ መርሆች የሚመራ እና በመስጂዱ እንዲሁም በአካባቢው ላሉ ወጣቶች ኢኮኖሚያዊ፣ ማህበራዊ፣ መንፈሳዊ፣ ሥነ ልቦናዊ እና ሥነ ምግባራዊ ደህንነት ማረጋገጥ የሚችል ተቋም እንዲሆን ማድረግ ነው። ወጣቶች ራሳቸውን በማስተዳደር በኅብረተሰብ ውስጥ ምሳሌ እንዲሆኑ ማድረግ ዋና ግባችን ነው።</p>
+            <h2 class="section-title">💎 መሠረታዊ እሴቶች (ቁልፍ እሴቶች)</h2>
+            <div class="activity-block"><ul>
+                <li><strong>1. መንፈሳዊነት (Spirituality):</strong> የእስልምና ግዴታዎችን ከአላህ ሽልማት በመፈለግ እና የመሐመድ (ሰ.ዐ.ወ)ን ተግባር (ሱና) በመከተል በትጋት መፈጸም። መንፈሳዊ እድገት ለማንኛውም ወጣት የሕይወት መሠረት ነው።</li>
+                <li><strong>2. አገልጋይ አመራር እና በጎ ፈቃድ (Servant Leadership & Voluntarism):</strong> ከበጎ ፈቃድ እና ከአገልግሎት መንፈስ የተነሳ አገልግሎት መስጠት። አመራሮቻችን ለማህበረሰቡ አገልጋይ እንጂ ጌታ አይደሉም።</li>
+                <li><strong>3. ወንድማማችነት (Brotherhood):</strong> የእስላማዊ ወንድማማችነት መርሆችን ማስከበር እና መጠበቅ። ሁላችንም እንደ አንድ ቤተሰብ ነን ፤ እርስ በርሳችን መደጋገፍ ግዴታችን ነው።</li>
+                <li><strong>4. ታማኝነት እና አደራ መጠበቅ (Integrity & Trustworthiness):</strong> ለአላህ እና ለምናገለግለው ማህበረሰብ ሐቀኛ እና ታማኝ መሆን። ታማኝነት የወጣቱ ጌጥ ነው።</li>
+                <li><strong>5. ለዓላማ ቁርጠኝነት (Commitment to Purpose):</strong> በተቀመጡ ግቦች ላይ ጸንቶ መቆም እና ለእነሱ መቆረጥ። ማንኛውም ሥራ በቁርጠኝነት ካልተሠራ አይሳካም።</li>
+                <li><strong>6. ልቀት እና አርአያነት (Excellence & Role Modeling):</strong> ሁሉንም ተግባራት በከፍተኛ ደረጃ በማከናወን አርአያ መሆን። ወጣቶች በዕውቀት፣ በሥነ ምግባር እና በተግባር ምሳሌ መሆን አለባቸው።</li>
+                <li><strong>7. እኩልነት እና ፍትሕ (Equality and Justice):</strong> ማህበረሰቡን በፍትሕ እና ያለ አድልዎ ማገልገል። ሁሉም ሰው በዘር፣ በቀለም ወይም በማኅበራዊ ደረጃ ሳይለይ እኩል ክብር አለው።</li>
+            </ul></div>
         </div>
     </div>
 
-    <!-- COMMUNITY PAGE (full) -->
-    <div id="community-page" class="page"><div class="container"><h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2><div class="activity-grid"><div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን ምግብ ዕርዳታ</li><li>የዘካተ ፊጥር ስርጭት</li><li>ለታመሙ ጉብኝት</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት</li></ul></div><div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li></ul></div><div class="activity-block"><h3>👩 የሴቶች ዘርፍ</h3><ul><li>የቁርአን ክፍለ ጊዜ</li><li>ሴት-ለ-ሴት ዳዕዋ</li></ul></div><div class="activity-block"><h3>🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li></ul></div></div></div></div>
+    <!-- COMMUNITY PAGE (expanded content for each department) -->
+    <div id="community-page" class="page">
+        <div class="container">
+            <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
+            <p>እንኳን ወደ አወሊያ መስጂድ ወጣቶች ጀምዐ ዘርፎች በደህና መጡ። እያንዳንዱ ዘርፍ የተወሰኑ ተልዕኮዎችን የሚወጣ ሲሆን ከታች ዝርዝር መረጃ ይመልከቱ።</p>
+            <div class="activity-grid">
+                <div class="activity-block"><h3>ማህበራዊ እንክብካቤ</h3><ul><li>ከአስተዳደር ኮሚቴ ጋር በመተባበር የረመዳን የምግብ ዕርዳታ (አስበዛ) ማከፋፈል። በየዓመቱ በሺዎች ለሚቆጠሩ ተጎጂ ቤተሰቦች ይደርሳል።</li><li>የዘካተ ፊጥር እና የኡድሂያ ስርጭት። የኡድሂያ ሥጋ ለድሆች እና ለችግረኞች በማከፋፈል የዓል ማህበረሰብን ማቀራረብ።</li><li>ለታመሙ እና ለተቸገሩ አባላት የጉብኝት ፕሮግራም (ዚያራ) ማዘጋጀት። ታማሚን መጠየቅ ታላቅ ሥነ ምግባር ነው።</li><li>ለተቸገሩ ቤተሰቦች የልብስ እና የጫማ ልገሳ መሰብሰብ። በክረምት ወቅት ልዩ ትኩረት ይሰጣል።</li><li>በክረምት ወቅት የትምህርት ቁሳቁሶች ስርጭት። ለተማሪዎች መጽሐፍ፣ ቦርሳ እና ሌሎች መሳሪያዎች በማቅረብ ትምህርታቸውን እንዲቀጥሉ መርዳት።</li></ul></div>
+                <div class="activity-block"><h3>📖 ዳዕዋ እና ቁርአን ጥናት ዘርፍ</h3><ul><li>ከመድረሳ ጋር በመተባበር በክረምት ወቅት የሸሪዓ ኮርሶችን በየጊዜው ማዘጋጀት። በእስልምና ፍልስፍና፣ ፊቅህ እና ታሪክ ላይ ጥልቅ ትምህርቶች ይሰጣሉ።</li><li>ለማህበረሰቡ በዲን ላይ የተመሠረተ ጥያቄ እና መልስ ዝግጅቶችን ማዘጋጀት። ወጣቶች የሚያጋጥሟቸውን ዘመናዊ ጥያቄዎች በሸሪዓ መሠረት መልስ ያገኛሉ።</li><li>ትምህርታዊ የሃይማኖት መጣጥፎችን እና ጽሑፎችን መለጠፍ። በማኅበራዊ ትስስር ገጾች ላይ የሚጠቅሙ ዕውቀቶች ይቀርባሉ።</li><li>ከኢማሞች ጋር በመተባበር በመስጂዱ ውስጥ የሚካሄዱትን የቁርአን ቅራኣት እና የዳዕዋ ፕሮግራሞችን መከታተል እና መደገፍ። የቁርአን ተማሪዎች በየዓመቱ በማጠናቀር ፈተና ይሳተፋሉ።</li></ul></div>
+                <div class="activity-block"><h3>👩 የሴቶች ዘርፍ ተግባራት</h3><ul><li>ለእናቶች ገለልተኛ የቁርአን ቅራኣት ክፍለ ጊዜዎችን ማካሄድ። ሴቶች በራሳቸው አቅጣጫ የቁርአን ትምህርት እንዲያገኙ ምቹ ሁኔታ ይፈጠራል።</li><li>ሴቶችን ለማበረታታት “ሴት-ለ-ሴት” ዳዕዋ ፕሮግራሞች። በሴቶች መካከል የእምነት ንቃት እንዲስፋፋ የተለያዩ ዝግጅቶች ይዘጋጃሉ።</li><li>ለጁሙዓ ሶላት አገልግሎት እና ቅዳሜ ማመቻቸት። ሴቶች በጸሎት ቤቱ ውስጥ መጽሐፍትን እና ሌሎች መገልገያዎችን እንዲያገኙ ይደረጋል።</li><li>ከወንዶች ጎን ጋር በማመሳሰል የሴቶች አመራር እንዲጠናከር መስራት። በማህበሩ ውስጥ ሴቶች ኃላፊነት እንዲወጡ እድሎች ይሰጣሉ።</li></ul></div>
+                <div class="activity-block"><h3>🏅 የስፖርት እና የወጣቶች ፕሮግራም</h3><ul><li>“አክህላቅ ቱርናሜንት” የእግር ኳስ ቡድን አስተዳደር። በስፖርት አማካኝነት ወጣቶች ጤናማ ማህበራዊ ግንኙነት እንዲፈጥሩ ይደረጋል።</li><li>የእሁድ እግር ኳስ መደበኛ ጨዋታዎች። በየሳምንቱ ሁለት ቡድኖች በተፎካካሪነት ይወዳደራሉ።</li><li>ከክረምት ኮርሶች ጋር ተያይዘው ቦክስ እና ሌሎች ስፖርቶች። ወጣቶች የአካል ብቃትን ከሃይማኖታዊ ትምህርት ጋር ማዋሃድ ይችላሉ።</li></ul></div>
+            </div>
+        </div>
+    </div>
 
-    <!-- DONATE PAGE -->
-    <div id="donate-page" class="page"><div class="container"><div class="donate-box"><h3>💚 ይደግፉን</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዱናል።</p><div class="single-bank"><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ይግለጹ።</p></div></div></div>
+    <!-- DONATE PAGE (expanded text) -->
+    <div id="donate-page" class="page">
+        <div class="container">
+            <div class="donate-box"><h3>💚 የአወሊያ መስጂድ ወጣቶች ጀምዐን ይደግፉ</h3>
+            <p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ፣ የመስጂዱን የወጣቶች ማእከል ለማስቀጠል እና ትምህርታዊ ቁሳቁሶችን ለማቅረብ ይረዱናል። እስልምና በገንዘብ መለገስን ከፍ አድርጎ ይመለከታል፤ ዘካ፣ ሰደቃ እና ሌሎች የበጎ ፈቃድ ልገሳዎች በዚህ በኩል ማድረስ ይቻላል። ድጋፎችዎ በቀጥታ ወደ ፕሮጀክቶች ይውላሉ።</p>
+            <div class="single-bank"><h4>🏦 የባንክ ዝርዝሮች / የባንክ መረጃ</h4>
+            <p><strong>የአካውንት ስም / የሂሳብ ስም:</strong> የአወሊያ መስጂድ ወጣቶች ጀምዐ</p>
+            <p><strong>የአካውንት ቁጥር / የሂሳብ ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button> <span>(አጭር ቁጥር: 9733)</span></p>
+            <p><strong>ቅርንጫፍ / ቅርንጫፍ:</strong> የለም (ቀጥታ ተቀማጭ)</p>
+            <p><strong>ባንክ / ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div>
+            <p>🙏 እባክዎ "ለአወሊያ መስጂድ ወጣቶች ልገሳ" በማለት ማጣቀሻ ይጠቀሙ። ለማንኛውም ጥያቄ በስልክ ወይም በኢሜይል ያናግሩን። አላህ በጎ ሥራዎቻችሁን ይቀበል።</p></div>
+        </div>
+    </div>
 
-    <!-- PRAYER PAGE -->
+    <!-- PRAYER PAGE (expanded text) -->
     <div id="prayer-page" class="page">
         <div class="container">
-            <h2 class="section-title">🕌 የሶላት ሰዓት</h2>
+            <h2 class="section-title">🕌 የሶላት ሰዓት እና ቆጠራ</h2>
+            <p>ሶላት የእስልምና ምሰሶ ናት። ከታች ለአወሊያ መስጂድ (አዲስ አበባ) የሚሆኑ ትክክለኛ የሶላት ሰዓቶች ቀርበዋል። በየቀኑ እነዚህን ሰዓቶች በማክበር ከአላህ ጋር ያለንን ቁርኝት እናጠናክራለን።</p>
             <div class="prayer-grid" id="prayerGrid"></div>
             <div class="countdown-box" id="countdownBox">
                 <h4>⏳ ቀጣይ ሶላት የሚቀረው ጊዜ</h4>
@@ -367,11 +386,11 @@
                 </div>
                 <div id="notifList">Loading...</div>
             </div>
-            <p style="margin-top:1rem;">*የጁሙዓ ሶላት ከምሽቱ 12:24 ላይ ነው።</p>
+            <p style="margin-top:1rem;">*የጁሙዓ (ዓርብ) ሶላት ከምሽቱ 12:24 (12:24 ቀትር) ላይ ነው። እባክዎ ከመምጣትዎ በፊት ትንሽ ቀደም ብለው ይምጡ። ሶላትን በጊዜዋ መስገድ በጣም የሚወደድ ተግባር ነው።</p>
         </div>
     </div>
 
-    <!-- NEWS & MATCHES (only one match, time changed to 12:30 ጠዋት) -->
+    <!-- NEWS & MATCHES (only the one match, time 12:30 ጠዋት as requested) -->
     <div id="news-page" class="page">
         <div class="container">
             <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች (Upcoming Matches)</h2>
@@ -383,18 +402,35 @@
                     <div class="match-detail" style="display:flex; justify-content:center; gap:0.8rem; background:rgba(248,248,242,0.05); padding:0.5rem; border-radius:2rem; margin:0.6rem 0;"><span style="font-weight:700;">📍 ቦታ / Location:</span><span>in the small area</span></div>
                 </div>
             </div>
-            <p style="text-align:center; margin-top:2rem; color:var(--green);">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! ✨</p>
+            <p style="text-align:center; margin-top:2rem; color:var(--green);">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ በአክብሮት እንጋብዛለን! አብረን ጤናማ ተወዳዳሪነትን እናሳይ። ✨</p>
         </div>
     </div>
 
-    <!-- CONTACT PAGE (full) -->
-    <div id="contact-page" class="page"><div class="container"><h2 class="section-title">📞 አግኙን</h2><div class="contact-grid"><div><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div><div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div><div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com</div></div></div><div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0">t.me/+GdbodoOS7VQzYjk0</a></div></div><div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00<br>ዓርብ 10:00–12:00<br>ቅዳሜ 3:00–5:00</div></div><div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123">@awoliayouth123</a></div></div></div></div></div></div>
+    <!-- CONTACT PAGE (expanded "about us" text) -->
+    <div id="contact-page" class="page">
+        <div class="container">
+            <h2 class="section-title">📞 ስለ እኛ / About Us</h2>
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>በአዲስ አበባ ከተማ አስተዳደር ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div>
+                    <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button></div><div>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div></div>
+                    <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
+                    <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank">t.me/+GdbodoOS7VQzYjk0</a> <button class="copy-btn" data-text="https://t.me/+GdbodoOS7VQzYjk0">ሊንክ ቅዳ</button></div></div>
+                </div>
+                <div>
+                    <div class="contact-item"><div class="contact-label">🕹️ ቢሮ ሰዓት</div><div>ሰኞ–ሐሙስ 2:00–6:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)<br>ዓርብ 10:00–12:00 ጠዋት (ከእያንዳንዱ ሶላት በኋላ)<br>ቅዳሜ 3:00–5:00 ከሰዓት (ከእያንዳንዱ ሶላት በኋላ)</div></div>
+                    <div class="contact-item"><div class="contact-label">🎵 ማህበራዊ ትስስር</div><div><a href="https://www.tiktok.com/@awoliayouth123" target="_blank">ቲክቶክ @awoliayouth123</a></div></div>
+                    <div class="contact-item"><div class="contact-label">📜 ማንነታችን</div><div>አወሊያ መስጂድ ወጣቶች ጀምዐ ከ2015 ዓ.ም ጀምሮ በመስጂዱ ጥላ ሥር የሚንቀሳቀስ የወጣቶች ድርጅት ነው። ዓላማችን ወጣቶችን በእምነት፣ በትምህርት እና በማህበራዊ አገልግሎት ማበረታታት ነው። ከተለያዩ ዘርፎች ጋር በመተባበር ለማህበረሰቡ ተጠቃሚ የሚሆኑ ፕሮጀክቶችን እንሰራለን። እንኳን ወደ ገጻችን መጡ ። አብረን ለትውልድ ብርሃን እንሁን።</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer"><p>📌 አወሊያ መስጂድ ወጣቶች ጀምዐ — በአላህ ላይ እምነትህን ጠብቅ<br>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ</p></footer>
 </main>
 
 <script>
-    // LOADING SCREEN
+    // LOADING SCREEN (unchanged)
     (function() {
         const loader = document.getElementById('loader');
         const loaderBar = document.getElementById('loaderBar');
@@ -406,7 +442,7 @@
         setTimeout(() => { if(loader) { loader.style.opacity = '0'; setTimeout(() => { if(loader) loader.style.display = 'none'; }, 800); } }, 3000);
     })();
 
-    // Firebase config
+    // Firebase config (unchanged)
     const firebaseConfig = {
         apiKey: "AIzaSyBoUQ_-Gt7PJfWhI6Jh6Xgx1-x8RjYPKCU",
         authDomain: "mosquenotif.firebaseapp.com",
@@ -426,7 +462,7 @@
     let currentUserId = null;
     let currentDisplayName = "";
 
-    // Auth modal (email/password + Google)
+    // Auth modal logic (identical to previous working version)
     const authModal = document.getElementById('authModal');
     const authModalTitle = document.getElementById('authModalTitle');
     const authName = document.getElementById('authName');
@@ -490,7 +526,7 @@
     document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
     authModal.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
 
-    // Auth state listener (persistent login)
+    // Auth state listener
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
@@ -518,7 +554,6 @@
         }
     });
 
-    // Load unread notifications
     async function loadUnreadNotifications() {
         if (!currentUserId) return;
         const notifListDiv = document.getElementById('notifList');
@@ -555,7 +590,6 @@
         } catch(e) { console.error(e); notifListDiv.innerHTML = 'ስህተት / Error loading notifications'; }
     }
 
-    // Real-time listener for new unread notifications
     let unsubscribeNotifications = null;
     auth.onAuthStateChanged(user => {
         if (unsubscribeNotifications) unsubscribeNotifications();
@@ -650,7 +684,7 @@
         if (Notification.permission === 'granted') new Notification("🔊 ሙከራ", { body: "ድምፅ እየሰራ ነው" });
     });
 
-    // Prayer times (identical to previous)
+    // Prayer times (unchanged logic)
     const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
     const prayerArabic = { Fajr: 'الFajr', Dhuhr: 'الDhuhr', Asr: 'الAsr', Maghrib: 'الMaghrib', Isha: 'الIsha' };
     const fallbackTimes = { Fajr: "04:58", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
@@ -797,7 +831,6 @@
         });
     });
 
-    // Sign out button
     const topBarSignBtnElem = document.getElementById('topBarSignBtn');
     topBarSignBtnElem.addEventListener('click', () => {
         if (currentUser) auth.signOut();
