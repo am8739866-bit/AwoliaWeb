@@ -232,7 +232,7 @@
 
 <main class="main-content">
     <div class="container">
-        <!-- HOME PAGE -->
+        <!-- HOME PAGE (same as before) -->
         <div id="home-page" class="page active-page">
             <div class="hero fade-up"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-title">አወሊያ መስጂድ <span>ወጣቶች ጀምዐ</span></div><p class="hero-tagline">እምነት · አንድነት · አገልግሎት · ከ2015 ዓ.ም</p><div class="hero-cta"><a href="#" data-page-target="prayer" class="btn btn-primary hero-nav">የሶላት ሰዓቶች</a><a href="#" data-page-target="community" class="btn btn-outline hero-nav">የማህበሩ ዘርፎች</a></div></div>
             <div class="ticker-container"><div class="ticker-track" id="tickerTrack"></div></div>
@@ -240,7 +240,7 @@
             <h2 class="section-title fade-up">👁️ ራዕይ</h2><div class="glass-card fade-up"><p>በ2031 ዓ.ም በኢትዮጵያ እና በዓለም አቀፍ ደረጃ እንደ ተምሳሌት የሚጠቀስ የወጣቶች ድርጅት መሆን፣ ወጣቶችን በመንፈሳዊ፣ ማህበራዊ እና ሥነ ምግባራዊ መስክ ማብቃት ነው።</p></div>
             <h2 class="section-title fade-up">💎 መሠረታዊ እሴቶች</h2><div class="glass-card fade-up"><ul><li>መንፈሳዊ ቁርጠኝነት</li><li>አገልጋይ አመራር</li><li>ወንድማማችነት እና አንድነት</li><li>ታማኝነት እና ግልጽነት</li><li>ልቀትና ፈጠራ</li><li>እኩልነት እና ፍትሕ</li></ul><p>እነዚህ እሴቶች የማህበሩን ሁሉንም እንቅስቃሴዎች ይመራሉ።</p></div>
         </div>
-        <!-- COMMUNITY PAGE -->
+        <!-- COMMUNITY PAGE (same) -->
         <div id="community-page" class="page">
             <h2 class="section-title fade-up">🤝 የማህበሩ ዘርፎች እና ተግባራት</h2>
             <div class="activity-grid">
@@ -253,7 +253,7 @@
         </div>
         <!-- DONATE PAGE -->
         <div id="donate-page" class="page"><div class="donate-box fade-up"><h3 style="color:#2dd4bf;">💚 ድጋፍዎ እንኳን ደህና መጣ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን፣ ማህበራዊ እርዳታዎችን እና የእውቀት መድረኮችን ለማስኬድ ወሳኝ ሚና ይጫወታሉ።</p><div class="glass-card" style="margin:1rem auto; max-width:450px;"><p><strong>የባንክ አካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p><p><strong>የልገሳ መግለጫ:</strong> “ለአወሊያ መስጂድ ወጣቶች ማህበር” በማለት ይግለጹ።</p></div><p>🙏 አላህ ከሁላችንም ይቀበል። ትንሽም ቢሆን ልገሳ ከፍተኛ ለውጥ ያመጣል።</p></div></div>
-        <!-- PRAYER PAGE -->
+        <!-- PRAYER PAGE (fixed location) -->
         <div id="prayer-page" class="page">
             <h2 class="section-title fade-up">🕌 የሶላት ሰዓት (3P55+GR አዲስ አበባ)</h2>
             <div class="prayer-grid" id="prayerGrid"></div>
@@ -292,17 +292,14 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // -------------- LOCAL STORAGE HELPERS --------------
     let currentUser = null;
     let notificationPermission = false;
     let audioCtx = null;
     let prayerInterval = null;
-    
     let users = [];
     try { const stored = localStorage.getItem('awolia_users'); if (stored) users = JSON.parse(stored); } catch(e) { users = []; }
     function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(users)); }
 
-    // Activity log
     let activityLog = [];
     try { const storedLog = localStorage.getItem('awolia_activity'); if (storedLog) activityLog = JSON.parse(storedLog); } catch(e) { activityLog = []; }
     function saveActivityLog() { localStorage.setItem('awolia_activity', JSON.stringify(activityLog)); }
@@ -313,9 +310,13 @@
     }
 
     function findUserByName(fullName) { return users.find(u => u.fullName.toLowerCase() === fullName.toLowerCase()); }
+    function isUserBlocked(fullName) {
+        const user = findUserByName(fullName);
+        return user && user.blocked === true;
+    }
     function registerUser(fullName, password) {
         if (findUserByName(fullName)) throw new Error("ይህ ስም አስቀድሞ ተመዝግቧል።");
-        const newUser = { fullName, password, createdAt: new Date().toISOString(), notifications: [] };
+        const newUser = { fullName, password, createdAt: new Date().toISOString(), notifications: [], blocked: false, favorite: false };
         users.push(newUser); saveUsers();
         addActivity(fullName, "✅ ተመዝግቧል (Registered)");
         return newUser;
@@ -323,26 +324,25 @@
     function loginUser(fullName, password) {
         const user = findUserByName(fullName);
         if (!user) throw new Error("ስም አልተገኘም።");
+        if (user.blocked) throw new Error("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ። (You have been blocked by admin.)");
         if (user.password !== password) throw new Error("የይለፍ ቃል ትክክል አይደለም።");
         addActivity(fullName, "🔓 ገብቷል (Logged in)");
         return user;
     }
-    function logoutUser() {
-        if (currentUser) addActivity(currentUser.fullName, "🔒 ወጥቷል (Logged out)");
-    }
+    function logoutUser() { if (currentUser) addActivity(currentUser.fullName, "🔒 ወጥቷል (Logged out)"); }
 
     function demoLogin() {
         const demoName = "DemoUser_" + Math.floor(Math.random()*1000);
         const demoPass = "demo123";
         let user = findUserByName(demoName);
         if (!user) user = registerUser(demoName, demoPass);
+        if (user.blocked) { alert("ይህ ዴሞ መለያ ታግዷል። እባክዎ እንደገና ይሞክሩ።"); return; }
         currentUser = user; persistCurrentUser(); updateUserUI(); closeAuthModalFunc();
         addActivity(currentUser.fullName, "🎮 በዴሞ ገብቷል (Demo login)");
         alert("በዴሞ መለያ ገብተዋል። ሁሉም ተግባራት በሙሉ ይገኛሉ።");
     }
 
     function getCurrentUserNotifications() { if (!currentUser) return []; const u=findUserByName(currentUser.fullName); return u ? (u.notifications||[]) : []; }
-    
     function showPopupWithOk(notification) {
         let cont = document.getElementById('msgContainer');
         if (!cont) { cont = document.createElement('div'); cont.id = 'msgContainer'; document.body.appendChild(cont); }
@@ -361,7 +361,6 @@
             loadUserNotifications();
         });
     }
-
     function addNotificationToCurrentUser(title, body) {
         if(!currentUser) return;
         const notifId = Date.now() + '_' + Math.random().toString(36).substr(2, 8);
@@ -376,28 +375,21 @@
             if(notificationPermission && Notification.permission === 'granted') new Notification(title, { body });
         }
     }
-
     function markAllNotificationsRead() {
         if(!currentUser) return;
         const user = findUserByName(currentUser.fullName);
         if(user && user.notifications){ user.notifications.forEach(n=>n.read=true); saveUsers(); loadUserNotifications(); }
     }
-
     function loadUserNotifications(){
         const listDiv=document.getElementById('notifList'); if(!listDiv) return;
         if(!currentUser){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>'; return; }
         const notifs=getCurrentUserNotifications();
         if(notifs.length===0){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">ምንም አዲስ ማሳወቂያ የለም</div>'; return; }
         let html='';
-        notifs.forEach(n=>{ 
-            const readClass = n.read ? 'opacity-50' : '';
-            html+=`<div class="notif-item ${readClass}"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-body">${escapeHtml(n.body)}</div><div class="notif-time">${new Date(n.timestamp).toLocaleString()}</div></div>`;
-        });
+        notifs.forEach(n=>{ const readClass = n.read ? 'opacity-50' : ''; html+=`<div class="notif-item ${readClass}"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-body">${escapeHtml(n.body)}</div><div class="notif-time">${new Date(n.timestamp).toLocaleString()}</div></div>`; });
         listDiv.innerHTML=html;
     }
-    
     function escapeHtml(str){ return String(str).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
-    
     function updateUserUI(){
         const topBarUser=document.getElementById('topBarUser'), topBarSignBtn=document.getElementById('topBarSignBtn'), sidebarStatus=document.getElementById('sidebarUserStatus');
         if(currentUser){
@@ -408,12 +400,10 @@
         } else { topBarUser.innerText=''; topBarSignBtn.innerText='ግባ'; sidebarStatus.innerHTML='🔒 እባክዎ ይግቡ ወይም ይመዝገቡ'; document.getElementById('notifList').innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>'; }
     }
     function persistCurrentUser(){ if(currentUser) localStorage.setItem('awolia_current_user',JSON.stringify({fullName:currentUser.fullName,password:currentUser.password})); else localStorage.removeItem('awolia_current_user'); }
-    
     const savedUser=localStorage.getItem('awolia_current_user');
     if(savedUser){ try{ const parsed=JSON.parse(savedUser); const exists=users.some(u=>u.fullName===parsed.fullName); if(exists) currentUser=parsed; else localStorage.removeItem('awolia_current_user'); }catch(e){} }
     if(currentUser) updateUserUI();
 
-    // Auth Modal
     const authModal=document.getElementById('authModal'), authFullName=document.getElementById('authFullName'), authPassword=document.getElementById('authPassword'), authSubmitBtn=document.getElementById('authSubmitBtn'), authSwitch=document.getElementById('authSwitch'), closeAuth=document.getElementById('closeAuthModal'), realGoogleBtn=document.getElementById('realGoogleBtn'), demoLoginBtn=document.getElementById('demoLoginBtn');
     let isRegisterMode=false;
     function showAuthModal(registerMode){ isRegisterMode=registerMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; authModal.style.display="flex"; }
@@ -421,11 +411,10 @@
     authSubmitBtn.onclick=()=>{ const fullName=authFullName.value.trim(), password=authPassword.value.trim(); if(!fullName||!password){ alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; } try{ if(isRegisterMode){ const newUser=registerUser(fullName,password); currentUser=newUser; alert(`እንኳን ደህና መጡ ${newUser.fullName}!`); } else { const user=loginUser(fullName,password); currentUser=user; alert(`እንኳን ደህና መጡ ${user.fullName}!`); } closeAuthModalFunc(); authFullName.value=''; authPassword.value=''; persistCurrentUser(); updateUserUI(); } catch(err){ alert("ስህተት: "+err.message); } };
     authSwitch.onclick=()=>{ isRegisterMode=!isRegisterMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; };
     closeAuth.onclick=closeAuthModalFunc;
-    realGoogleBtn.onclick=async()=>{ const provider=new firebase.auth.GoogleAuthProvider(); try{ const result=await auth.signInWithPopup(provider); const user=result.user; const displayName=user.displayName||user.email.split('@')[0]; let localUser=findUserByName(displayName); if(!localUser) localUser=registerUser(displayName,'google_'+user.uid); else { localUser.password='google_'+user.uid; saveUsers(); } currentUser=localUser; persistCurrentUser(); updateUserUI(); closeAuthModalFunc(); addActivity(currentUser.fullName,"🔓 በGoogle ገብቷል (Google login)"); alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`); } catch(error){ alert("Google መግባት አልተሳካም: "+error.message); } };
+    realGoogleBtn.onclick=async()=>{ const provider=new firebase.auth.GoogleAuthProvider(); try{ const result=await auth.signInWithPopup(provider); const user=result.user; const displayName=user.displayName||user.email.split('@')[0]; if(isUserBlocked(displayName)){ alert("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።"); return; } let localUser=findUserByName(displayName); if(!localUser) localUser=registerUser(displayName,'google_'+user.uid); else { localUser.password='google_'+user.uid; saveUsers(); } currentUser=localUser; persistCurrentUser(); updateUserUI(); closeAuthModalFunc(); addActivity(currentUser.fullName,"🔓 በGoogle ገብቷል (Google login)"); alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`); } catch(error){ alert("Google መግባት አልተሳካም: "+error.message); } };
     demoLoginBtn.onclick=()=>{ demoLogin(); };
     document.getElementById('topBarSignBtn').addEventListener('click',()=>{ if(currentUser){ logoutUser(); currentUser=null; persistCurrentUser(); updateUserUI(); alert("በስኬት ወጥተዋል።"); } else showAuthModal(false); });
 
-    // Navigation
     const sidebar=document.getElementById('sidebar'), overlay=document.getElementById('sidebarOverlay'), menuBtn=document.getElementById('menuBtn');
     menuBtn.onclick=()=>{ sidebar.classList.add('open'); overlay.classList.add('active'); };
     overlay.onclick=()=>{ sidebar.classList.remove('open'); overlay.classList.remove('active'); };
@@ -435,15 +424,13 @@
     navLinks.forEach(link=>{ link.addEventListener('click',(e)=>{ e.preventDefault(); const pid=link.dataset.page; if(pid&&pages[pid]) switchPage(pid); }); });
     document.querySelectorAll('.hero-nav').forEach(btn=>{ btn.addEventListener('click',(e)=>{ e.preventDefault(); const target=btn.getAttribute('data-page-target'); if(target&&pages[target]) switchPage(target); }); });
 
-    // ------------------------------------------------------------------
-    // PRAYER TIMES – FIXED LOCATION: 3P55+GR Addis Ababa (lat 9.005, lon 38.763)
-    // ------------------------------------------------------------------
+    // PRAYER TIMES – FIXED LOCATION 3P55+GR ADDIS ABABA
     const prayerNames={Fajr:'ፋጅር', Dhuhr:'ዙህር', Asr:'ዐስር', Maghrib:'መግሪብ', Isha:'ዒሻ'};
     let prayerCache=null, lastAlert=null;
     async function fetchPrayerTimes() {
-        const latitude = 9.005;    // 3P55+GR Addis Ababa
+        const latitude = 9.005;
         const longitude = 38.763;
-        const method = 3; // Muslim World League
+        const method = 3;
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
@@ -464,7 +451,6 @@
                 }
             }
         } catch(e) { console.warn("API error, using fallback"); }
-        // Fallback times for the same location (approximate)
         return { Fajr: "05:02", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
     }
     async function loadPrayerTimesUI(){
@@ -533,7 +519,6 @@
     document.getElementById('clearAllNotifs')?.addEventListener('click',()=>{ if(currentUser) markAllNotificationsRead(); });
     document.querySelectorAll('.copy-btn').forEach(btn=>{ btn.addEventListener('click',function(){ navigator.clipboard.writeText(this.dataset.text); this.innerText='ተቀድቷል!'; setTimeout(()=>this.innerText='ቅዳ',1500); }); });
 
-    // Storage event listener for cross-tab notifications (admin panel)
     window.addEventListener('storage', (event) => {
         if (event.key === 'awolia_users' && currentUser) {
             try { users = JSON.parse(event.newValue || '[]'); } catch(e) { users = []; }
