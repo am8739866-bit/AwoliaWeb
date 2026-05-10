@@ -4,32 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>☽ Awolia Youth Association | አወሊያ መስጂድ ወጣቶች ጀምዐ</title>
-    <!-- Google Fonts (Modern) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
     <meta name="theme-color" content="#0a0c10">
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at 10% 20%, #0a0f1c, #030507);
             color: #f0f3f8;
             overflow-x: hidden;
         }
-
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #1a1f2a; }
         ::-webkit-scrollbar-thumb { background: #2dd4bf; border-radius: 10px; }
-
         .sidebar {
             position: fixed;
             top: 0;
@@ -48,25 +39,9 @@
             overflow-y: auto;
         }
         .sidebar.open { transform: translateX(0); }
-        .sidebar-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(45, 212, 191, 0.3);
-        }
-        .sidebar-logo img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #2dd4bf;
-            box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
-        }
-        .sidebar-logo h3 {
-            margin-top: 0.8rem;
-            font-size: 1rem;
-            color: #2dd4bf;
-        }
+        .sidebar-logo { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(45,212,191,0.3); }
+        .sidebar-logo img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid #2dd4bf; box-shadow: 0 0 20px rgba(45,212,191,0.3); }
+        .sidebar-logo h3 { margin-top: 0.8rem; font-size: 1rem; color: #2dd4bf; }
         .sidebar-nav a {
             display: flex;
             align-items: center;
@@ -79,11 +54,7 @@
             transition: all 0.2s;
             cursor: pointer;
         }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(45, 212, 191, 0.1);
-            color: #2dd4bf;
-            transform: translateX(5px);
-        }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(45,212,191,0.1); color: #2dd4bf; transform: translateX(5px); }
         .sidebar-overlay {
             position: fixed;
             inset: 0;
@@ -93,7 +64,6 @@
             display: none;
         }
         .sidebar-overlay.active { display: block; }
-
         .top-bar {
             position: fixed;
             top: 0;
@@ -105,55 +75,18 @@
             padding: 1rem 2rem;
             background: rgba(10, 15, 28, 0.7);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+            border-bottom: 1px solid rgba(45,212,191,0.2);
             z-index: 1000;
         }
-        .logo-small {
-            font-size: 1.1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #2dd4bf, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .menu-btn, .signin-btn {
-            background: transparent;
-            border: 1px solid rgba(45, 212, 191, 0.5);
-            color: #2dd4bf;
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .menu-btn:hover, .signin-btn:hover {
-            background: rgba(45, 212, 191, 0.1);
-            border-color: #2dd4bf;
-        }
-        .user-greeting {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-right: 0.8rem;
-        }
-
-        .main-content {
-            margin-top: 70px;
-            padding: 0 1rem;
-        }
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-        .page {
-            display: none;
-            animation: fadeInUp 0.5s ease;
-        }
+        .logo-small { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #2dd4bf, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .menu-btn, .signin-btn { background: transparent; border: 1px solid rgba(45,212,191,0.5); color: #2dd4bf; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; transition: 0.2s; }
+        .menu-btn:hover, .signin-btn:hover { background: rgba(45,212,191,0.1); border-color: #2dd4bf; }
+        .user-greeting { font-size: 0.8rem; color: #94a3b8; margin-right: 0.8rem; }
+        .main-content { margin-top: 70px; padding: 0 1rem; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
+        .page { display: none; animation: fadeInUp 0.5s ease; }
         .page.active-page { display: block; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .hero {
             text-align: center;
             padding: 3rem 1rem;
@@ -163,240 +96,42 @@
             border: 1px solid rgba(45,212,191,0.2);
             margin-bottom: 2rem;
         }
-        .hero-arabic {
-            font-family: 'Scheherazade New', serif;
-            font-size: 2.5rem;
-            color: #2dd4bf;
-            text-shadow: 0 0 15px rgba(45,212,191,0.4);
-        }
-        .hero-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 0.5rem 0;
-        }
+        .hero-arabic { font-family: 'Scheherazade New', serif; font-size: 2.5rem; color: #2dd4bf; text-shadow: 0 0 15px rgba(45,212,191,0.4); }
+        .hero-title { font-size: 2.2rem; font-weight: 800; margin: 0.5rem 0; }
         .hero-title span { color: #2dd4bf; }
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 0.7rem 1.8rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            cursor: pointer;
-            display: inline-block;
-            text-decoration: none;
-        }
-        .btn-primary {
-            background: #2dd4bf;
-            color: #0a0f1c;
-            border: none;
-            box-shadow: 0 4px 14px rgba(45,212,191,0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(45,212,191,0.4);
-        }
-        .btn-outline {
-            border: 1px solid rgba(45,212,191,0.6);
-            background: transparent;
-            color: #e2e8f0;
-        }
-        .btn-outline:hover {
-            border-color: #2dd4bf;
-            color: #2dd4bf;
-            background: rgba(45,212,191,0.05);
-        }
-
-        .ticker-container {
-            background: rgba(45,212,191,0.05);
-            border-radius: 2rem;
-            padding: 0.8rem 0;
-            margin: 1rem 0 2rem;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .ticker-track {
-            display: inline-flex;
-            gap: 2rem;
-            animation: scrollTicker 20s linear infinite;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            background: rgba(45,212,191,0.1);
-            padding: 0.3rem 1rem;
-            border-radius: 2rem;
-        }
-        .ticker-dot {
-            width: 6px;
-            height: 6px;
-            background: #2dd4bf;
-            border-radius: 50%;
-        }
-        @keyframes scrollTicker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .activity-grid, .prayer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .glass-card {
-            background: rgba(15, 25, 35, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(45,212,191,0.15);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: all 0.3s;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(45,212,191,0.4);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3);
-        }
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            border-left: 4px solid #2dd4bf;
-            padding-left: 1rem;
-        }
+        .hero-cta { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+        .btn { padding: 0.7rem 1.8rem; border-radius: 2rem; font-weight: 600; transition: all 0.2s; cursor: pointer; display: inline-block; text-decoration: none; }
+        .btn-primary { background: #2dd4bf; color: #0a0f1c; border: none; box-shadow: 0 4px 14px rgba(45,212,191,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,212,191,0.4); }
+        .btn-outline { border: 1px solid rgba(45,212,191,0.6); background: transparent; color: #e2e8f0; }
+        .btn-outline:hover { border-color: #2dd4bf; color: #2dd4bf; background: rgba(45,212,191,0.05); }
+        .ticker-container { background: rgba(45,212,191,0.05); border-radius: 2rem; padding: 0.8rem 0; margin: 1rem 0 2rem; overflow: hidden; white-space: nowrap; }
+        .ticker-track { display: inline-flex; gap: 2rem; animation: scrollTicker 20s linear infinite; }
+        .ticker-item { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; background: rgba(45,212,191,0.1); padding: 0.3rem 1rem; border-radius: 2rem; }
+        .ticker-dot { width: 6px; height: 6px; background: #2dd4bf; border-radius: 50%; }
+        @keyframes scrollTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .activity-grid, .prayer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .glass-card { background: rgba(15, 25, 35, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(45,212,191,0.15); border-radius: 1.5rem; padding: 1.5rem; transition: all 0.3s; }
+        .glass-card:hover { transform: translateY(-5px); border-color: rgba(45,212,191,0.4); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3); }
+        .section-title { font-size: 1.8rem; font-weight: 700; margin: 1rem 0; border-left: 4px solid #2dd4bf; padding-left: 1rem; }
         .prayer-time { font-size: 2rem; font-weight: 700; color: #2dd4bf; font-family: monospace; }
-        .countdown-box {
-            background: rgba(45,212,191,0.08);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .countdown-timer {
-            font-size: 2.2rem;
-            font-weight: 700;
-            font-family: monospace;
-            color: #2dd4bf;
-            margin: 0.5rem 0;
-        }
-        .notif-history {
-            max-height: 280px;
-            overflow-y: auto;
-            margin-top: 1.5rem;
-        }
-        .notif-item {
-            background: rgba(45,212,191,0.05);
-            border-left: 3px solid #2dd4bf;
-            padding: 0.8rem;
-            margin-bottom: 0.8rem;
-            border-radius: 0.8rem;
-        }
-        .donate-box {
-            background: linear-gradient(135deg, #0f1a24, #071015);
-            border: 1px solid rgba(45,212,191,0.2);
-            border-radius: 1.5rem;
-            padding: 2rem;
-        }
-        .copy-btn {
-            background: #2dd4bf;
-            color: #0a0f1c;
-            border: none;
-            padding: 0.2rem 0.7rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
-        .contact-item {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .contact-label {
-            min-width: 100px;
-            color: #2dd4bf;
-            font-weight: 600;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(45,212,191,0.1);
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            color: #6c7a91;
-        }
-
-        .admin-panel {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: rgba(15,25,35,0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(45,212,191,0.3);
-            border-radius: 1.5rem;
-            padding: 1rem;
-            z-index: 2000;
-            max-width: 280px;
-            display: none;
-        }
-        .message-popup {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            max-width: 320px;
-            background: #2dd4bf;
-            color: #0a0f1c;
-            padding: 0.8rem;
-            border-radius: 1rem;
-            z-index: 2100;
-            animation: slideUp 0.3s;
-            cursor: pointer;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #0a0f1c;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            transition: opacity 0.8s;
-        }
-        .loader-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(45,212,191,0.2);
-            border-top: 3px solid #2dd4bf;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
+        .countdown-box { background: rgba(45,212,191,0.08); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin-top: 2rem; }
+        .countdown-timer { font-size: 2.2rem; font-weight: 700; font-family: monospace; color: #2dd4bf; margin: 0.5rem 0; }
+        .notif-history { max-height: 280px; overflow-y: auto; margin-top: 1.5rem; }
+        .notif-item { background: rgba(45,212,191,0.05); border-left: 3px solid #2dd4bf; padding: 0.8rem; margin-bottom: 0.8rem; border-radius: 0.8rem; }
+        .donate-box { background: linear-gradient(135deg, #0f1a24, #071015); border: 1px solid rgba(45,212,191,0.2); border-radius: 1.5rem; padding: 2rem; }
+        .copy-btn { background: #2dd4bf; color: #0a0f1c; border: none; padding: 0.2rem 0.7rem; border-radius: 2rem; cursor: pointer; font-size: 0.7rem; }
+        .contact-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .contact-label { min-width: 100px; color: #2dd4bf; font-weight: 600; }
+        footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(45,212,191,0.1); margin-top: 3rem; font-size: 0.8rem; color: #6c7a91; }
+        .admin-panel { position: fixed; bottom: 1rem; right: 1rem; background: rgba(15,25,35,0.95); backdrop-filter: blur(16px); border: 1px solid rgba(45,212,191,0.3); border-radius: 1.5rem; padding: 1rem; z-index: 2000; max-width: 280px; display: none; }
+        .message-popup { position: fixed; bottom: 1rem; left: 1rem; right: 1rem; max-width: 320px; background: #2dd4bf; color: #0a0f1c; padding: 0.8rem; border-radius: 1rem; z-index: 2100; animation: slideUp 0.3s; cursor: pointer; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        #loader { position: fixed; inset: 0; background: #0a0f1c; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem; transition: opacity 0.8s; }
+        .loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(45,212,191,0.2); border-top: 3px solid #2dd4bf; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-text {
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: #2dd4bf;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 1.6rem; }
-            .hero-arabic { font-size: 1.8rem; }
-            .section-title { font-size: 1.5rem; }
-            .container { padding: 1rem; }
-        }
+        .loader-text { font-size: 0.8rem; letter-spacing: 2px; color: #2dd4bf; }
+        @media (max-width: 768px) { .hero-title { font-size: 1.6rem; } .hero-arabic { font-size: 1.8rem; } .section-title { font-size: 1.5rem; } .container { padding: 1rem; } }
     </style>
 </head>
 <body>
@@ -452,7 +187,6 @@
 
 <main class="main-content">
     <div class="container">
-        <!-- HOME -->
         <div id="home-page" class="page active-page">
             <div class="hero">
                 <div class="hero-arabic">مَسْجِد الْوَلِيَّة</div>
@@ -471,8 +205,6 @@
             <h2 class="section-title">💎 መሠረታዊ እሴቶች</h2>
             <div class="glass-card"><ul><li>መንፈሳዊነት · አገልጋይ አመራር · ወንድማማችነት · ታማኝነት · ለዓላማ ቁርጠኝነት · ልቀት · እኩልነት እና ፍትሕ</li></ul></div>
         </div>
-
-        <!-- COMMUNITY -->
         <div id="community-page" class="page">
             <h2 class="section-title">🤝 ዘርፎች እና ተግባራት</h2>
             <div class="activity-grid">
@@ -482,13 +214,9 @@
                 <div class="glass-card"><h3 style="color:#2dd4bf;">🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li></ul></div>
             </div>
         </div>
-
-        <!-- DONATE -->
         <div id="donate-page" class="page">
             <div class="donate-box"><h3 style="color:#2dd4bf;">💚 ይደግፉን</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዱናል።</p><div class="glass-card" style="margin:1rem auto; max-width:450px;"><p><strong>የአካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p></div><p>🙏 "ለአወሊያ መስጂድ ወጣቶች ማህበር ልገሳ" በማለት ይግለጹ።</p></div>
         </div>
-
-        <!-- PRAYER -->
         <div id="prayer-page" class="page">
             <h2 class="section-title">🕌 የሶላት ሰዓት</h2>
             <div class="prayer-grid" id="prayerGrid"></div>
@@ -506,8 +234,6 @@
             </div>
             <p style="margin-top:1rem;">*የጁሙዓ ሶላት ከምሽቱ 12:24 ላይ ነው።</p>
         </div>
-
-        <!-- NEWS & MATCHES -->
         <div id="news-page" class="page">
             <h2 class="section-title">⚽ ቀጣይ ጨዋታዎች</h2>
             <div class="activity-grid">
@@ -515,8 +241,6 @@
             </div>
             <p style="text-align:center; margin-top:1rem;">✨ ሁሉም ወጣቶች በመገኘት ደጋፊ እንዲሆኑ እንጋብዛለን! ✨</p>
         </div>
-
-        <!-- CONTACT -->
         <div id="contact-page" class="page">
             <h2 class="section-title">📞 አግኙን</h2>
             <div class="glass-card"><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ ወረዳ 05 አወሊያ መስጂድ</div></div>
@@ -537,7 +261,6 @@
 </div>
 
 <script>
-    // --- LOADER ---
     window.addEventListener('load', () => {
         setTimeout(() => {
             const loader = document.getElementById('loader');
@@ -546,8 +269,9 @@
         }, 1200);
     });
 
+    // ✅ NEW API KEY INTEGRATED HERE
     const firebaseConfig = {
-        apiKey: "AIzaSyBoUQ_-Gt7PJfWhI6Jh6Xgx1-x8RjYPKCU",
+        apiKey: "AIzaSyAykSoRHyc3cm84eEV3Xe5uI9OTVpZh1XY",
         authDomain: "mosquenotif.firebaseapp.com",
         projectId: "mosquenotif",
         storageBucket: "mosquenotif.firebasestorage.app",
@@ -564,7 +288,6 @@
     let prayerInterval = null;
     let demoMode = false;
 
-    // DOM elements
     const authModal = document.getElementById('authModal');
     const authModalTitle = document.getElementById('authModalTitle');
     const authName = document.getElementById('authName');
@@ -765,7 +488,6 @@
         } catch(e) {}
     }
 
-    // Prayer times
     const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
     let prayerCache = null;
     let lastAlert = null;
@@ -847,7 +569,6 @@
 
     loadPrayerTimesUI();
 
-    // Admin panel
     let adminPanel = document.getElementById('adminPanel');
     function checkAdmin() {
         let pwd = prompt("Admin password:");
@@ -872,7 +593,6 @@
         if (tapCount === 3) { checkAdmin(); tapCount = 0; }
     });
 
-    // Sidebar & page switching
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const menuBtn = document.getElementById('menuBtn');
