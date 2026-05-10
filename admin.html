@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – Awolia Youth Association</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #2dd4bf; margin-bottom: 1rem; }
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            font-size: 1rem;
+        }
+        .login-box button {
+            background: #2dd4bf;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .admin-panel {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th { background: #f8fafc; }
+        .activity-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .send-notif {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+        }
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            margin: 0.5rem 0;
+            font-family: inherit;
+        }
+        button {
+            background: #2dd4bf;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .logout-btn {
+            background: #ef4444;
+            float: right;
+        }
+        .status { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; }
+        .status-online { background: #10b981; color: white; }
+        .status-offline { background: #64748b; color: white; }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div id="loginView" class="login-box">
+        <h1>👑 Admin Login</h1>
+        <input type="password" id="adminPassword" placeholder="Enter admin password">
+        <button onclick="checkAdminLogin()">Login</button>
+    </div>
+
+    <div id="adminView" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>📊 Admin Dashboard – Awolia Youth</h1>
+            <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+        </div>
+
+        <div class="admin-panel">
+            <h2>👥 Registered Users</h2>
+            <table id="usersTable">
+                <thead><tr><th>Full Name</th><th>Registered On</th><th>Status</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="admin-panel">
+            <h2>📜 Activity Log (Login / Logout / Registration)</h2>
+            <div class="activity-log" id="activityLog"></div>
+        </div>
+
+        <div class="admin-panel send-notif">
+            <h2>📢 Send Notification to All Users</h2>
+            <textarea id="notifTitle" placeholder="Notification Title" rows="1"></textarea>
+            <textarea id="notifBody" placeholder="Notification Message" rows="3"></textarea>
+            <button onclick="sendGlobalNotification()">Send to All</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadData() {
+        // Read from localStorage
+        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+        const activity = JSON.parse(localStorage.getItem('awolia_activity') || '[]');
+        const currentUserRaw = localStorage.getItem('awolia_current_user');
+        let currentUserName = null;
+        if (currentUserRaw) {
+            try {
+                const cur = JSON.parse(currentUserRaw);
+                currentUserName = cur.fullName;
+            } catch(e) {}
+        }
+
+        // Render users table
+        const tbody = document.querySelector('#usersTable tbody');
+        tbody.innerHTML = '';
+        users.forEach(user => {
+            const tr = document.createElement('tr');
+            const isOnline = (currentUserName === user.fullName);
+            tr.innerHTML = `
+                <td>${escapeHtml(user.fullName)}</td>
+                <td>${new Date(user.createdAt).toLocaleString()}</td>
+                <td><span class="status ${isOnline ? 'status-online' : 'status-offline'}">${isOnline ? 'Online' : 'Offline'}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Render activity log
+        const logDiv = document.getElementById('activityLog');
+        if (activity.length === 0) {
+            logDiv.innerHTML = '<p>No activity yet.</p>';
+        } else {
+            let html = '<ul style="list-style: none;">';
+            activity.forEach(entry => {
+                html += `<li style="padding: 0.5rem; border-bottom: 1px solid #e2e8f0;">
+                            <strong>${escapeHtml(entry.userName)}</strong> – ${escapeHtml(entry.action)}<br>
+                            <small>${new Date(entry.timestamp).toLocaleString()}</small>
+                         </li>`;
+            });
+            html += '</ul>';
+            logDiv.innerHTML = html;
+        }
+    }
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    }
+
+    function sendGlobalNotification() {
+        const title = document.getElementById('notifTitle').value.trim();
+        const body = document.getElementById('notifBody').value.trim();
+        if (!title || !body) {
+            alert("Please enter both title and message.");
+            return;
+        }
+        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+        users.forEach(user => {
+            if (!user.notifications) user.notifications = [];
+            user.notifications.unshift({
+                title: title,
+                body: body,
+                timestamp: new Date().toISOString(),
+                read: false
+            });
+        });
+        localStorage.setItem('awolia_users', JSON.stringify(users));
+        alert(`Notification sent to ${users.length} user(s).`);
+        document.getElementById('notifTitle').value = '';
+        document.getElementById('notifBody').value = '';
+        loadData(); // refresh if needed (users table unchanged but just in case)
+    }
+
+    function checkAdminLogin() {
+        const pwd = document.getElementById('adminPassword').value;
+        if (pwd === 'admin123') {
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('adminView').style.display = 'block';
+            loadData();
+            // Auto-refresh every 5 seconds
+            if (window.refreshInterval) clearInterval(window.refreshInterval);
+            window.refreshInterval = setInterval(loadData, 5000);
+        } else {
+            alert('Incorrect password');
+        }
+    }
+
+    function logoutAdmin() {
+        document.getElementById('loginView').style.display = 'block';
+        document.getElementById('adminView').style.display = 'none';
+        if (window.refreshInterval) clearInterval(window.refreshInterval);
+        document.getElementById('adminPassword').value = '';
+    }
+
+    // On page load, check if already logged in? We’ll start with login view.
+    document.getElementById('loginView').style.display = 'block';
+    document.getElementById('adminView').style.display = 'none';
+</script>
+</body>
+</html>
