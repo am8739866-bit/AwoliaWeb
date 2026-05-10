@@ -57,8 +57,54 @@
             text-align: left;
             padding: 0.75rem;
             border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
         }
         th { background: #f8fafc; }
+        .search-box {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+        }
+        .favorite-star {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #fbbf24;
+            background: none;
+            border: none;
+        }
+        .block-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+        .unblock-btn {
+            background: #10b981;
+        }
+        .user-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .action-buttons {
+            margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .send-to-selected {
+            background: #3b82f6;
+        }
         .activity-log {
             max-height: 400px;
             overflow-y: auto;
@@ -92,6 +138,9 @@
         .status { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; }
         .status-online { background: #10b981; color: white; }
         .status-offline { background: #64748b; color: white; }
+        .favorite-row {
+            background-color: #fef3c7;
+        }
     </style>
 </head>
 <body>
@@ -110,10 +159,28 @@
 
         <div class="admin-panel">
             <h2>👥 Registered Users</h2>
-            <table id="usersTable">
-                <thead><tr><th>Full Name</th><th>Registered On</th><th>Status</th></tr></thead>
-                <tbody></tbody>
-            </table>
+            <div class="search-box">
+                <input type="text" id="searchUser" placeholder="Search by name..." onkeyup="filterUsers()">
+                <button onclick="filterUsers()">🔍 Search</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
+                            <th>Full Name</th>
+                            <th>Registered On</th>
+                            <th>Status</th>
+                            <th>Favorite</th>
+                            <th>Block</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+            <div class="action-buttons">
+                <button id="sendToSelectedBtn" class="send-to-selected">📨 Send Notification to Selected</button>
+            </div>
         </div>
 
         <div class="admin-panel">
@@ -125,40 +192,67 @@
             <h2>📢 Send Notification to All Users</h2>
             <textarea id="notifTitle" placeholder="Notification Title" rows="1"></textarea>
             <textarea id="notifBody" placeholder="Notification Message" rows="3"></textarea>
-            <button onclick="sendGlobalNotification()">Send to All</button>
+            <button onclick="sendToAll()">Send to All</button>
         </div>
     </div>
 </div>
 
 <script>
+    let allUsers = [];
+    let currentFilter = '';
+
     function loadData() {
-        // Read from localStorage
-        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
-        const activity = JSON.parse(localStorage.getItem('awolia_activity') || '[]');
+        const stored = localStorage.getItem('awolia_users');
+        allUsers = stored ? JSON.parse(stored) : [];
+        renderUsersTable();
+        renderActivityLog();
+    }
+
+    function renderUsersTable() {
+        const tbody = document.getElementById('usersTableBody');
         const currentUserRaw = localStorage.getItem('awolia_current_user');
         let currentUserName = null;
         if (currentUserRaw) {
-            try {
-                const cur = JSON.parse(currentUserRaw);
-                currentUserName = cur.fullName;
-            } catch(e) {}
+            try { const cur = JSON.parse(currentUserRaw); currentUserName = cur.fullName; } catch(e) {}
         }
-
-        // Render users table
-        const tbody = document.querySelector('#usersTable tbody');
+        let filtered = allUsers.filter(u => u.fullName.toLowerCase().includes(currentFilter.toLowerCase()));
         tbody.innerHTML = '';
-        users.forEach(user => {
-            const tr = document.createElement('tr');
+        filtered.forEach((user, idx) => {
             const isOnline = (currentUserName === user.fullName);
+            const rowClass = user.favorite ? 'favorite-row' : '';
+            const tr = document.createElement('tr');
+            tr.className = rowClass;
             tr.innerHTML = `
+                <td><input type="checkbox" class="user-checkbox" data-name="${escapeHtml(user.fullName)}" ${user.blocked ? 'disabled' : ''}></td>
                 <td>${escapeHtml(user.fullName)}</td>
                 <td>${new Date(user.createdAt).toLocaleString()}</td>
                 <td><span class="status ${isOnline ? 'status-online' : 'status-offline'}">${isOnline ? 'Online' : 'Offline'}</span></td>
+                <td><button class="favorite-star" data-name="${escapeHtml(user.fullName)}">${user.favorite ? '⭐' : '☆'}</button></td>
+                <td><button class="block-btn ${user.blocked ? 'unblock-btn' : ''}" data-name="${escapeHtml(user.fullName)}">${user.blocked ? 'Unblock' : 'Block'}</button></td>
             `;
             tbody.appendChild(tr);
         });
+        // attach event listeners
+        document.querySelectorAll('.favorite-star').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = btn.getAttribute('data-name');
+                toggleFavorite(name);
+            });
+        });
+        document.querySelectorAll('.block-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = btn.getAttribute('data-name');
+                toggleBlock(name);
+            });
+        });
+        // update select all checkbox state
+        const allCheckboxes = document.querySelectorAll('.user-checkbox:not([disabled])');
+        const selectAll = document.getElementById('selectAllCheckbox');
+        if (selectAll) selectAll.checked = allCheckboxes.length > 0 && Array.from(allCheckboxes).every(cb => cb.checked);
+    }
 
-        // Render activity log
+    function renderActivityLog() {
+        const activity = JSON.parse(localStorage.getItem('awolia_activity') || '[]');
         const logDiv = document.getElementById('activityLog');
         if (activity.length === 0) {
             logDiv.innerHTML = '<p>No activity yet.</p>';
@@ -175,21 +269,88 @@
         }
     }
 
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    function toggleFavorite(fullName) {
+        const user = allUsers.find(u => u.fullName === fullName);
+        if (user) {
+            user.favorite = !user.favorite;
+            saveUsersAndReload();
+        }
     }
 
-    function sendGlobalNotification() {
-        const title = document.getElementById('notifTitle').value.trim();
-        const body = document.getElementById('notifBody').value.trim();
-        if (!title || !body) {
-            alert("Please enter both title and message.");
+    function toggleBlock(fullName) {
+        const user = allUsers.find(u => u.fullName === fullName);
+        if (user) {
+            user.blocked = !user.blocked;
+            saveUsersAndReload();
+            // If current logged in user is blocked, force logout on next page load? We'll just save.
+            alert(`${fullName} has been ${user.blocked ? 'BLOCKED' : 'UNBLOCKED'}.`);
+        }
+    }
+
+    function saveUsersAndReload() {
+        localStorage.setItem('awolia_users', JSON.stringify(allUsers));
+        loadData(); // refresh table and activity
+    }
+
+    function filterUsers() {
+        currentFilter = document.getElementById('searchUser').value;
+        renderUsersTable();
+    }
+
+    function toggleSelectAll() {
+        const selectAll = document.getElementById('selectAllCheckbox');
+        const checkboxes = document.querySelectorAll('.user-checkbox:not([disabled])');
+        checkboxes.forEach(cb => cb.checked = selectAll.checked);
+    }
+
+    function getSelectedUsers() {
+        const selected = [];
+        document.querySelectorAll('.user-checkbox:checked').forEach(cb => {
+            const name = cb.getAttribute('data-name');
+            if (name) selected.push(name);
+        });
+        return selected;
+    }
+
+    function sendToSelected() {
+        const selectedNames = getSelectedUsers();
+        if (selectedNames.length === 0) {
+            alert("No users selected.");
             return;
         }
+        const title = prompt("Notification Title:");
+        if (!title) return;
+        const body = prompt("Notification Message:");
+        if (!body) return;
+        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+        let sentCount = 0;
+        users.forEach(user => {
+            if (selectedNames.includes(user.fullName)) {
+                if (!user.notifications) user.notifications = [];
+                user.notifications.unshift({
+                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 8),
+                    title: title,
+                    body: body,
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+                sentCount++;
+            }
+        });
+        localStorage.setItem('awolia_users', JSON.stringify(users));
+        alert(`Notification sent to ${sentCount} user(s).`);
+        loadData(); // refresh users list (no change in users table but activity log might reflect later)
+    }
+
+    function sendToAll() {
+        const title = document.getElementById('notifTitle').value.trim();
+        const body = document.getElementById('notifBody').value.trim();
+        if (!title || !body) { alert("Please enter both title and message."); return; }
         const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
         users.forEach(user => {
             if (!user.notifications) user.notifications = [];
             user.notifications.unshift({
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 8),
                 title: title,
                 body: body,
                 timestamp: new Date().toISOString(),
@@ -200,8 +361,10 @@
         alert(`Notification sent to ${users.length} user(s).`);
         document.getElementById('notifTitle').value = '';
         document.getElementById('notifBody').value = '';
-        loadData(); // refresh if needed (users table unchanged but just in case)
+        loadData();
     }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
     function checkAdminLogin() {
         const pwd = document.getElementById('adminPassword').value;
@@ -209,12 +372,9 @@
             document.getElementById('loginView').style.display = 'none';
             document.getElementById('adminView').style.display = 'block';
             loadData();
-            // Auto-refresh every 5 seconds
             if (window.refreshInterval) clearInterval(window.refreshInterval);
             window.refreshInterval = setInterval(loadData, 5000);
-        } else {
-            alert('Incorrect password');
-        }
+        } else { alert('Incorrect password'); }
     }
 
     function logoutAdmin() {
@@ -224,9 +384,9 @@
         document.getElementById('adminPassword').value = '';
     }
 
-    // On page load, check if already logged in? We’ll start with login view.
     document.getElementById('loginView').style.display = 'block';
     document.getElementById('adminView').style.display = 'none';
+    document.getElementById('sendToSelectedBtn').addEventListener('click', sendToSelected);
 </script>
 </body>
 </html>
