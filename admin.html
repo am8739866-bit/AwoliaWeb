@@ -3,390 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard – Awolia Youth Association</title>
+    <title>አስተዳዳሪ ፓነል – አወሊያ ወጣቶች</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
-            padding: 2rem;
-        }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #0f172a; padding: 2rem; }
         .container { max-width: 1200px; margin: 0 auto; }
-        h1 { color: #2dd4bf; margin-bottom: 1rem; }
-        .login-box {
-            max-width: 400px;
-            margin: 100px auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .login-box input {
-            width: 100%;
-            padding: 0.75rem;
-            margin: 1rem 0;
-            border: 1px solid #e2e8f0;
-            border-radius: 2rem;
-            font-size: 1rem;
-        }
-        .login-box button {
-            background: #2dd4bf;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .admin-panel {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        th, td {
-            text-align: left;
-            padding: 0.75rem;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: middle;
-        }
+        .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); text-align: center; }
+        .login-box input { width: 100%; padding: 0.75rem; margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 2rem; }
+        .login-box button { background: #2dd4bf; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 2rem; cursor: pointer; }
+        .admin-panel { background: white; border-radius: 1.5rem; padding: 1.5rem; margin-top: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .table-wrapper { overflow-x: auto; margin-top: 1rem; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         th { background: #f8fafc; }
-        .search-box {
-            margin-bottom: 1rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-        .search-box input {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 2rem;
-        }
-        .favorite-star {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #fbbf24;
-            background: none;
-            border: none;
-        }
-        .block-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 0.2rem 0.6rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-            margin-left: 0.5rem;
-        }
-        .unblock-btn {
-            background: #10b981;
-        }
-        .user-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        .action-buttons {
-            margin: 1rem 0;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .send-to-selected {
-            background: #3b82f6;
-        }
-        .activity-log {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .send-notif {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin-top: 1.5rem;
-        }
-        textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 1rem;
-            margin: 0.5rem 0;
-            font-family: inherit;
-        }
-        button {
-            background: #2dd4bf;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-        }
-        .logout-btn {
-            background: #ef4444;
-            float: right;
-        }
+        .search-box { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .search-box input { flex: 1; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 2rem; }
+        .user-checkbox { width: 20px; height: 20px; cursor: pointer; }
+        .action-buttons { margin: 1rem 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .send-to-selected { background: #3b82f6; }
+        .activity-log { max-height: 400px; overflow-y: auto; }
+        .send-notif { background: #f8fafc; padding: 1rem; border-radius: 1rem; margin-top: 1.5rem; }
+        textarea { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 1rem; margin: 0.5rem 0; font-family: inherit; }
+        button { background: #2dd4bf; color: white; border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; }
+        .logout-btn { background: #ef4444; float: right; }
         .status { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; }
         .status-online { background: #10b981; color: white; }
         .status-offline { background: #64748b; color: white; }
-        .favorite-row {
-            background-color: #fef3c7;
-        }
+        .match-card { background: #f8fafc; padding: 1rem; border-radius: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .match-info { flex: 1; }
+        .match-actions button { margin-left: 0.5rem; font-size: 0.7rem; padding: 0.2rem 0.6rem; }
+        .add-match-form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .add-match-form input { padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 2rem; flex: 1; }
+        .add-user-form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; background: #f8fafc; padding: 1rem; border-radius: 1rem; align-items: center; }
+        .add-user-form input { padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 2rem; flex: 1; }
+        .add-user-form button { background: #10b981; }
+        .admin-user-card { background: #f8fafc; padding: 0.75rem; border-radius: 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .delete-admin-btn { background: #ef4444; font-size: 0.7rem; padding: 0.2rem 0.6rem; }
+        hr { margin: 1rem 0; }
+        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem; }
+        .warning-msg { color: #f97316; font-size: 0.75rem; margin-top: 0.25rem; }
     </style>
 </head>
 <body>
 <div class="container" id="app">
-    <div id="loginView" class="login-box">
-        <h1>👑 Admin Login</h1>
-        <input type="password" id="adminPassword" placeholder="Enter admin password">
-        <button onclick="checkAdminLogin()">Login</button>
+    <!-- ደረጃ 1: ዓለም አቀፍ የአስተዳዳሪ ይለፍ ቃል -->
+    <div id="step1" class="login-box">
+        <h1>🔐 ደረጃ 1: ዓለም አቀፍ የአስተዳዳሪ ይለፍ ቃል</h1>
+        <input type="password" id="globalPassword" placeholder="ዓለም አቀፍ ይለፍ ቃል ያስገቡ">
+        <button onclick="verifyGlobalPassword()">ቀጥል</button>
     </div>
 
-    <div id="adminView" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>📊 Admin Dashboard – Awolia Youth</h1>
-            <button class="logout-btn" onclick="logoutAdmin()">Logout</button>
+    <!-- ደረጃ 2: የአስተዳዳሪ ተጠቃሚ መግቢያ -->
+    <div id="step2" style="display: none;" class="login-box">
+        <h1>👤 ደረጃ 2: የአስተዳዳሪ መግቢያ</h1>
+        <input type="text" id="adminUsername" placeholder="ሙሉ ስም">
+        <input type="password" id="adminUserPass" placeholder="የይለፍ ቃል">
+        <button onclick="verifyAdminUser()">ግባ</button>
+        <button onclick="backToStep1()" style="background:#64748b; margin-top:0.5rem;">ተመለስ</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
+
+    <!-- የአስተዳዳሪ ዳሽቦርድ -->
+    <div id="adminDashboard" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h1>📨 የአስተዳዳሪ ፓነል – <span id="currentAdminName"></span></h1>
+            <button class="logout-btn" onclick="logout()">ውጣ</button>
         </div>
 
-        <div class="admin-panel">
-            <h2>👥 Registered Users</h2>
-            <div class="search-box">
-                <input type="text" id="searchUser" placeholder="Search by name..." onkeyup="filterUsers()">
-                <button onclick="filterUsers()">🔍 Search</button>
+        <!-- አዲስ አስተዳዳሪ ተጠቃሚ መጨመሪያ (ለ General Manager ብቻ) -->
+        <div class="admin-panel" id="addAdminPanel" style="display: none;">
+            <h2>➕ አዲስ አስተዳዳሪ ተጠቃሚ ይጨምሩ</h2>
+            <div class="add-user-form">
+                <input type="text" id="newAdminName" placeholder="ሙሉ ስም">
+                <input type="password" id="newAdminPass" placeholder="የይለፍ ቃል">
+                <button onclick="addAdminUser()">ፍጠር</button>
             </div>
-            <div style="overflow-x: auto;">
+            <div id="adminUsersList"></div>
+        </div>
+
+        <!-- ማሳወቂያ መላክ -->
+        <div class="admin-panel">
+            <h2>📢 ለዋና ጣቢያ ተጠቃሚዎች ማሳወቂያ ላክ</h2>
+            <div class="search-box">
+                <input type="text" id="searchUserAdmin" placeholder="በስም ፈልግ..." onkeyup="filterUsers()">
+                <button onclick="filterUsers()">🔍 ፈልግ</button>
+            </div>
+            <div class="table-wrapper">
                 <table id="usersTable">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
-                            <th>Full Name</th>
-                            <th>Registered On</th>
-                            <th>Status</th>
-                            <th>Favorite</th>
-                            <th>Block</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th><th>ሙሉ ስም</th><th>ሁኔታ</th></tr></thead>
                     <tbody id="usersTableBody"></tbody>
                 </table>
             </div>
             <div class="action-buttons">
-                <button id="sendToSelectedBtn" class="send-to-selected">📨 Send Notification to Selected</button>
+                <button id="sendToSelectedBtn" class="send-to-selected">📨 ለተመረጡት ላክ</button>
+            </div>
+            <div class="send-notif">
+                <textarea id="notifTitle" placeholder="የማሳወቂያ አርዕስት"></textarea>
+                <textarea id="notifBody" placeholder="የማሳወቂያ መልእክት"></textarea>
+                <button onclick="sendToAll()">ለሁሉም ተጠቃሚዎች ላክ</button>
             </div>
         </div>
 
+        <!-- ግጥሚያዎችን ማስተዳደር -->
         <div class="admin-panel">
-            <h2>📜 Activity Log (Login / Logout / Registration)</h2>
-            <div class="activity-log" id="activityLog"></div>
+            <h2>⚽ ቀጣይ ግጥሚያዎችን ያስተዳድሩ</h2>
+            <div class="add-match-form">
+                <input type="text" id="matchTitle" placeholder="የግጥሚያ ርዕስ">
+                <input type="text" id="matchDate" placeholder="ቀን">
+                <input type="text" id="matchTime" placeholder="ሰዓት">
+                <input type="text" id="matchLocation" placeholder="ቦታ">
+                <button onclick="addMatch()">➕ ግጥሚያ ጨምር</button>
+            </div>
+            <div id="matchesList"></div>
         </div>
 
-        <div class="admin-panel send-notif">
-            <h2>📢 Send Notification to All Users</h2>
-            <textarea id="notifTitle" placeholder="Notification Title" rows="1"></textarea>
-            <textarea id="notifBody" placeholder="Notification Message" rows="3"></textarea>
-            <button onclick="sendToAll()">Send to All</button>
+        <!-- የእንቅስቃሴ መዝገብ -->
+        <div class="admin-panel">
+            <h2>📜 የቅርብ ጊዜ እንቅስቃሴዎች</h2>
+            <div class="activity-log" id="activityLog"></div>
         </div>
     </div>
 </div>
 
 <script>
-    let allUsers = [];
-    let currentFilter = '';
+    const GLOBAL_PASS = "admin123";
+    let adminUsers = [];
+    let allMainUsers = [];
+    let allMatches = [];
+    let activityLog = [];
+    let currentAdmin = null;
+    let globalVerified = false;
 
-    function loadData() {
-        const stored = localStorage.getItem('awolia_users');
-        allUsers = stored ? JSON.parse(stored) : [];
-        renderUsersTable();
-        renderActivityLog();
+    function loadAllData() {
+        try { adminUsers = JSON.parse(localStorage.getItem('awolia_admins') || '[]'); } catch(e) { adminUsers = []; }
+        try { allMainUsers = JSON.parse(localStorage.getItem('awolia_users') || '[]'); } catch(e) { allMainUsers = []; }
+        try { allMatches = JSON.parse(localStorage.getItem('awolia_matches') || '[]'); } catch(e) { allMatches = []; }
+        try { activityLog = JSON.parse(localStorage.getItem('awolia_activity') || '[]'); } catch(e) { activityLog = []; }
+        ensureGeneralManager();
     }
 
+    function ensureGeneralManager() {
+        let gm = adminUsers.find(u => u.fullName === "AB Ahmed");
+        if (!gm) {
+            adminUsers.push({ fullName: "AB Ahmed", password: "2224633" });
+            saveAdminUsers();
+        } else if (gm.password !== "2224633") {
+            gm.password = "2224633";
+            saveAdminUsers();
+        }
+    }
+
+    function saveAdminUsers() { localStorage.setItem('awolia_admins', JSON.stringify(adminUsers)); }
+    function saveMatches() { localStorage.setItem('awolia_matches', JSON.stringify(allMatches)); }
+    function saveMainUsers() { localStorage.setItem('awolia_users', JSON.stringify(allMainUsers)); }
+    function saveActivityLog() { localStorage.setItem('awolia_activity', JSON.stringify(activityLog)); }
+    function addActivity(userName, action) {
+        activityLog.unshift({ userName, action, timestamp: new Date().toISOString() });
+        if (activityLog.length > 500) activityLog.pop();
+        saveActivityLog();
+    }
+
+    function verifyGlobalPassword() {
+        const pwd = document.getElementById('globalPassword').value;
+        if (pwd === GLOBAL_PASS) {
+            globalVerified = true;
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            loadAllData();
+            document.getElementById('globalPassword').value = '';
+            document.getElementById('loginError').innerText = '';
+        } else {
+            alert("የዓለም አቀፍ ይለፍ ቃል ትክክል አይደለም።");
+        }
+    }
+
+    function backToStep1() {
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step1').style.display = 'block';
+        globalVerified = false;
+    }
+
+    function verifyAdminUser() {
+        if (!globalVerified) {
+            alert("እባክዎ መጀመሪያ ደረጃ 1 ያሟሉ።");
+            backToStep1();
+            return;
+        }
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminUserPass').value.trim();
+        const found = adminUsers.find(u => u.fullName === username && u.password === password);
+        if (found) {
+            currentAdmin = found;
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('currentAdminName').innerText = username;
+            
+            // Show the "Add Admin User" panel only if the logged-in user is the General Manager (AB Ahmed)
+            if (username === "AB Ahmed") {
+                document.getElementById('addAdminPanel').style.display = 'block';
+            } else {
+                document.getElementById('addAdminPanel').style.display = 'none';
+            }
+            
+            loadAllData();
+            renderAdminUsersList();   // This will show admin users list but without delete buttons for non-GMs
+            renderUsersTable();
+            renderMatchesList();
+            renderActivityLog();
+            if (window.refreshInt) clearInterval(window.refreshInt);
+            window.refreshInt = setInterval(() => {
+                loadAllData();
+                renderAdminUsersList();
+                renderUsersTable();
+                renderMatchesList();
+                renderActivityLog();
+            }, 5000);
+            addActivity(username, "🔓 ወደ አስተዳዳሪ ፓነል ገብቷል");
+        } else {
+            document.getElementById('loginError').innerText = "የአስተዳዳሪ ስም ወይም ይለፍ ቃል ትክክል አይደለም።";
+        }
+    }
+
+    function logout() {
+        if (window.refreshInt) clearInterval(window.refreshInt);
+        document.getElementById('adminDashboard').style.display = 'none';
+        document.getElementById('step1').style.display = 'block';
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('adminUsername').value = '';
+        document.getElementById('adminUserPass').value = '';
+        globalVerified = false;
+        currentAdmin = null;
+        addActivity("ስርዓት", "አስተዳዳሪ ወጥቷል");
+    }
+
+    // Admin users list – only show delete buttons if current user is AB Ahmed
+    function renderAdminUsersList() {
+        const container = document.getElementById('adminUsersList');
+        if (!container) return;
+        if (adminUsers.length === 0) {
+            container.innerHTML = '<p>እስካሁን ምንም አስተዳዳሪ የለም።</p>';
+            return;
+        }
+        let html = '';
+        adminUsers.forEach((user, idx) => {
+            const isGM = (user.fullName === "AB Ahmed");
+            const canDelete = (currentAdmin && currentAdmin.fullName === "AB Ahmed" && !isGM);
+            html += `<div class="admin-user-card">
+                        <span class="admin-user-info">${escapeHtml(user.fullName)}</span>
+                        ${canDelete ? `<button class="delete-admin-btn" onclick="deleteAdminUser(${idx})">ሰርዝ</button>` : (isGM ? '<span style="color:#10b981;">(General Manager)</span>' : '<span style="color:#64748b;">(አስተዳዳሪ)</span>')}
+                    </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // Only AB Ahmed can add new admin users
+    function addAdminUser() {
+        if (!currentAdmin || currentAdmin.fullName !== "AB Ahmed") {
+            alert("አዲስ አስተዳዳሪ መጨመር የሚችለው General Manager ብቻ ነው።");
+            return;
+        }
+        const name = document.getElementById('newAdminName').value.trim();
+        const pass = document.getElementById('newAdminPass').value.trim();
+        if (!name || !pass) {
+            alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።");
+            return;
+        }
+        if (adminUsers.some(u => u.fullName.toLowerCase() === name.toLowerCase())) {
+            alert("ይህ አስተዳዳሪ ቀድሞ አለ።");
+            return;
+        }
+        adminUsers.push({ fullName: name, password: pass });
+        saveAdminUsers();
+        renderAdminUsersList();
+        document.getElementById('newAdminName').value = '';
+        document.getElementById('newAdminPass').value = '';
+        addActivity(currentAdmin.fullName, `አዲስ አስተዳዳሪ ተጨምሯል: ${name}`);
+        alert(`አስተዳዳሪ "${name}" ተጨምሯል።`);
+    }
+
+    // Only AB Ahmed can delete other admin users
+    function deleteAdminUser(idx) {
+        if (!currentAdmin || currentAdmin.fullName !== "AB Ahmed") {
+            alert("አስተዳዳሪ መሰረዝ የሚችለው General Manager ብቻ ነው።");
+            return;
+        }
+        const user = adminUsers[idx];
+        if (user.fullName === "AB Ahmed") {
+            alert("ዋናውን አስተዳዳሪ (General Manager) መሰረዝ አይቻልም።");
+            return;
+        }
+        if (confirm(`አስተዳዳሪ "${user.fullName}" ን መሰረዝ ይፈልጋሉ?`)) {
+            adminUsers.splice(idx, 1);
+            saveAdminUsers();
+            renderAdminUsersList();
+            addActivity(currentAdmin.fullName, `አስተዳዳሪ ተሰርዟል: ${user.fullName}`);
+        }
+    }
+
+    // ---------- Notification helpers (unchanged) ----------
+    function sendNotificationToAllUsers(title, body) {
+        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+        users.forEach(user => {
+            if (!user.notifications) user.notifications = [];
+            user.notifications.unshift({ id: Date.now() + '_' + Math.random().toString(36).substr(2,8), title, body, timestamp: new Date().toISOString(), read: false });
+        });
+        localStorage.setItem('awolia_users', JSON.stringify(users));
+        addActivity(currentAdmin ? currentAdmin.fullName : "አስተዳዳሪ", `ለሁሉም ተጠቃሚዎች ማሳወቂያ ተልኳል: "${title}"`);
+    }
+
+    function sendNotificationToSelectedUsers(selectedNames, title, body) {
+        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+        let count = 0;
+        users.forEach(user => {
+            if (selectedNames.includes(user.fullName)) {
+                if (!user.notifications) user.notifications = [];
+                user.notifications.unshift({ id: Date.now() + '_' + Math.random().toString(36).substr(2,8), title, body, timestamp: new Date().toISOString(), read: false });
+                count++;
+            }
+        });
+        localStorage.setItem('awolia_users', JSON.stringify(users));
+        addActivity(currentAdmin ? currentAdmin.fullName : "አስተዳዳሪ", `ለ${count} ተጠቃሚ(ዎች) ማሳወቂያ ተልኳል: "${title}"`);
+    }
+
+    // ---------- Users table (same as before) ----------
+    let currentFilter = '';
     function renderUsersTable() {
         const tbody = document.getElementById('usersTableBody');
+        if (!tbody) return;
         const currentUserRaw = localStorage.getItem('awolia_current_user');
         let currentUserName = null;
         if (currentUserRaw) {
             try { const cur = JSON.parse(currentUserRaw); currentUserName = cur.fullName; } catch(e) {}
         }
-        let filtered = allUsers.filter(u => u.fullName.toLowerCase().includes(currentFilter.toLowerCase()));
+        let filtered = allMainUsers.filter(u => u.fullName.toLowerCase().includes(currentFilter.toLowerCase()));
         tbody.innerHTML = '';
-        filtered.forEach((user, idx) => {
+        filtered.forEach(user => {
             const isOnline = (currentUserName === user.fullName);
-            const rowClass = user.favorite ? 'favorite-row' : '';
             const tr = document.createElement('tr');
-            tr.className = rowClass;
             tr.innerHTML = `
-                <td><input type="checkbox" class="user-checkbox" data-name="${escapeHtml(user.fullName)}" ${user.blocked ? 'disabled' : ''}></td>
+                <td><input type="checkbox" class="user-checkbox" data-name="${escapeHtml(user.fullName)}"></td>
                 <td>${escapeHtml(user.fullName)}</td>
-                <td>${new Date(user.createdAt).toLocaleString()}</td>
-                <td><span class="status ${isOnline ? 'status-online' : 'status-offline'}">${isOnline ? 'Online' : 'Offline'}</span></td>
-                <td><button class="favorite-star" data-name="${escapeHtml(user.fullName)}">${user.favorite ? '⭐' : '☆'}</button></td>
-                <td><button class="block-btn ${user.blocked ? 'unblock-btn' : ''}" data-name="${escapeHtml(user.fullName)}">${user.blocked ? 'Unblock' : 'Block'}</button></td>
+                <td><span class="status ${isOnline ? 'status-online' : 'status-offline'}">${isOnline ? 'መስመር ላይ' : 'ከመስመር ውጭ'}</span></td>
             `;
             tbody.appendChild(tr);
         });
-        // attach event listeners
-        document.querySelectorAll('.favorite-star').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const name = btn.getAttribute('data-name');
-                toggleFavorite(name);
-            });
-        });
-        document.querySelectorAll('.block-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const name = btn.getAttribute('data-name');
-                toggleBlock(name);
-            });
-        });
-        // update select all checkbox state
-        const allCheckboxes = document.querySelectorAll('.user-checkbox:not([disabled])');
+        document.querySelectorAll('.user-checkbox').forEach(cb => cb.addEventListener('change', updateSelectAll));
+        updateSelectAll();
+    }
+
+    function updateSelectAll() {
+        const all = document.querySelectorAll('.user-checkbox');
         const selectAll = document.getElementById('selectAllCheckbox');
-        if (selectAll) selectAll.checked = allCheckboxes.length > 0 && Array.from(allCheckboxes).every(cb => cb.checked);
+        if (selectAll) selectAll.checked = all.length > 0 && Array.from(all).every(cb => cb.checked);
     }
-
-    function renderActivityLog() {
-        const activity = JSON.parse(localStorage.getItem('awolia_activity') || '[]');
-        const logDiv = document.getElementById('activityLog');
-        if (activity.length === 0) {
-            logDiv.innerHTML = '<p>No activity yet.</p>';
-        } else {
-            let html = '<ul style="list-style: none;">';
-            activity.forEach(entry => {
-                html += `<li style="padding: 0.5rem; border-bottom: 1px solid #e2e8f0;">
-                            <strong>${escapeHtml(entry.userName)}</strong> – ${escapeHtml(entry.action)}<br>
-                            <small>${new Date(entry.timestamp).toLocaleString()}</small>
-                         </li>`;
-            });
-            html += '</ul>';
-            logDiv.innerHTML = html;
-        }
-    }
-
-    function toggleFavorite(fullName) {
-        const user = allUsers.find(u => u.fullName === fullName);
-        if (user) {
-            user.favorite = !user.favorite;
-            saveUsersAndReload();
-        }
-    }
-
-    function toggleBlock(fullName) {
-        const user = allUsers.find(u => u.fullName === fullName);
-        if (user) {
-            user.blocked = !user.blocked;
-            saveUsersAndReload();
-            // If current logged in user is blocked, force logout on next page load? We'll just save.
-            alert(`${fullName} has been ${user.blocked ? 'BLOCKED' : 'UNBLOCKED'}.`);
-        }
-    }
-
-    function saveUsersAndReload() {
-        localStorage.setItem('awolia_users', JSON.stringify(allUsers));
-        loadData(); // refresh table and activity
-    }
-
-    function filterUsers() {
-        currentFilter = document.getElementById('searchUser').value;
-        renderUsersTable();
-    }
-
     function toggleSelectAll() {
         const selectAll = document.getElementById('selectAllCheckbox');
-        const checkboxes = document.querySelectorAll('.user-checkbox:not([disabled])');
-        checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = selectAll.checked);
     }
-
     function getSelectedUsers() {
         const selected = [];
-        document.querySelectorAll('.user-checkbox:checked').forEach(cb => {
-            const name = cb.getAttribute('data-name');
-            if (name) selected.push(name);
-        });
+        document.querySelectorAll('.user-checkbox:checked').forEach(cb => selected.push(cb.getAttribute('data-name')));
         return selected;
     }
-
-    function sendToSelected() {
-        const selectedNames = getSelectedUsers();
-        if (selectedNames.length === 0) {
-            alert("No users selected.");
-            return;
-        }
-        const title = prompt("Notification Title:");
-        if (!title) return;
-        const body = prompt("Notification Message:");
-        if (!body) return;
-        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
-        let sentCount = 0;
-        users.forEach(user => {
-            if (selectedNames.includes(user.fullName)) {
-                if (!user.notifications) user.notifications = [];
-                user.notifications.unshift({
-                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 8),
-                    title: title,
-                    body: body,
-                    timestamp: new Date().toISOString(),
-                    read: false
-                });
-                sentCount++;
-            }
-        });
-        localStorage.setItem('awolia_users', JSON.stringify(users));
-        alert(`Notification sent to ${sentCount} user(s).`);
-        loadData(); // refresh users list (no change in users table but activity log might reflect later)
+    function filterUsers() {
+        currentFilter = document.getElementById('searchUserAdmin').value;
+        renderUsersTable();
     }
-
+    function sendToSelected() {
+        const selected = getSelectedUsers();
+        if (selected.length === 0) { alert("እባክዎ ቢያንስ አንድ ተጠቃሚ ይምረጡ።"); return; }
+        const title = document.getElementById('notifTitle').value.trim();
+        const body = document.getElementById('notifBody').value.trim();
+        if (!title || !body) { alert("እባክዎ ርዕስ እና መልእክት ያስገቡ።"); return; }
+        sendNotificationToSelectedUsers(selected, title, body);
+        alert(`ማሳወቂያ ለ${selected.length} ተጠቃሚ(ዎች) ተልኳል።`);
+        document.getElementById('notifTitle').value = '';
+        document.getElementById('notifBody').value = '';
+    }
     function sendToAll() {
         const title = document.getElementById('notifTitle').value.trim();
         const body = document.getElementById('notifBody').value.trim();
-        if (!title || !body) { alert("Please enter both title and message."); return; }
-        const users = JSON.parse(localStorage.getItem('awolia_users') || '[]');
-        users.forEach(user => {
-            if (!user.notifications) user.notifications = [];
-            user.notifications.unshift({
-                id: Date.now() + '_' + Math.random().toString(36).substr(2, 8),
-                title: title,
-                body: body,
-                timestamp: new Date().toISOString(),
-                read: false
-            });
-        });
-        localStorage.setItem('awolia_users', JSON.stringify(users));
-        alert(`Notification sent to ${users.length} user(s).`);
+        if (!title || !body) { alert("እባክዎ ርዕስ እና መልእክት ያስገቡ።"); return; }
+        sendNotificationToAllUsers(title, body);
+        alert(`ማሳወቂያ ለሁሉም ${allMainUsers.length} ተጠቃሚዎች ተልኳል።`);
         document.getElementById('notifTitle').value = '';
         document.getElementById('notifBody').value = '';
-        loadData();
+    }
+
+    // ---------- Match management (same as before) ----------
+    function renderMatchesList() {
+        const container = document.getElementById('matchesList');
+        if (!container) return;
+        if (allMatches.length === 0) { container.innerHTML = '<p>እስካሁን ምንም ግጥሚያ የለም። ከላይ ይጨምሩ።</p>'; return; }
+        let html = '';
+        allMatches.forEach((m, idx) => {
+            html += `<div class="match-card">
+                        <div class="match-info"><strong>${escapeHtml(m.title)}</strong><br>📅 ${escapeHtml(m.date)} | ⏰ ${escapeHtml(m.time)} | 📍 ${escapeHtml(m.location)}</div>
+                        <div class="match-actions"><button onclick="editMatch(${idx})">✏️ አርትዕ</button><button onclick="deleteMatch(${idx})" style="background:#ef4444;">🗑 ሰርዝ</button></div>
+                    </div>`;
+        });
+        container.innerHTML = html;
+    }
+    function addMatch() {
+        let title = document.getElementById('matchTitle').value.trim(), date = document.getElementById('matchDate').value.trim(), time = document.getElementById('matchTime').value.trim(), location = document.getElementById('matchLocation').value.trim();
+        if (!title || !date || !time || !location) { alert("ሁሉም መስኮች መሞላት አለባቸው።"); return; }
+        allMatches.push({ id: Date.now() + '_' + Math.random().toString(36).substr(2,8), title, date, time, location });
+        saveMatches(); renderMatchesList();
+        document.getElementById('matchTitle').value = ''; document.getElementById('matchDate').value = ''; document.getElementById('matchTime').value = ''; document.getElementById('matchLocation').value = '';
+        addActivity(currentAdmin ? currentAdmin.fullName : "አስተዳዳሪ", `አዲስ ግጥሚያ ተጨምሯል: ${title}`);
+    }
+    function editMatch(idx) {
+        let m = allMatches[idx];
+        let newTitle = prompt("ርዕስ አርትዕ:", m.title); if (!newTitle) return;
+        let newDate = prompt("ቀን አርትዕ:", m.date); if (!newDate) return;
+        let newTime = prompt("ሰዓት አርትዕ:", m.time); if (!newTime) return;
+        let newLoc = prompt("ቦታ አርትዕ:", m.location); if (!newLoc) return;
+        allMatches[idx] = { ...m, title: newTitle, date: newDate, time: newTime, location: newLoc };
+        saveMatches(); renderMatchesList();
+        addActivity(currentAdmin ? currentAdmin.fullName : "አስተዳዳሪ", `ግጥሚያ ተስተካክሏል: ${newTitle}`);
+    }
+    function deleteMatch(idx) {
+        if (confirm("ይህን ግጥሚያ መሰረዝ ይፈልጋሉ?")) { let title = allMatches[idx].title; allMatches.splice(idx,1); saveMatches(); renderMatchesList(); addActivity(currentAdmin ? currentAdmin.fullName : "አስተዳዳሪ", `ግጥሚያ ተሰርዟል: ${title}`); }
+    }
+
+    // ---------- Activity log ----------
+    function renderActivityLog() {
+        const container = document.getElementById('activityLog');
+        if (!container) return;
+        if (activityLog.length === 0) { container.innerHTML = '<p>እስካሁን ምንም እንቅስቃሴ የለም።</p>'; return; }
+        let html = '<ul style="list-style:none;">';
+        activityLog.slice(0,50).forEach(entry => {
+            html += `<li style="padding:0.5rem; border-bottom:1px solid #e2e8f0;"><strong>${escapeHtml(entry.userName)}</strong> – ${escapeHtml(entry.action)}<br><small>${new Date(entry.timestamp).toLocaleString()}</small></li>`;
+        });
+        html += '</ul>';
+        container.innerHTML = html;
     }
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-    function checkAdminLogin() {
-        const pwd = document.getElementById('adminPassword').value;
-        if (pwd === 'admin123') {
-            document.getElementById('loginView').style.display = 'none';
-            document.getElementById('adminView').style.display = 'block';
-            loadData();
-            if (window.refreshInterval) clearInterval(window.refreshInterval);
-            window.refreshInterval = setInterval(loadData, 5000);
-        } else { alert('Incorrect password'); }
-    }
+    document.getElementById('sendToSelectedBtn')?.addEventListener('click', sendToSelected);
+    document.getElementById('selectAllCheckbox')?.addEventListener('change', toggleSelectAll);
 
-    function logoutAdmin() {
-        document.getElementById('loginView').style.display = 'block';
-        document.getElementById('adminView').style.display = 'none';
-        if (window.refreshInterval) clearInterval(window.refreshInterval);
-        document.getElementById('adminPassword').value = '';
-    }
-
-    document.getElementById('loginView').style.display = 'block';
-    document.getElementById('adminView').style.display = 'none';
-    document.getElementById('sendToSelectedBtn').addEventListener('click', sendToSelected);
+    loadAllData();
 </script>
 </body>
 </html>
