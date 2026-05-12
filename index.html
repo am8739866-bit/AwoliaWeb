@@ -381,7 +381,7 @@
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
     });
 
-    // ----- Firebase Config (NEW API KEY) -----
+    // ----- Firebase Config (Your provided API key) -----
     const firebaseConfig = {
         apiKey: "AIzaSyBoUQ_-Gt7PJfWhI6Jh6Xgx1-x8RjYPKCU",
         authDomain: "mosquenotif.firebaseapp.com",
@@ -541,12 +541,57 @@
     // ----- Auth Modal Handlers -----
     const authModal=document.getElementById('authModal'), authFullName=document.getElementById('authFullName'), authPassword=document.getElementById('authPassword'), authSubmitBtn=document.getElementById('authSubmitBtn'), authSwitch=document.getElementById('authSwitch'), closeAuth=document.getElementById('closeAuthModal'), realGoogleBtn=document.getElementById('realGoogleBtn'), demoLoginBtn=document.getElementById('demoLoginBtn');
     let isRegisterMode=false;
+    let googlePopupInProgress = false;
+
     function showAuthModal(registerMode){ isRegisterMode=registerMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; authModal.style.display="flex"; }
     function closeAuthModalFunc(){ authModal.style.display="none"; }
     authSubmitBtn.onclick=()=>{ const fullName=authFullName.value.trim(), password=authPassword.value.trim(); if(!fullName||!password){ alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; } try{ if(isRegisterMode){ const newUser=registerUser(fullName,password); currentUser=newUser; alert(`እንኳን ደህና መጡ ${newUser.fullName}!`); } else { const user=loginUser(fullName,password); currentUser=user; alert(`እንኳን ደህና መጡ ${user.fullName}!`); } closeAuthModalFunc(); authFullName.value=''; authPassword.value=''; persistCurrentUser(); updateUserUI(); } catch(err){ alert("ስህተት: "+err.message); } };
     authSwitch.onclick=()=>{ isRegisterMode=!isRegisterMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; };
     closeAuth.onclick=closeAuthModalFunc;
-    realGoogleBtn.onclick=async()=>{ const provider=new firebase.auth.GoogleAuthProvider(); try{ const result=await auth.signInWithPopup(provider); const user=result.user; const displayName=user.displayName||user.email.split('@')[0]; if(isUserBlocked(displayName)){ alert("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።"); return; } let localUser=findUserByName(displayName); if(!localUser) localUser=registerUser(displayName,'google_'+user.uid); else { localUser.password='google_'+user.uid; saveUsers(); } currentUser=localUser; persistCurrentUser(); updateUserUI(); closeAuthModalFunc(); addActivity(currentUser.fullName,"🔓 በGoogle ገብቷል (Google login)"); alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`); } catch(error){ alert("Google መግባት አልተሳካም: "+error.message); } };
+
+    // FIXED Google Sign-In with popup cancellation handling
+    realGoogleBtn.onclick = async () => {
+        if (googlePopupInProgress) {
+            alert("የGoogle መግቢያ እየሰራ ነው። እባክዎ ትንሽ ይጠብቁ።");
+            return;
+        }
+        googlePopupInProgress = true;
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+            // Sign out any existing session to avoid conflicts
+            await auth.signOut().catch(() => {});
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            const displayName = user.displayName || user.email.split('@')[0];
+            if (isUserBlocked(displayName)) {
+                alert("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።");
+                return;
+            }
+            let localUser = findUserByName(displayName);
+            if (!localUser) {
+                localUser = registerUser(displayName, 'google_' + user.uid);
+            } else {
+                localUser.password = 'google_' + user.uid;
+                saveUsers();
+            }
+            currentUser = localUser;
+            persistCurrentUser();
+            updateUserUI();
+            closeAuthModalFunc();
+            addActivity(currentUser.fullName, "🔓 በGoogle ገብቷል (Google login)");
+            alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`);
+        } catch (error) {
+            if (error.code === 'auth/cancelled-popup-request') {
+                console.warn("Popup was cancelled or another popup was already open.");
+                alert("የGoogle መስኮት ተሰርዟል ወይም ሌላ መስኮት ተከፍቷል። እባክዎ ይሞክሩ።");
+            } else {
+                alert("Google መግባት አልተሳካም: " + error.message);
+            }
+        } finally {
+            googlePopupInProgress = false;
+        }
+    };
+
     demoLoginBtn.onclick=()=>{ demoLogin(); };
     document.getElementById('topBarSignBtn').addEventListener('click',()=>{ if(currentUser){ logoutUser(); currentUser=null; persistCurrentUser(); updateUserUI(); alert("በስኬት ወጥተዋል።"); } else showAuthModal(false); });
 
