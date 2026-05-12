@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
     <meta name="theme-color" content="#f8fafc">
-    <!-- Firebase SDK (only for Google Sign-In) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <style>
@@ -40,7 +40,6 @@
             --input-border: #e2e8f0;
             --input-text: #1e293b;
         }
-
         body.dark {
             --bg-gradient: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
             --text-color: #e2e8f0;
@@ -69,7 +68,6 @@
             --input-border: #334155;
             --input-text: #e2e8f0;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -89,10 +87,10 @@
             height: 100%;
             background: var(--sidebar-bg);
             backdrop-filter: blur(20px);
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
             z-index: 1100;
             transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
             display: flex;
             flex-direction: column;
             padding: 2rem 1rem;
@@ -181,7 +179,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 1.5rem;
             padding: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
             cursor: default;
         }
         .glass-card:hover {
@@ -243,9 +241,7 @@
             color: #2dd4bf;
             transition: 0.2s;
         }
-        .theme-toggle:hover {
-            background: #2dd4bf40;
-        }
+        .theme-toggle:hover { background: #2dd4bf40; }
         @media (max-width: 768px) {
             .hero-title { font-size: 1.6rem; }
             .hero-arabic { font-size: 1.8rem; }
@@ -363,7 +359,7 @@
 </main>
 
 <script>
-    // Theme switcher
+    // ----- Theme Switcher -----
     function setTheme(theme) {
         if (theme === 'dark') {
             document.body.classList.add('dark');
@@ -374,11 +370,8 @@
         }
     }
     function toggleTheme() {
-        if (document.body.classList.contains('dark')) {
-            setTheme('light');
-        } else {
-            setTheme('dark');
-        }
+        if (document.body.classList.contains('dark')) setTheme('light');
+        else setTheme('dark');
     }
     const savedTheme = localStorage.getItem('awolia_theme');
     if (savedTheme === 'dark') setTheme('dark');
@@ -388,7 +381,7 @@
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
     });
 
-    // Firebase config (Google Sign-In)
+    // ----- Firebase Config -----
     const firebaseConfig = {
         apiKey: "AIzaSyAykSoRHyc3cm84eEV3Xe5uI9OTVpZh1XY",
         authDomain: "mosquenotif.firebaseapp.com",
@@ -400,17 +393,303 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Rest of the original script (users, notifications, matches, etc.) continues...
-    // (The full working script from the previous version is included here.
-    // For brevity, the script section is exactly the same as in the previous long answer.
-    // I have kept it intact to ensure all features work.)
-    
-    // ... [Full working script from previous message – all login, notification, prayer, match logic] ...
-    // In the actual file you would paste the entire script from the previous version.
-    // To save space I am not repeating it, but in your final `index.html` you must include it.
+    // ----- Global Variables -----
+    let currentUser = null;
+    let notificationPermission = false;
+    let audioCtx = null;
+    let prayerInterval = null;
+    let users = [];
+    let matches = [];
 
-    // NOTE: The complete script was provided in the previous message. 
-    // Please use that full script here. The above is a placeholder.
+    // ----- Load Data -----
+    function loadData() {
+        try { const u = localStorage.getItem('awolia_users'); if (u) users = JSON.parse(u); } catch(e) { users = []; }
+        try { const m = localStorage.getItem('awolia_matches'); if (m) matches = JSON.parse(m); else matches = []; } catch(e) { matches = []; }
+        renderMatches();
+    }
+
+    function renderMatches() {
+        const grid = document.getElementById('matchesGrid');
+        if (!grid) return;
+        if (!matches.length) {
+            grid.innerHTML = '<div class="glass-card">ምንም የሚመጡ ጨዋታዎች የሉም</div>';
+            return;
+        }
+        let html = '';
+        matches.forEach(m => {
+            html += `<div class="glass-card">
+                        <div style="font-size:1.2rem; font-weight:bold; color:#2dd4bf;">${escapeHtml(m.title)}</div>
+                        <div>📅 ${escapeHtml(m.date)}</div>
+                        <div>⏰ ${escapeHtml(m.time)}</div>
+                        <div>📍 ${escapeHtml(m.location)}</div>
+                     </div>`;
+        });
+        grid.innerHTML = html;
+    }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+
+    // ----- User Management -----
+    function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(users)); }
+    let activityLog = [];
+    try { const a = localStorage.getItem('awolia_activity'); if (a) activityLog = JSON.parse(a); } catch(e) { activityLog = []; }
+    function saveActivityLog() { localStorage.setItem('awolia_activity', JSON.stringify(activityLog)); }
+    function addActivity(userName, action) {
+        activityLog.unshift({ userName, action, timestamp: new Date().toISOString() });
+        if (activityLog.length > 500) activityLog.pop();
+        saveActivityLog();
+    }
+
+    function findUserByName(fullName) { return users.find(u => u.fullName.toLowerCase() === fullName.toLowerCase()); }
+    function isUserBlocked(fullName) { const u = findUserByName(fullName); return u && u.blocked === true; }
+    function registerUser(fullName, password) {
+        if (findUserByName(fullName)) throw new Error("ይህ ስም አስቀድሞ ተመዝግቧል።");
+        const newUser = { fullName, password, createdAt: new Date().toISOString(), notifications: [], blocked: false, favorite: false };
+        users.push(newUser); saveUsers();
+        addActivity(fullName, "✅ ተመዝግቧል (Registered)");
+        return newUser;
+    }
+    function loginUser(fullName, password) {
+        const user = findUserByName(fullName);
+        if (!user) throw new Error("ስም አልተገኘም።");
+        if (user.blocked) throw new Error("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።");
+        if (user.password !== password) throw new Error("የይለፍ ቃል ትክክል አይደለም።");
+        addActivity(fullName, "🔓 ገብቷል (Logged in)");
+        return user;
+    }
+    function logoutUser() { if (currentUser) addActivity(currentUser.fullName, "🔒 ወጥቷል (Logged out)"); }
+
+    function demoLogin() {
+        const demoName = "DemoUser_" + Math.floor(Math.random()*1000);
+        const demoPass = "demo123";
+        let user = findUserByName(demoName);
+        if (!user) user = registerUser(demoName, demoPass);
+        if (user.blocked) { alert("ይህ ዴሞ መለያ ታግዷል። እባክዎ እንደገና ይሞክሩ።"); return; }
+        currentUser = user; persistCurrentUser(); updateUserUI(); closeAuthModalFunc();
+        addActivity(currentUser.fullName, "🎮 በዴሞ ገብቷል (Demo login)");
+        alert("በዴሞ መለያ ገብተዋል። ሁሉም ተግባራት በሙሉ ይገኛሉ።");
+    }
+
+    // ----- Notifications -----
+    function getCurrentUserNotifications() { if (!currentUser) return []; const u=findUserByName(currentUser.fullName); return u ? (u.notifications||[]) : []; }
+    function showPopupWithOk(notification) {
+        let cont = document.getElementById('msgContainer');
+        if (!cont) { cont = document.createElement('div'); cont.id = 'msgContainer'; document.body.appendChild(cont); }
+        const pop = document.createElement('div'); pop.className = 'message-popup';
+        pop.innerHTML = `<strong>📢 ${escapeHtml(notification.title)}</strong><br>${escapeHtml(notification.body)}<br><button class="ok-notif-btn" data-id="${notification.id}">OK</button>`;
+        cont.appendChild(pop);
+        const okBtn = pop.querySelector('.ok-notif-btn');
+        okBtn.addEventListener('click', () => {
+            const user = findUserByName(currentUser.fullName);
+            if (user && user.notifications) {
+                const notif = user.notifications.find(n => n.id === notification.id);
+                if (notif) notif.read = true;
+                saveUsers();
+            }
+            pop.remove();
+            loadUserNotifications();
+        });
+    }
+    function addNotificationToCurrentUser(title, body) {
+        if(!currentUser) return;
+        const notifId = Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        const newNotif = { id: notifId, title, body, timestamp: new Date().toISOString(), read: false };
+        const user = findUserByName(currentUser.fullName);
+        if(user){
+            if(!user.notifications) user.notifications = [];
+            user.notifications.unshift(newNotif);
+            saveUsers();
+            loadUserNotifications();
+            showPopupWithOk(newNotif);
+            if(notificationPermission && Notification.permission === 'granted') new Notification(title, { body });
+        }
+    }
+    function markAllNotificationsRead() {
+        if(!currentUser) return;
+        const user = findUserByName(currentUser.fullName);
+        if(user && user.notifications){ user.notifications.forEach(n=>n.read=true); saveUsers(); loadUserNotifications(); }
+    }
+    function loadUserNotifications(){
+        const listDiv=document.getElementById('notifList'); if(!listDiv) return;
+        if(!currentUser){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>'; return; }
+        const notifs=getCurrentUserNotifications();
+        if(notifs.length===0){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">ምንም አዲስ ማሳወቂያ የለም</div>'; return; }
+        let html='';
+        notifs.forEach(n=>{ const readClass = n.read ? 'opacity-50' : ''; html+=`<div class="notif-item ${readClass}"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-body">${escapeHtml(n.body)}</div><div class="notif-time">${new Date(n.timestamp).toLocaleString()}</div></div>`; });
+        listDiv.innerHTML=html;
+    }
+
+    // ----- UI Update -----
+    function updateUserUI(){
+        const topBarUser=document.getElementById('topBarUser'), topBarSignBtn=document.getElementById('topBarSignBtn'), sidebarStatus=document.getElementById('sidebarUserStatus');
+        if(currentUser){
+            topBarUser.innerText=`👤 ${currentUser.fullName}`; topBarSignBtn.innerText='ውጣ';
+            sidebarStatus.innerHTML=`✅ ገብተዋል: ${currentUser.fullName}<br><button id="sidebarTestNotif" style="margin-top:6px; background:#2dd4bf; color:white; border:none; padding:4px 10px; border-radius:20px; font-size:0.7rem; cursor:pointer;">🔔 የሙከራ ማሳወቂያ</button>`;
+            document.getElementById('sidebarTestNotif')?.addEventListener('click',()=>{ if(notificationPermission && Notification.permission==='granted') new Notification("📢 ሙከራ",{body:`ሰላም ${currentUser.fullName}!`}); else alert("እባክዎ መጀመሪያ ማንቂያ ያንቁ።"); addNotificationToCurrentUser("ሙከራ", `ሰላም ${currentUser.fullName}`); });
+            loadUserNotifications();
+        } else {
+            topBarUser.innerText=''; topBarSignBtn.innerText='ግባ';
+            sidebarStatus.innerHTML='🔒 እባክዎ ይግቡ ወይም ይመዝገቡ';
+            document.getElementById('notifList').innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>';
+        }
+    }
+    function persistCurrentUser(){ if(currentUser) localStorage.setItem('awolia_current_user',JSON.stringify({fullName:currentUser.fullName,password:currentUser.password})); else localStorage.removeItem('awolia_current_user'); }
+    const savedUser=localStorage.getItem('awolia_current_user');
+    if(savedUser){ try{ const parsed=JSON.parse(savedUser); const exists=users.some(u=>u.fullName===parsed.fullName); if(exists) currentUser=parsed; else localStorage.removeItem('awolia_current_user'); }catch(e){} }
+    if(currentUser) updateUserUI();
+
+    // ----- Auth Modal Handlers -----
+    const authModal=document.getElementById('authModal'), authFullName=document.getElementById('authFullName'), authPassword=document.getElementById('authPassword'), authSubmitBtn=document.getElementById('authSubmitBtn'), authSwitch=document.getElementById('authSwitch'), closeAuth=document.getElementById('closeAuthModal'), realGoogleBtn=document.getElementById('realGoogleBtn'), demoLoginBtn=document.getElementById('demoLoginBtn');
+    let isRegisterMode=false;
+    function showAuthModal(registerMode){ isRegisterMode=registerMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; authModal.style.display="flex"; }
+    function closeAuthModalFunc(){ authModal.style.display="none"; }
+    authSubmitBtn.onclick=()=>{ const fullName=authFullName.value.trim(), password=authPassword.value.trim(); if(!fullName||!password){ alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; } try{ if(isRegisterMode){ const newUser=registerUser(fullName,password); currentUser=newUser; alert(`እንኳን ደህና መጡ ${newUser.fullName}!`); } else { const user=loginUser(fullName,password); currentUser=user; alert(`እንኳን ደህና መጡ ${user.fullName}!`); } closeAuthModalFunc(); authFullName.value=''; authPassword.value=''; persistCurrentUser(); updateUserUI(); } catch(err){ alert("ስህተት: "+err.message); } };
+    authSwitch.onclick=()=>{ isRegisterMode=!isRegisterMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; };
+    closeAuth.onclick=closeAuthModalFunc;
+    realGoogleBtn.onclick=async()=>{ const provider=new firebase.auth.GoogleAuthProvider(); try{ const result=await auth.signInWithPopup(provider); const user=result.user; const displayName=user.displayName||user.email.split('@')[0]; if(isUserBlocked(displayName)){ alert("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።"); return; } let localUser=findUserByName(displayName); if(!localUser) localUser=registerUser(displayName,'google_'+user.uid); else { localUser.password='google_'+user.uid; saveUsers(); } currentUser=localUser; persistCurrentUser(); updateUserUI(); closeAuthModalFunc(); addActivity(currentUser.fullName,"🔓 በGoogle ገብቷል (Google login)"); alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`); } catch(error){ alert("Google መግባት አልተሳካም: "+error.message); } };
+    demoLoginBtn.onclick=()=>{ demoLogin(); };
+    document.getElementById('topBarSignBtn').addEventListener('click',()=>{ if(currentUser){ logoutUser(); currentUser=null; persistCurrentUser(); updateUserUI(); alert("በስኬት ወጥተዋል።"); } else showAuthModal(false); });
+
+    // ----- Sidebar Navigation -----
+    const sidebar=document.getElementById('sidebar'), overlay=document.getElementById('sidebarOverlay'), menuBtn=document.getElementById('menuBtn');
+    menuBtn.onclick=()=>{ sidebar.classList.add('open'); overlay.classList.add('active'); };
+    overlay.onclick=()=>{ sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+    const pages={ home:document.getElementById('home-page'), community:document.getElementById('community-page'), donate:document.getElementById('donate-page'), prayer:document.getElementById('prayer-page'), news:document.getElementById('news-page'), contact:document.getElementById('contact-page') };
+    const navLinks=document.querySelectorAll('.sidebar-nav a');
+    function switchPage(pageId){ Object.values(pages).forEach(p=>p.classList.remove('active-page')); pages[pageId].classList.add('active-page'); navLinks.forEach(l=>l.classList.toggle('active',l.dataset.page===pageId)); sidebar.classList.remove('open'); overlay.classList.remove('active'); window.scrollTo(0,0); }
+    navLinks.forEach(link=>{ link.addEventListener('click',(e)=>{ e.preventDefault(); const pid=link.dataset.page; if(pid&&pages[pid]) switchPage(pid); }); });
+    document.querySelectorAll('.hero-nav').forEach(btn=>{ btn.addEventListener('click',(e)=>{ e.preventDefault(); const target=btn.getAttribute('data-page-target'); if(target&&pages[target]) switchPage(target); }); });
+
+    // ----- Prayer Times (fixed location 3P55+GR Addis Ababa) -----
+    const prayerNames={Fajr:'ፋጅር', Dhuhr:'ዙህር', Asr:'ዐስር', Maghrib:'መግሪብ', Isha:'ዒሻ'};
+    let prayerCache=null, lastAlert=null;
+    async function fetchPrayerTimes() {
+        const lat=9.005, lon=38.763, method=3;
+        const d=new Date();
+        const url=`https://api.aladhan.com/v1/calendar/${d.getFullYear()}/${d.getMonth()+1}?latitude=${lat}&longitude=${lon}&method=${method}`;
+        try{
+            const res=await fetch(url);
+            const data=await res.json();
+            if(data.code===200 && data.data){
+                const day=data.data[d.getDate()-1];
+                if(day?.timings){
+                    return { Fajr:day.timings.Fajr.substring(0,5), Dhuhr:day.timings.Dhuhr.substring(0,5), Asr:day.timings.Asr.substring(0,5), Maghrib:day.timings.Maghrib.substring(0,5), Isha:day.timings.Isha.substring(0,5) };
+                }
+            }
+        }catch(e){}
+        return { Fajr:"05:02", Dhuhr:"12:23", Asr:"15:36", Maghrib:"18:35", Isha:"19:43" };
+    }
+    async function loadPrayerTimesUI(){
+        prayerCache=await fetchPrayerTimes();
+        const grid=document.getElementById('prayerGrid');
+        if(grid){
+            let html='';
+            for(let [k,v] of Object.entries(prayerCache)) html+=`<div class="glass-card fade-up"><div class="prayer-time">ال${k}</div><div>${prayerNames[k]}</div><div class="prayer-time">${v}</div></div>`;
+            grid.innerHTML=html;
+            document.querySelectorAll('#prayerGrid .fade-up').forEach(el=>observer.observe(el));
+        }
+        const ticker=document.getElementById('tickerTrack');
+        if(ticker && prayerCache){ let t=''; for(let [k,v] of Object.entries(prayerCache)) t+=`<div class="ticker-item"><span class="ticker-dot"></span> ${prayerNames[k]} ${v}</div>`; ticker.innerHTML=t+t; }
+        startCountdownLoop();
+    }
+    function getNextPrayer(){
+        if(!prayerCache) return null;
+        const now=new Date();
+        const cur=now.getHours()*60+now.getMinutes();
+        let next=null, minDiff=Infinity, nextTime=null;
+        for(let [name,time] of Object.entries(prayerCache)){
+            let [h,m]=time.split(':'); let total=parseInt(h)*60+parseInt(m);
+            if(total<cur) total+=1440;
+            let diff=total-cur;
+            if(diff<minDiff){ minDiff=diff; next=name; nextTime=time; }
+        }
+        const sec=60-now.getSeconds();
+        return { name:prayerNames[next]||next, time:nextTime, hours:Math.floor(minDiff/60), minutes:minDiff%60, seconds:sec===60?0:sec, totalSec:minDiff*60+sec, key:next };
+    }
+    function startCountdownLoop(){
+        if(prayerInterval) clearInterval(prayerInterval);
+        prayerInterval=setInterval(()=>{
+            if(!prayerCache) return;
+            const nxt=getNextPrayer();
+            if(!nxt) return;
+            const timerDiv=document.getElementById('countdownTimer'), nameSpan=document.getElementById('nextPrayerName');
+            if(timerDiv) timerDiv.innerText=`${String(nxt.hours).padStart(2,'0')}:${String(nxt.minutes).padStart(2,'0')}:${String(nxt.seconds).padStart(2,'0')}`;
+            if(nameSpan) nameSpan.innerText=`${nxt.name} (${nxt.time})`;
+            if(nxt.totalSec<=0.5 && lastAlert!==nxt.key && notificationPermission && currentUser){
+                playBeep();
+                new Notification("🕌 የሶላት ሰዓት ደረሰ",{body:`ለ${nxt.name} ሶላት ሰዓት ነው። አላህ ይቀበል።`});
+                lastAlert=nxt.key;
+            } else if(nxt.totalSec>60) lastAlert=null;
+        },500);
+    }
+    function playBeep(){
+        try{
+            const ctx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+            audioCtx=ctx;
+            const play=()=>{ const osc=ctx.createOscillator(), gain=ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value=880; gain.gain.value=0.2; osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.8); osc.stop(ctx.currentTime+0.8); };
+            if(ctx.state==='suspended') ctx.resume().then(play); else play();
+        }catch(e){}
+    }
+    loadPrayerTimesUI();
+
+    // ----- Notification Permission & Test -----
+    const enableNotifBtn=document.getElementById('enableNotifBtn');
+    if(enableNotifBtn){
+        enableNotifBtn.addEventListener('click',async()=>{
+            if(!currentUser){ alert("እባክዎ መጀመሪያ ይግቡ ወይም ይመዝገቡ።"); return; }
+            if(Notification.permission==='granted'){ notificationPermission=true; new Notification("✅ ማንቂያ ንቁ ነው"); }
+            else if(Notification.permission==='default'){ const perm=await Notification.requestPermission(); notificationPermission=perm==='granted'; if(notificationPermission) new Notification("✅ ማንቂያ ተንቅቷል"); }
+            else alert("ማንቂያ ታግዷል።");
+        });
+    }
+    document.getElementById('testPrayerSound')?.addEventListener('click',()=>{ playBeep(); if(notificationPermission) new Notification("ሙከራ",{body:"ድምፅ እየሰራ ነው"}); });
+    document.getElementById('clearAllNotifs')?.addEventListener('click',()=>{ if(currentUser) markAllNotificationsRead(); });
+    document.querySelectorAll('.copy-btn').forEach(btn=>{ btn.addEventListener('click',function(){ navigator.clipboard.writeText(this.dataset.text); this.innerText='ተቀድቷል!'; setTimeout(()=>this.innerText='ቅዳ',1500); }); });
+
+    // ----- Storage & Cross-tab sync -----
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'awolia_users' && currentUser) {
+            try { users = JSON.parse(event.newValue || '[]'); } catch(e) { users = []; }
+            checkForNewNotificationsAndShow();
+            loadUserNotifications();
+        }
+        if (event.key === 'awolia_matches') {
+            try { matches = JSON.parse(event.newValue || '[]'); } catch(e) { matches = []; }
+            renderMatches();
+        }
+    });
+    function checkForNewNotificationsAndShow() {
+        if (!currentUser) return;
+        const user = findUserByName(currentUser.fullName);
+        if (!user || !user.notifications) return;
+        if (!window.shownNotifIds) window.shownNotifIds = new Set();
+        const unread = user.notifications.filter(n => !n.read && !window.shownNotifIds.has(n.id));
+        for (let notif of unread) {
+            window.shownNotifIds.add(notif.id);
+            showPopupWithOk(notif);
+        }
+        loadUserNotifications();
+    }
+    setInterval(() => {
+        if (currentUser) {
+            const freshUsers = JSON.parse(localStorage.getItem('awolia_users') || '[]');
+            if (JSON.stringify(users) !== JSON.stringify(freshUsers)) {
+                users = freshUsers;
+                checkForNewNotificationsAndShow();
+                loadUserNotifications();
+            }
+        }
+        const freshMatches = JSON.parse(localStorage.getItem('awolia_matches') || '[]');
+        if (JSON.stringify(matches) !== JSON.stringify(freshMatches)) {
+            matches = freshMatches;
+            renderMatches();
+        }
+    }, 3000);
+
+    // ----- Scroll Animations -----
+    const observer=new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); },{threshold:0.1});
+    document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+    window.addEventListener('load',()=>{ setTimeout(()=>{ const loader=document.getElementById('loader'); loader.style.opacity='0'; setTimeout(()=>loader.style.display='none',800); },1200); loadData(); });
 </script>
 </body>
 </html>
