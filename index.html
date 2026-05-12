@@ -7,19 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
     <meta name="theme-color" content="#f8fafc">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <style>
-        /* Light theme (default) */
+        /* ========== CSS (same as previous working version) ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg-gradient: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
             --text-color: #1e293b;
-            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-bg: rgba(255,255,255,0.7);
             --glass-border: rgba(45,212,191,0.2);
             --glass-hover-border: rgba(45,212,191,0.5);
             --card-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
-            --hero-bg: rgba(255, 255, 255, 0.6);
+            --hero-bg: rgba(255,255,255,0.6);
             --ticker-bg: rgba(255,255,255,0.5);
             --ticker-item-bg: rgba(45,212,191,0.1);
             --ticker-text: #1e293b;
@@ -28,169 +26,90 @@
             --donate-box-bg: rgba(45,212,191,0.1);
             --footer-border: rgba(0,0,0,0.05);
             --footer-text: #64748b;
-            --message-popup-bg: #ffffff;
+            --message-popup-bg: #fff;
             --message-popup-text: #1e293b;
-            --sidebar-bg: rgba(255, 255, 255, 0.98);
+            --sidebar-bg: rgba(255,255,255,0.98);
             --sidebar-border: #e2e8f0;
             --sidebar-text: #334155;
             --sidebar-hover-bg: rgba(45,212,191,0.1);
-            --top-bar-bg: rgba(255, 255, 255, 0.95);
+            --top-bar-bg: rgba(255,255,255,0.95);
             --top-bar-border: #e2e8f0;
             --input-bg: #f1f5f9;
             --input-border: #e2e8f0;
             --input-text: #1e293b;
+            --comment-bg: rgba(0,0,0,0.02);
         }
         body.dark {
             --bg-gradient: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
             --text-color: #e2e8f0;
-            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-bg: rgba(15,23,42,0.7);
             --glass-border: rgba(45,212,191,0.25);
             --glass-hover-border: #2dd4bf;
             --card-shadow: 0 20px 30px -12px rgba(0,0,0,0.5);
-            --hero-bg: rgba(15, 23, 42, 0.6);
-            --ticker-bg: rgba(15, 23, 42, 0.5);
+            --hero-bg: rgba(15,23,42,0.6);
+            --ticker-bg: rgba(15,23,42,0.5);
             --ticker-item-bg: rgba(45,212,191,0.15);
             --ticker-text: #e2e8f0;
-            --countdown-bg: rgba(15, 23, 42, 0.6);
-            --notif-item-bg: rgba(30, 41, 59, 0.8);
+            --countdown-bg: rgba(15,23,42,0.6);
+            --notif-item-bg: rgba(30,41,59,0.8);
             --donate-box-bg: rgba(45,212,191,0.15);
             --footer-border: rgba(255,255,255,0.1);
             --footer-text: #94a3b8;
             --message-popup-bg: #1e293b;
             --message-popup-text: #e2e8f0;
-            --sidebar-bg: rgba(15, 23, 42, 0.95);
+            --sidebar-bg: rgba(15,23,42,0.95);
             --sidebar-border: #334155;
             --sidebar-text: #cbd5e1;
             --sidebar-hover-bg: rgba(45,212,191,0.2);
-            --top-bar-bg: rgba(15, 23, 42, 0.95);
+            --top-bar-bg: rgba(15,23,42,0.95);
             --top-bar-border: #334155;
             --input-bg: #1e293b;
             --input-border: #334155;
             --input-text: #e2e8f0;
+            --comment-bg: rgba(255,255,255,0.05);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-color);
-            overflow-x: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); color: var(--text-color); overflow-x: hidden; transition: all 0.3s ease; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--input-border); }
         ::-webkit-scrollbar-thumb { background: #2dd4bf; border-radius: 10px; }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100%;
-            background: var(--sidebar-bg);
-            backdrop-filter: blur(20px);
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-            z-index: 1100;
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1rem;
-            overflow-y: auto;
-            border-right: 1px solid var(--sidebar-border);
-        }
+        .sidebar { position: fixed; top: 0; left: 0; width: 280px; height: 100%; background: var(--sidebar-bg); backdrop-filter: blur(20px); border-right: 1px solid var(--sidebar-border); z-index: 1100; transform: translateX(-100%); transition: transform 0.3s; display: flex; flex-direction: column; padding: 2rem 1rem; overflow-y: auto; }
         .sidebar.open { transform: translateX(0); }
         .sidebar-logo { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--sidebar-border); }
-        .sidebar-logo img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #2dd4bf; box-shadow: 0 8px 20px rgba(45,212,191,0.2); }
+        .sidebar-logo img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #2dd4bf; box-shadow: 0 8px 20px rgba(45,212,191,0.2); }
         .sidebar-logo h3 { margin-top: 0.8rem; font-size: 1rem; color: #2dd4bf; font-weight: 700; }
-        .sidebar-nav a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.7rem 1rem;
-            margin: 0.2rem 0;
-            border-radius: 1rem;
-            font-weight: 500;
-            color: var(--sidebar-text);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: var(--sidebar-hover-bg);
-            color: #2dd4bf;
-            transform: translateX(5px);
-        }
-        .sidebar-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-            z-index: 1055;
-            display: none;
-        }
+        .sidebar-nav a { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1rem; margin: 0.2rem 0; border-radius: 1rem; font-weight: 500; color: var(--sidebar-text); transition: 0.2s; cursor: pointer; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--sidebar-hover-bg); color: #2dd4bf; transform: translateX(5px); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1055; display: none; }
         .sidebar-overlay.active { display: block; }
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: var(--top-bar-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--top-bar-border);
-            z-index: 1000;
-        }
+        .top-bar { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--top-bar-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--top-bar-border); z-index: 1000; }
         .logo-small { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #2dd4bf, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .menu-btn, .signin-btn { background: transparent; border: 1px solid #2dd4bf; color: #2dd4bf; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; transition: 0.2s; }
-        .menu-btn:hover, .signin-btn:hover { background: rgba(45,212,191,0.2); border-color: #2dd4bf; }
-        .user-greeting { font-size: 0.8rem; color: var(--footer-text); margin-right: 0.8rem; }
+        .menu-btn, .signin-btn { background: transparent; border: 1px solid #2dd4bf; color: #2dd4bf; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; }
         .main-content { margin-top: 70px; padding: 0 1rem; }
         .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
-        .page { display: none; animation: fadeInUp 0.5s ease; }
+        .page { display: none; animation: fadeInUp 0.5s; }
         .page.active-page { display: block; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .hero {
-            text-align: center;
-            padding: 2rem 1rem;
-            background: var(--hero-bg);
-            border-radius: 2rem;
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--glass-border);
-            margin-bottom: 2rem;
-        }
+        .hero { text-align: center; padding: 2rem 1rem; background: var(--hero-bg); border-radius: 2rem; backdrop-filter: blur(8px); border: 1px solid var(--glass-border); margin-bottom: 2rem; }
         .hero-arabic { font-family: 'Scheherazade New', serif; font-size: 2.5rem; color: #2dd4bf; text-shadow: 0 0 15px rgba(45,212,191,0.4); }
         .hero-title { font-size: 2rem; font-weight: 800; margin: 0.5rem 0; background: linear-gradient(135deg, #2dd4bf, #a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .hero-cta { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
-        .btn { padding: 0.7rem 1.8rem; border-radius: 2rem; font-weight: 600; transition: all 0.2s; cursor: pointer; display: inline-block; text-decoration: none; }
+        .btn { padding: 0.7rem 1.8rem; border-radius: 2rem; font-weight: 600; transition: 0.2s; cursor: pointer; display: inline-block; }
         .btn-primary { background: #2dd4bf; color: #fff; border: none; box-shadow: 0 4px 14px rgba(45,212,191,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,212,191,0.4); }
         .btn-outline { border: 1px solid rgba(45,212,191,0.6); background: transparent; color: #2dd4bf; }
-        .btn-outline:hover { border-color: #2dd4bf; color: #2dd4bf; background: rgba(45,212,191,0.05); }
+        .btn-outline:hover { border-color: #2dd4bf; background: rgba(45,212,191,0.05); }
         .ticker-container { background: var(--ticker-bg); border-radius: 2rem; padding: 0.8rem 0; margin: 1rem 0 2rem; overflow: hidden; white-space: nowrap; border: 1px solid var(--glass-border); }
         .ticker-track { display: inline-flex; gap: 2rem; animation: scrollTicker 20s linear infinite; }
         @keyframes scrollTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .ticker-item { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; background: var(--ticker-item-bg); padding: 0.3rem 1rem; border-radius: 2rem; color: var(--ticker-text); }
         .ticker-dot { width: 6px; height: 6px; background: #2dd4bf; border-radius: 50%; }
         .activity-grid, .prayer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
-            cursor: default;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            border-color: var(--glass-hover-border);
-            box-shadow: var(--card-shadow);
-        }
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 1.5rem; padding: 1.5rem; transition: all 0.3s; cursor: default; }
+        .glass-card:hover { transform: translateY(-5px) scale(1.01); border-color: var(--glass-hover-border); box-shadow: var(--card-shadow); }
         .section-title { font-size: 1.8rem; font-weight: 700; margin: 1rem 0; border-left: 4px solid #2dd4bf; padding-left: 1rem; color: var(--text-color); }
         .prayer-time { font-size: 2rem; font-weight: 700; color: #2dd4bf; font-family: monospace; }
         .countdown-box { background: var(--countdown-bg); border-radius: 1.5rem; padding: 1.5rem; text-align: center; margin-top: 2rem; backdrop-filter: blur(5px); border: 1px solid var(--glass-border); }
-        .countdown-timer { font-size: 2.2rem; font-weight: 700; font-family: monospace; color: #2dd4bf; margin: 0.5rem 0; animation: pulse 1.5s ease-in-out infinite; }
+        .countdown-timer { font-size: 2.2rem; font-weight: 700; font-family: monospace; color: #2dd4bf; margin: 0.5rem 0; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
         .notif-history { max-height: 280px; overflow-y: auto; margin-top: 1.5rem; }
         .notif-item { background: var(--notif-item-bg); border-left: 3px solid #2dd4bf; padding: 0.8rem; margin-bottom: 0.8rem; border-radius: 0.8rem; color: var(--text-color); }
@@ -198,50 +117,20 @@
         .copy-btn { background: #2dd4bf; color: #0a0f1c; border: none; padding: 0.2rem 0.7rem; border-radius: 2rem; cursor: pointer; font-size: 0.7rem; }
         .contact-item { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
         .contact-label { min-width: 100px; font-weight: 600; color: #2dd4bf; }
-        .contact-item div:last-child { word-break: break-word; overflow-wrap: break-word; flex: 1; color: var(--text-color); }
         footer { text-align: center; padding: 2rem; border-top: 1px solid var(--footer-border); margin-top: 3rem; font-size: 0.8rem; color: var(--footer-text); }
-        .message-popup {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            max-width: 360px;
-            background: var(--message-popup-bg);
-            color: var(--message-popup-text);
-            padding: 1rem;
-            border-radius: 1rem;
-            border-left: 5px solid #2dd4bf;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
-            z-index: 2100;
-            animation: slideUp 0.3s;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .message-popup button {
-            align-self: flex-end;
-            background: #2dd4bf;
-            color: white;
-            border: none;
-            padding: 0.3rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
+        .message-popup { position: fixed; bottom: 1rem; left: 1rem; right: 1rem; max-width: 360px; background: var(--message-popup-bg); color: var(--message-popup-text); padding: 1rem; border-radius: 1rem; border-left: 5px solid #2dd4bf; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); z-index: 2100; animation: slideUp 0.3s; display: flex; flex-direction: column; gap: 0.5rem; }
+        .message-popup button { align-self: flex-end; background: #2dd4bf; color: white; border: none; padding: 0.3rem 1rem; border-radius: 2rem; cursor: pointer; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .theme-toggle {
-            background: #2dd4bf20;
-            border: 1px solid #2dd4bf;
-            border-radius: 2rem;
-            padding: 0.3rem 0.8rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: #2dd4bf;
-            transition: 0.2s;
-        }
+        .theme-toggle { background: #2dd4bf20; border: 1px solid #2dd4bf; border-radius: 2rem; padding: 0.3rem 0.8rem; cursor: pointer; font-size: 0.8rem; color: #2dd4bf; transition: 0.2s; }
         .theme-toggle:hover { background: #2dd4bf40; }
+        .comments-section { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--glass-border); }
+        .comment-item { background: var(--comment-bg); padding: 0.6rem; border-radius: 0.8rem; margin-bottom: 0.6rem; }
+        .comment-meta { font-size: 0.7rem; color: var(--footer-text); margin-top: 0.2rem; }
+        .add-comment-form { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+        .add-comment-form input { flex: 1; padding: 0.5rem; border: 1px solid var(--input-border); border-radius: 2rem; background: var(--input-bg); color: var(--input-text); }
+        .add-comment-form button { padding: 0.3rem 1rem; font-size: 0.8rem; }
         @media (max-width: 768px) {
             .hero-title { font-size: 1.6rem; }
             .hero-arabic { font-size: 1.8rem; }
@@ -261,11 +150,10 @@
 <div id="authModal" class="auth-modal" style="display: none; position: fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(12px); z-index:3000; align-items:center; justify-content:center;">
     <div style="background:var(--message-popup-bg); border-radius:2rem; padding:2rem; max-width:400px; width:90%; text-align:center; border:1px solid #2dd4bf; color:var(--text-color);">
         <h3 id="authModalTitle" style="color:#2dd4bf; margin-bottom:1rem;">🔐 የመግቢያ ዘዴ ይምረጡ</h3>
-        <input type="text" id="authFullName" placeholder="ሙሉ ስም (ለአካባቢ መለያ)" style="width:100%; padding:0.7rem; margin:0.5rem 0; background:var(--input-bg); border:1px solid var(--input-border); border-radius:2rem; color:var(--input-text);">
+        <input type="text" id="authFullName" placeholder="ሙሉ ስም" style="width:100%; padding:0.7rem; margin:0.5rem 0; background:var(--input-bg); border:1px solid var(--input-border); border-radius:2rem; color:var(--input-text);">
         <input type="password" id="authPassword" placeholder="የይለፍ ቃል" style="width:100%; padding:0.7rem; margin:0.5rem 0; background:var(--input-bg); border:1px solid var(--input-border); border-radius:2rem; color:var(--input-text);">
         <div style="display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
             <button id="authSubmitBtn" style="background:#2dd4bf; color:white; border:none; padding:0.5rem 1rem; border-radius:2rem; font-weight:bold;">ግባ / ይመዝገቡ</button>
-            <button id="realGoogleBtn" style="background:#4285f4; color:white; border:none; padding:0.5rem 1rem; border-radius:2rem; font-weight:bold;">🔵 በGoogle ይግቡ</button>
             <button id="demoLoginBtn" style="background:#ffb347; color:white; border:none; padding:0.5rem 1rem; border-radius:2rem; font-weight:bold;">🎮 ዴሞ መግቢያ</button>
         </div>
         <div id="authSwitch" style="margin-top:1rem; font-size:0.8rem; opacity:0.7; cursor:pointer; color:#2dd4bf;">አዲስ ነዎት? የአካባቢ መለያ ይፍጠሩ</div>
@@ -275,140 +163,98 @@
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-        <img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="Awolia Youth Logo">
-        <h3>አወሊያ መስጂድ ወጣቶች ጀምዐ</h3>
-    </div>
-    <div class="sidebar-nav">
-        <a data-page="home" class="active"><span>🏠</span> መነሻ</a>
-        <a data-page="community"><span>🤝</span> ዘርፎች</a>
-        <a data-page="donate"><span>💚</span> ልገሳ</a>
-        <a data-page="prayer"><span>🕌</span> ሶላት ሰዓት</a>
-        <a data-page="news"><span>📰</span> ዜና እና ጨዋታዎች</a>
-        <a data-page="contact"><span>📞</span> ስለ እኛ</a>
-    </div>
-    <div id="sidebarUserStatus" style="margin-top:auto; text-align:center; font-size:0.7rem; opacity:0.7; padding-top:1rem;"></div>
+    <div class="sidebar-logo"><img src="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg" alt="Logo"><h3>አወሊያ መስጂድ ወጣቶች ጀምዐ</h3></div>
+    <div class="sidebar-nav"><a data-page="home" class="active"><span>🏠</span> መነሻ</a><a data-page="community"><span>🤝</span> ዘርፎች</a><a data-page="donate"><span>💚</span> ልገሳ</a><a data-page="prayer"><span>🕌</span> ሶላት ሰዓት</a><a data-page="news"><span>📰</span> ዜና እና ጨዋታዎች</a><a data-page="contact"><span>📞</span> ስለ እኛ</a></div>
+    <div id="sidebarUserStatus" style="margin-top:auto; text-align:center; font-size:0.7rem; padding-top:1rem;"></div>
 </div>
 
-<div class="top-bar">
-    <div class="logo-small">☽ Awolia Youth Association</div>
-    <div style="display: flex; align-items: center; gap: 0.8rem;">
-        <span id="topBarUser" class="user-greeting"></span>
-        <button id="topBarSignBtn" class="signin-btn">ግባ</button>
-    </div>
-    <button class="menu-btn" id="menuBtn">☰</button>
-</div>
+<div class="top-bar"><div class="logo-small">☽ Awolia Youth Association</div><div style="display:flex; align-items:center; gap:0.8rem;"><span id="topBarUser" class="user-greeting"></span><button id="topBarSignBtn" class="signin-btn">ግባ</button></div><button class="menu-btn" id="menuBtn">☰</button></div>
 
-<main class="main-content">
-    <div class="container">
-        <div id="home-page" class="page active-page">
-            <div class="hero fade-up"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-title">አወሊያ መስጂድ <span>ወጣቶች ጀምዐ</span></div><p class="hero-tagline">እምነት · አንድነት · አገልግሎት · ከ2015 ዓ.ም</p><div class="hero-cta"><a href="#" data-page-target="prayer" class="btn btn-primary hero-nav">የሶላት ሰዓቶች</a><a href="#" data-page-target="community" class="btn btn-outline hero-nav">የማህበሩ ዘርፎች</a></div></div>
-            <div class="ticker-container"><div class="ticker-track" id="tickerTrack"></div></div>
-            <h2 class="section-title fade-up">🎯 ተልዕኮ</h2><div class="glass-card fade-up"><p>የአወሊያ መስጂድ ወጣቶች የአባላቱን መንፈሳዊ ብስለት፣ ማህበራዊ ኃላፊነት እና የሥነ ምግባር ግንባታ ማረጋገጥ ነው።</p></div>
-            <h2 class="section-title fade-up">👁️ ራዕይ</h2><div class="glass-card fade-up"><p>በ2031 ዓ.ም በኢትዮጵያ እና በዓለም አቀፍ ደረጃ እንደ ተምሳሌት የሚጠቀስ የወጣቶች ድርጅት መሆን።</p></div>
-            <h2 class="section-title fade-up">💎 መሠረታዊ እሴቶች</h2><div class="glass-card fade-up"><ul><li>መንፈሳዊ ቁርጠኝነት</li><li>አገልጋይ አመራር</li><li>ወንድማማችነት እና አንድነት</li><li>ታማኝነት እና ግልጽነት</li><li>ልቀትና ፈጠራ</li><li>እኩልነት እና ፍትሕ</li></ul></div>
-        </div>
-        <div id="community-page" class="page">
-            <h2 class="section-title fade-up">🤝 ዘርፎች እና ተግባራት</h2>
-            <div class="activity-grid">
-                <div class="glass-card fade-up"><h3 style="color:#2dd4bf;">ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን የምግብ ድጋፍ መርሐግብር</li><li>የዘካተ ፊጥር እና ዘካ ስርጭት</li><li>የታመሙ አባላት ጉብኝት እርዳታ</li><li>የልብስ እና ጫማ ልገሳ ዘመቻ</li><li>በክረምት የትምህርት ቁሳቁስ ስርጭት</li></ul></div>
-                <div class="glass-card fade-up"><h3 style="color:#2dd4bf;">📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ትምህርቶች (ወርሃዊ ኮርስ)</li><li>ጥያቄ እና መልስ መድረክ</li><li>የቁርአን ቅራኣት ድጋፍ እና ተወዳዳሪነት</li><li>የሃይማኖታዊ መጣጥፎች ህትመት</li></ul></div>
-                <div class="glass-card fade-up"><h3 style="color:#2dd4bf;">👩 የሴቶች ዘርፍ</h3><ul><li>ሳምንታዊ የቁርአን ጥናት ክበብ</li><li>ሴት-ለ-ሴት ዳዕዋ እና ማማከር</li><li>ጁሙዓ ሶላት ቀላል ማድረጊያ አገልግሎቶች</li></ul></div>
-                <div class="glass-card fade-up"><h3 style="color:#2dd4bf;">🏅 ስፖርት</h3><ul><li>ዓመታዊ አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ ሊግ</li><li>ቦክስ፣ ቮሊቦል እና ሌሎች ስፖርቶች</li></ul></div>
-            </div>
-            <div class="glass-card fade-up" style="margin-top:1.5rem;"><p>🌟 <strong>አዲስ ተነሳሽነት – የእውቀት መድረክ</strong> በየሳምንቱ ሐሙስ ከማግሪብ ሶላት በኋላ ይካሄዳል። ርዕሰ ጉዳዮች፡ እስላማዊ ታሪክ፣ ሳይንስ እና እምነት፣ የወጣቶች አመራር እና ማህበረሰብ ልማት።</p></div>
-        </div>
-        <div id="donate-page" class="page"><div class="donate-box fade-up"><h3 style="color:#2dd4bf;">💚 ድጋፍዎ እንኳን ደህና መጣ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን፣ ማህበራዊ እርዳታዎችን እና የእውቀት መድረኮችን ለማስኬድ ወሳኝ ሚና ይጫወታሉ።</p><div class="glass-card" style="margin:1rem auto; max-width:450px;"><p><strong>የባንክ አካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p><p><strong>የልገሳ መግለጫ:</strong> “ለአወሊያ መስጂድ ወጣቶች” በማለት ይግለጹ።</p></div><p>🙏 አላህ ከሁላችንም ይቀበል። ትንሽም ቢሆን ልገሳ ከፍተኛ ለውጥ ያመጣል።</p></div></div>
-        <div id="prayer-page" class="page">
-            <h2 class="section-title fade-up">🕌 የሶላት ሰዓት (3P55+GR አዲስ አበባ)</h2>
-            <div class="prayer-grid" id="prayerGrid"></div>
-            <div class="countdown-box fade-up">
-                <h3>⏳ ቀጣይ ሶላት</h3>
-                <div class="countdown-timer" id="countdownTimer">--:--:--</div>
-                <p>ቀጣይ: <span id="nextPrayerName">--</span></p>
-                <button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ</button>
-                <button id="testPrayerSound" class="btn btn-outline" style="margin-top:0.5rem;">🔊 የድምፅ ሙከራ</button>
-            </div>
-            <div class="notif-history fade-up">
-                <h3 style="color:#2dd4bf;">📬 አዲስ ማሳወቂያ</h3>
-                <div id="notifList">እባክዎ ይግቡ ወይም ይመዝገቡ</div>
-                <button id="clearAllNotifs" style="background:#a12a2a; color:white; border:none; padding:0.3rem 0.8rem; border-radius:2rem; font-size:0.7rem; margin-top:0.5rem;">🗑 ሁሉንም አንብብ አድርግ</button>
-            </div>
-            <p style="margin-top:1rem;">የጁምአ ሰላት ከቀኑ 12፡24 ሰአት ይሰግዳል። ከመድረሱ በፊት ገላዎን መታጠብዎን ያረጋግጡ።</p>
-        </div>
-        <div id="news-page" class="page">
-            <h2 class="section-title fade-up">⚽ ቀጣይ ጨዋታዎች</h2>
-            <div id="matchesGrid" class="activity-grid"></div>
-        </div>
-        <div id="contact-page" class="page">
-            <h2 class="section-title fade-up">📞 ስለ እኛ እና አግኙን</h2>
-            <div class="glass-card fade-up">
-                <div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ፣ ወረዳ 05፣ አወሊያ መስጂድ</div></div>
-                <div class="contact-item"><div class="contact-label">📞 ስልክ</div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button><br>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div>
-                <div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#2dd4bf;">t.me/+GdbodoOS7VQzYjk0</a></div></div>
-                <div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123" target="_blank" style="color:#2dd4bf;">@awoliayouth123</a></div></div>
-                <div class="contact-item"><div class="contact-label">📜 ማንነታችን</div><div>ከ2015 ዓ.ም (2022 እ.ኤ.አ.) ጀምሮ በህጋዊ መንገድ የተመዘገበ የወጣቶች ድርጅት ነን። ዓላማችን ወጣቶችን በእምነት፣ በትምህርት እና በማህበራዊ አገልግሎት ማብቃት ነው። ከ300 በላይ ንቁ አባላት አሉን።</div></div>
-                <div style="margin-top: 1.5rem; text-align: center;">
-                    <button id="themeToggleBtn" class="theme-toggle">🌓 ጨለማ/ብርሃን ሁነታ</button>
-                </div>
-            </div>
-        </div>
+<main class="main-content"><div class="container">
+    <div id="home-page" class="page active-page">
+        <div class="hero fade-up"><div class="hero-arabic">مَسْجِد الْوَلِيَّة</div><div class="hero-title">አወሊያ መስጂድ <span>ወጣቶች ጀምዐ</span></div><p class="hero-tagline">እምነት · አንድነት · አገልግሎት · ከ2015 ዓ.ም</p><div class="hero-cta"><a href="#" data-page-target="prayer" class="btn btn-primary hero-nav">የሶላት ሰዓቶች</a><a href="#" data-page-target="community" class="btn btn-outline hero-nav">ዘርፎች</a></div></div>
+        <div class="ticker-container"><div class="ticker-track" id="tickerTrack"></div></div>
+        <h2 class="section-title fade-up">🎯 ተልዕኮ</h2><div class="glass-card fade-up"><p>የአወሊያ መስጂድ ወጣቶች የአባላቱን መንፈሳዊ ብስለት፣ ማህበራዊ ኃላፊነት እና የሥነ ምግባር ግንባታ ማረጋገጥ ነው።</p></div>
+        <h2 class="section-title fade-up">👁️ ራዕይ</h2><div class="glass-card fade-up"><p>በ2031 ዓ.ም በኢትዮጵያ እና በዓለም አቀፍ ደረጃ እንደ ተምሳሌት የሚጠቀስ የወጣቶች ድርጅት መሆን።</p></div>
+        <h2 class="section-title fade-up">💎 መሠረታዊ እሴቶች</h2><div class="glass-card fade-up"><ul><li>መንፈሳዊ ቁርጠኝነት</li><li>አገልጋይ አመራር</li><li>ወንድማማችነት እና አንድነት</li><li>ታማኝነት እና ግልጽነት</li><li>ልቀትና ፈጠራ</li><li>እኩልነት እና ፍትሕ</li></ul></div>
     </div>
-    <footer>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ – ሁሉም መብቶች ተጠብቀዋል</footer>
-</main>
+    <div id="community-page" class="page"><h2 class="section-title fade-up">🤝 ዘርፎች እና ተግባራት</h2><div class="activity-grid"><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን የምግብ ድጋፍ</li><li>የዘካተ ፊጥር ስርጭት</li><li>የታመሙ ጉብኝት</li><li>የልብስ እና ጫማ ልገሳ</li><li>በክረምት የትምህርት ቁሳቁስ</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li><li>ሃይማኖታዊ መጣጥፎች</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">👩 የሴቶች ዘርፍ</h3><ul><li>ሳምንታዊ የቁርአን ጥናት</li><li>ሴት-ለ-ሴት ዳዕዋ</li><li>ለጁሙዓ ሶላት ማመቻቸት</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li><li>ቦክስ፣ ቮሊቦል</li></ul></div></div><div class="glass-card fade-up" style="margin-top:1.5rem;"><p>🌟 <strong>አዲስ ተነሳሽነት – የእውቀት መድረክ</strong> በየሳምንቱ ሐሙስ ከማግሪብ ሶላት በኋላ ይካሄዳል።</p></div></div>
+    <div id="donate-page" class="page"><div class="donate-box fade-up"><h3 style="color:#2dd4bf;">💚 ድጋፍዎ እንኳን ደህና መጣ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዳሉ።</p><div class="glass-card" style="margin:1rem auto; max-width:450px;"><p><strong>የባንክ አካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p><p><strong>መግለጫ:</strong> “ለአወሊያ መስጂድ ወጣቶች”</p></div><p>🙏 አላህ ይቀበል። ትንሽም ቢሆን ልገሳ ከፍተኛ ለውጥ ያመጣል።</p></div></div>
+    <div id="prayer-page" class="page"><h2 class="section-title fade-up">🕌 የሶላት ሰዓት (3P55+GR አዲስ አበባ)</h2><div class="prayer-grid" id="prayerGrid"></div><div class="countdown-box fade-up"><h3>⏳ ቀጣይ ሶላት</h3><div class="countdown-timer" id="countdownTimer">--:--:--</div><p>ቀጣይ: <span id="nextPrayerName">--</span></p><button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ</button><button id="testPrayerSound" class="btn btn-outline" style="margin-top:0.5rem;">🔊 ሙከራ</button></div><div class="notif-history fade-up"><h3 style="color:#2dd4bf;">📬 አዲስ ማሳወቂያ</h3><div id="notifList">እባክዎ ይግቡ ወይም ይመዝገቡ</div><button id="clearAllNotifs" style="background:#a12a2a; color:white; border:none; padding:0.3rem 0.8rem; border-radius:2rem; margin-top:0.5rem;">🗑 ሁሉንም አንብብ አድርግ</button></div><p style="margin-top:1rem;">የጁምአ ሰላት ከቀኑ 12፡24 ሰአት ይሰግዳል። ከመድረሱ በፊት ገላዎን መታጠብዎን ያረጋግጡ።</p></div>
+    <div id="news-page" class="page"><h2 class="section-title fade-up">⚽ ቀጣይ ጨዋታዎች (ከአስተያየቶች ጋር)</h2><div id="matchesGrid" class="activity-grid"></div></div>
+    <div id="contact-page" class="page"><h2 class="section-title fade-up">📞 ስለ እኛ እና አግኙን</h2><div class="glass-card fade-up"><div class="contact-item"><div class="contact-label">📍 አድራሻ</div><div>ጉለሌ ክፍለ ከተማ፣ ወረዳ 05፣ አወሊያ መስጂድ</div></div><div class="contact-item"><div class="contact-label">📞 ስልክ</div><div>+251 910 518 948 <button class="copy-btn" data-text="+251910518948">ቅዳ</button><br>+251 922 957 451 <button class="copy-btn" data-text="+251922957451">ቅዳ</button></div></div><div class="contact-item"><div class="contact-label">📧 ኢሜይል</div><div>aweliyamesjidyouth@gmail.com <button class="copy-btn" data-text="aweliyamesjidyouth@gmail.com">ቅዳ</button></div></div><div class="contact-item"><div class="contact-label">📱 ቴሌግራም</div><div><a href="https://t.me/+GdbodoOS7VQzYjk0" target="_blank" style="color:#2dd4bf;">t.me/+GdbodoOS7VQzYjk0</a></div></div><div class="contact-item"><div class="contact-label">🎵 ቲክቶክ</div><div><a href="https://www.tiktok.com/@awoliayouth123" target="_blank" style="color:#2dd4bf;">@awoliayouth123</a></div></div><div class="contact-item"><div class="contact-label">📜 ማንነታችን</div><div>ከ2015 ዓ.ም (2022 እ.ኤ.አ.) ጀምሮ በህጋዊ መንገድ የተመዘገበ የወጣቶች ድርጅት ነን። ዓላማችን ወጣቶችን በእምነት፣ በትምህርት እና በማህበራዊ አገልግሎት ማብቃት ነው። ከ300 በላይ ንቁ አባላት አሉን።</div></div><div style="margin-top:1.5rem; text-align:center;"><button id="themeToggleBtn" class="theme-toggle">🌓 ጨለማ/ብርሃን ሁነታ</button></div></div></div>
+</div><footer>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ – ሁሉም መብቶች ተጠብቀዋል</footer></main>
 
 <script>
-    // ----- Theme Switcher -----
+    // ----- Theme switcher -----
     function setTheme(theme) {
-        if (theme === 'dark') {
-            document.body.classList.add('dark');
-            localStorage.setItem('awolia_theme', 'dark');
-        } else {
-            document.body.classList.remove('dark');
-            localStorage.setItem('awolia_theme', 'light');
-        }
+        if (theme === 'dark') { document.body.classList.add('dark'); localStorage.setItem('awolia_theme', 'dark'); }
+        else { document.body.classList.remove('dark'); localStorage.setItem('awolia_theme', 'light'); }
     }
-    function toggleTheme() {
-        if (document.body.classList.contains('dark')) setTheme('light');
-        else setTheme('dark');
-    }
+    function toggleTheme() { setTheme(document.body.classList.contains('dark') ? 'light' : 'dark'); }
     const savedTheme = localStorage.getItem('awolia_theme');
-    if (savedTheme === 'dark') setTheme('dark');
-    else setTheme('light');
+    setTheme(savedTheme === 'dark' ? 'dark' : 'light');
     document.addEventListener('DOMContentLoaded', () => {
         const themeBtn = document.getElementById('themeToggleBtn');
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
     });
 
-    // ----- Firebase Config (Your provided API key) -----
-    const firebaseConfig = {
-        apiKey: "AIzaSyBoUQ_-Gt7PJfWhI6Jh6Xgx1-x8RjYPKCU",
-        authDomain: "mosquenotif.firebaseapp.com",
-        projectId: "mosquenotif",
-        storageBucket: "mosquenotif.firebasestorage.app",
-        messagingSenderId: "362183752186",
-        appId: "1:362183752186:web:c6400e0c831a3258114c43"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // ----- Global Variables -----
+    // ----- Global variables -----
     let currentUser = null;
     let notificationPermission = false;
     let audioCtx = null;
     let prayerInterval = null;
     let users = [];
     let matches = [];
+    let allComments = [];
 
-    // ----- Load Data -----
     function loadData() {
-        try { const u = localStorage.getItem('awolia_users'); if (u) users = JSON.parse(u); } catch(e) { users = []; }
-        try { const m = localStorage.getItem('awolia_matches'); if (m) matches = JSON.parse(m); else matches = []; } catch(e) { matches = []; }
-        renderMatches();
+        try { users = JSON.parse(localStorage.getItem('awolia_users') || '[]'); } catch(e) { users = []; }
+        try { matches = JSON.parse(localStorage.getItem('awolia_matches') || '[]'); } catch(e) { matches = []; }
+        try { allComments = JSON.parse(localStorage.getItem('awolia_comments') || '[]'); } catch(e) { allComments = []; }
+        renderMatchesWithComments();  // always refresh after data load
     }
 
-    function renderMatches() {
+    function saveComments() { localStorage.setItem('awolia_comments', JSON.stringify(allComments)); }
+
+    function getCommentsForMatch(matchId) { return allComments.filter(c => c.matchId === matchId); }
+
+    // User adds a comment – only if logged in
+    function addUserComment(matchId) {
+        if (!currentUser) {
+            alert("እባክዎ መጀመሪያ ይግቡ ወይም ይመዝገቡ።");
+            return;
+        }
+        const inputField = document.getElementById(`comment-input-${matchId}`);
+        if (!inputField) return;
+        const text = inputField.value.trim();
+        if (!text) return;
+        const newComment = {
+            id: Date.now() + '_' + Math.random().toString(36).substr(2,8),
+            matchId: matchId,
+            userName: currentUser.fullName,
+            text: text,
+            timestamp: new Date().toISOString()
+        };
+        allComments.push(newComment);
+        saveComments();
+        // Dynamically add comment to the DOM without full refresh
+        const commentsContainer = document.getElementById(`comments-container-${matchId}`);
+        if (commentsContainer) {
+            const noCommentsDiv = commentsContainer.querySelector('.no-comments');
+            if (noCommentsDiv) noCommentsDiv.remove();
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = `<strong>${escapeHtml(newComment.userName)}</strong>: ${escapeHtml(newComment.text)}<div class="comment-meta">${new Date(newComment.timestamp).toLocaleString()}</div>`;
+            commentsContainer.prepend(commentDiv);
+            const countSpan = document.getElementById(`comment-count-${matchId}`);
+            if (countSpan) countSpan.innerText = allComments.filter(c => c.matchId === matchId).length;
+        }
+        inputField.value = '';
+        inputField.focus();  // keep keyboard open
+    }
+
+    function renderMatchesWithComments() {
         const grid = document.getElementById('matchesGrid');
         if (!grid) return;
         if (!matches.length) {
@@ -416,20 +262,43 @@
             return;
         }
         let html = '';
-        matches.forEach(m => {
-            html += `<div class="glass-card">
-                        <div style="font-size:1.2rem; font-weight:bold; color:#2dd4bf;">${escapeHtml(m.title)}</div>
-                        <div>📅 ${escapeHtml(m.date)}</div>
-                        <div>⏰ ${escapeHtml(m.time)}</div>
-                        <div>📍 ${escapeHtml(m.location)}</div>
-                     </div>`;
+        matches.forEach(match => {
+            const comments = getCommentsForMatch(match.id);
+            html += `<div class="glass-card" style="margin-bottom:1.5rem;">
+                        <div style="font-size:1.3rem; font-weight:bold; color:#2dd4bf;">${escapeHtml(match.title)}</div>
+                        <div>📅 ${escapeHtml(match.date)}</div>
+                        <div>⏰ ${escapeHtml(match.time)}</div>
+                        <div>📍 ${escapeHtml(match.location)}</div>
+                        <div class="comments-section">
+                            <div style="font-weight:600; margin-bottom:0.5rem;">💬 አስተያየቶች (<span id="comment-count-${match.id}">${comments.length}</span>)</div>
+                            <div id="comments-container-${match.id}">`;
+            if (comments.length === 0) {
+                html += `<div class="no-comments" style="font-size:0.8rem; color:var(--footer-text); margin-bottom:0.5rem;">እስካሁን ምንም አስተያየት የለም። የመጀመሪያው ይሁኑ!</div>`;
+            } else {
+                comments.slice().reverse().forEach(c => {
+                    html += `<div class="comment-item">
+                                <strong>${escapeHtml(c.userName)}</strong>: ${escapeHtml(c.text)}
+                                <div class="comment-meta">${new Date(c.timestamp).toLocaleString()}${c.editedAt ? ' (ተስተካክሏል)' : ''}</div>
+                            </div>`;
+                });
+            }
+            html += `</div>`;
+            if (currentUser) {
+                html += `<div class="add-comment-form">
+                            <input type="text" id="comment-input-${match.id}" placeholder="አስተያየትዎን ይጻፉ...">
+                            <button onclick="addUserComment('${match.id}')" class="btn-outline" style="padding:0.3rem 1rem;">አስተያየት ላክ</button>
+                         </div>`;
+            } else {
+                html += `<div style="font-size:0.8rem; margin-top:0.5rem; color:var(--footer-text);">አስተያየት ለመላክ እባክዎ ይግቡ።</div>`;
+            }
+            html += `</div></div>`;
         });
         grid.innerHTML = html;
     }
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-    // ----- User Management -----
+    // ----- User management (same as before, but added renderMatchesWithComments on login/logout) -----
     function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(users)); }
     let activityLog = [];
     try { const a = localStorage.getItem('awolia_activity'); if (a) activityLog = JSON.parse(a); } catch(e) { activityLog = []; }
@@ -439,38 +308,36 @@
         if (activityLog.length > 500) activityLog.pop();
         saveActivityLog();
     }
-
     function findUserByName(fullName) { return users.find(u => u.fullName.toLowerCase() === fullName.toLowerCase()); }
     function isUserBlocked(fullName) { const u = findUserByName(fullName); return u && u.blocked === true; }
     function registerUser(fullName, password) {
         if (findUserByName(fullName)) throw new Error("ይህ ስም አስቀድሞ ተመዝግቧል።");
         const newUser = { fullName, password, createdAt: new Date().toISOString(), notifications: [], blocked: false, favorite: false };
         users.push(newUser); saveUsers();
-        addActivity(fullName, "✅ ተመዝግቧል (Registered)");
+        addActivity(fullName, "✅ ተመዝግቧል");
         return newUser;
     }
     function loginUser(fullName, password) {
         const user = findUserByName(fullName);
         if (!user) throw new Error("ስም አልተገኘም።");
-        if (user.blocked) throw new Error("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።");
+        if (user.blocked) throw new Error("እርስዎ በአስተዳዳሪ ታግደዋል።");
         if (user.password !== password) throw new Error("የይለፍ ቃል ትክክል አይደለም።");
-        addActivity(fullName, "🔓 ገብቷል (Logged in)");
+        addActivity(fullName, "🔓 ገብቷል");
         return user;
     }
-    function logoutUser() { if (currentUser) addActivity(currentUser.fullName, "🔒 ወጥቷል (Logged out)"); }
-
+    function logoutUser() { if (currentUser) addActivity(currentUser.fullName, "🔒 ወጥቷል"); }
     function demoLogin() {
-        const demoName = "DemoUser_" + Math.floor(Math.random()*1000);
-        const demoPass = "demo123";
+        let demoName = "DemoUser_" + Math.floor(Math.random()*1000);
         let user = findUserByName(demoName);
-        if (!user) user = registerUser(demoName, demoPass);
-        if (user.blocked) { alert("ይህ ዴሞ መለያ ታግዷል። እባክዎ እንደገና ይሞክሩ።"); return; }
+        if (!user) user = registerUser(demoName, "demo123");
+        if (user.blocked) { alert("ይህ ዴሞ መለያ ታግዷል።"); return; }
         currentUser = user; persistCurrentUser(); updateUserUI(); closeAuthModalFunc();
-        addActivity(currentUser.fullName, "🎮 በዴሞ ገብቷል (Demo login)");
+        addActivity(currentUser.fullName, "🎮 በዴሞ ገብቷል");
         alert("በዴሞ መለያ ገብተዋል። ሁሉም ተግባራት በሙሉ ይገኛሉ።");
+        renderMatchesWithComments(); // Refresh the matches grid to show comment form
     }
 
-    // ----- Notifications -----
+    // ----- Notifications (unchanged) -----
     function getCurrentUserNotifications() { if (!currentUser) return []; const u=findUserByName(currentUser.fullName); return u ? (u.notifications||[]) : []; }
     function showPopupWithOk(notification) {
         let cont = document.getElementById('msgContainer');
@@ -478,229 +345,234 @@
         const pop = document.createElement('div'); pop.className = 'message-popup';
         pop.innerHTML = `<strong>📢 ${escapeHtml(notification.title)}</strong><br>${escapeHtml(notification.body)}<br><button class="ok-notif-btn" data-id="${notification.id}">OK</button>`;
         cont.appendChild(pop);
-        const okBtn = pop.querySelector('.ok-notif-btn');
-        okBtn.addEventListener('click', () => {
+        pop.querySelector('.ok-notif-btn').onclick = () => {
             const user = findUserByName(currentUser.fullName);
             if (user && user.notifications) {
-                const notif = user.notifications.find(n => n.id === notification.id);
-                if (notif) notif.read = true;
+                const nf = user.notifications.find(n => n.id === notification.id);
+                if (nf) nf.read = true;
                 saveUsers();
             }
             pop.remove();
             loadUserNotifications();
-        });
+        };
     }
     function addNotificationToCurrentUser(title, body) {
-        if(!currentUser) return;
-        const notifId = Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-        const newNotif = { id: notifId, title, body, timestamp: new Date().toISOString(), read: false };
+        if (!currentUser) return;
+        const id = Date.now() + '_' + Math.random().toString(36).substr(2,8);
         const user = findUserByName(currentUser.fullName);
-        if(user){
-            if(!user.notifications) user.notifications = [];
-            user.notifications.unshift(newNotif);
+        if (user) {
+            if (!user.notifications) user.notifications = [];
+            user.notifications.unshift({ id, title, body, timestamp: new Date().toISOString(), read: false });
             saveUsers();
             loadUserNotifications();
-            showPopupWithOk(newNotif);
-            if(notificationPermission && Notification.permission === 'granted') new Notification(title, { body });
+            showPopupWithOk({ id, title, body });
+            if (notificationPermission && Notification.permission === 'granted') new Notification(title, { body });
         }
     }
     function markAllNotificationsRead() {
-        if(!currentUser) return;
+        if (!currentUser) return;
         const user = findUserByName(currentUser.fullName);
-        if(user && user.notifications){ user.notifications.forEach(n=>n.read=true); saveUsers(); loadUserNotifications(); }
+        if (user && user.notifications) { user.notifications.forEach(n => n.read = true); saveUsers(); loadUserNotifications(); }
     }
-    function loadUserNotifications(){
-        const listDiv=document.getElementById('notifList'); if(!listDiv) return;
-        if(!currentUser){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>'; return; }
-        const notifs=getCurrentUserNotifications();
-        if(notifs.length===0){ listDiv.innerHTML='<div class="notif-item" style="text-align:center;">ምንም አዲስ ማሳወቂያ የለም</div>'; return; }
-        let html='';
-        notifs.forEach(n=>{ const readClass = n.read ? 'opacity-50' : ''; html+=`<div class="notif-item ${readClass}"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-body">${escapeHtml(n.body)}</div><div class="notif-time">${new Date(n.timestamp).toLocaleString()}</div></div>`; });
-        listDiv.innerHTML=html;
+    function loadUserNotifications() {
+        const div = document.getElementById('notifList');
+        if (!div) return;
+        if (!currentUser) { div.innerHTML = '<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>'; return; }
+        const notifs = getCurrentUserNotifications();
+        if (notifs.length === 0) { div.innerHTML = '<div class="notif-item" style="text-align:center;">ምንም አዲስ ማሳወቂያ የለም</div>'; return; }
+        let html = '';
+        notifs.forEach(n => { html += `<div class="notif-item"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-body">${escapeHtml(n.body)}</div><div class="notif-time">${new Date(n.timestamp).toLocaleString()}</div></div>`; });
+        div.innerHTML = html;
     }
 
-    // ----- UI Update -----
-    function updateUserUI(){
-        const topBarUser=document.getElementById('topBarUser'), topBarSignBtn=document.getElementById('topBarSignBtn'), sidebarStatus=document.getElementById('sidebarUserStatus');
-        if(currentUser){
-            topBarUser.innerText=`👤 ${currentUser.fullName}`; topBarSignBtn.innerText='ውጣ';
-            sidebarStatus.innerHTML=`✅ ገብተዋል: ${currentUser.fullName}<br><button id="sidebarTestNotif" style="margin-top:6px; background:#2dd4bf; color:white; border:none; padding:4px 10px; border-radius:20px; font-size:0.7rem; cursor:pointer;">🔔 የሙከራ ማሳወቂያ</button>`;
-            document.getElementById('sidebarTestNotif')?.addEventListener('click',()=>{ if(notificationPermission && Notification.permission==='granted') new Notification("📢 ሙከራ",{body:`ሰላም ${currentUser.fullName}!`}); else alert("እባክዎ መጀመሪያ ማንቂያ ያንቁ።"); addNotificationToCurrentUser("ሙከራ", `ሰላም ${currentUser.fullName}`); });
+    function updateUserUI() {
+        const topUser = document.getElementById('topBarUser');
+        const signBtn = document.getElementById('topBarSignBtn');
+        const statusDiv = document.getElementById('sidebarUserStatus');
+        if (currentUser) {
+            topUser.innerText = `👤 ${currentUser.fullName}`;
+            signBtn.innerText = 'ውጣ';
+            statusDiv.innerHTML = `✅ ገብተዋል: ${currentUser.fullName}<br><button id="sidebarTestNotif" style="margin-top:6px; background:#2dd4bf; color:white; border:none; padding:4px 10px; border-radius:20px;">🔔 ሙከራ</button>`;
+            document.getElementById('sidebarTestNotif')?.addEventListener('click', () => {
+                if (notificationPermission && Notification.permission === 'granted') new Notification("📢 ሙከራ", { body: `ሰላም ${currentUser.fullName}` });
+                else alert("እባክዎ መጀመሪያ ማንቂያ ያንቁ።");
+                addNotificationToCurrentUser("ሙከራ", `ሰላም ${currentUser.fullName}`);
+            });
             loadUserNotifications();
         } else {
-            topBarUser.innerText=''; topBarSignBtn.innerText='ግባ';
-            sidebarStatus.innerHTML='🔒 እባክዎ ይግቡ ወይም ይመዝገቡ';
-            document.getElementById('notifList').innerHTML='<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>';
+            topUser.innerText = '';
+            signBtn.innerText = 'ግባ';
+            statusDiv.innerHTML = '🔒 እባክዎ ይግቡ ወይም ይመዝገቡ';
+            document.getElementById('notifList').innerHTML = '<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>';
         }
+        // Refresh the matches grid whenever the user UI changes (login/logout)
+        renderMatchesWithComments();
     }
-    function persistCurrentUser(){ if(currentUser) localStorage.setItem('awolia_current_user',JSON.stringify({fullName:currentUser.fullName,password:currentUser.password})); else localStorage.removeItem('awolia_current_user'); }
-    const savedUser=localStorage.getItem('awolia_current_user');
-    if(savedUser){ try{ const parsed=JSON.parse(savedUser); const exists=users.some(u=>u.fullName===parsed.fullName); if(exists) currentUser=parsed; else localStorage.removeItem('awolia_current_user'); }catch(e){} }
-    if(currentUser) updateUserUI();
 
-    // ----- Auth Modal Handlers -----
-    const authModal=document.getElementById('authModal'), authFullName=document.getElementById('authFullName'), authPassword=document.getElementById('authPassword'), authSubmitBtn=document.getElementById('authSubmitBtn'), authSwitch=document.getElementById('authSwitch'), closeAuth=document.getElementById('closeAuthModal'), realGoogleBtn=document.getElementById('realGoogleBtn'), demoLoginBtn=document.getElementById('demoLoginBtn');
-    let isRegisterMode=false;
-    let googlePopupInProgress = false;
-
-    function showAuthModal(registerMode){ isRegisterMode=registerMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; authModal.style.display="flex"; }
-    function closeAuthModalFunc(){ authModal.style.display="none"; }
-    authSubmitBtn.onclick=()=>{ const fullName=authFullName.value.trim(), password=authPassword.value.trim(); if(!fullName||!password){ alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; } try{ if(isRegisterMode){ const newUser=registerUser(fullName,password); currentUser=newUser; alert(`እንኳን ደህና መጡ ${newUser.fullName}!`); } else { const user=loginUser(fullName,password); currentUser=user; alert(`እንኳን ደህና መጡ ${user.fullName}!`); } closeAuthModalFunc(); authFullName.value=''; authPassword.value=''; persistCurrentUser(); updateUserUI(); } catch(err){ alert("ስህተት: "+err.message); } };
-    authSwitch.onclick=()=>{ isRegisterMode=!isRegisterMode; document.getElementById('authModalTitle').innerText=isRegisterMode?"📝 አዲስ የአካባቢ መለያ ይፍጠሩ":"🔐 በአካባቢ መለያ ይግቡ"; authSubmitBtn.innerText=isRegisterMode?"ይመዝገቡ":"ግባ"; };
-    closeAuth.onclick=closeAuthModalFunc;
-
-    // FIXED Google Sign-In with popup cancellation handling
-    realGoogleBtn.onclick = async () => {
-        if (googlePopupInProgress) {
-            alert("የGoogle መግቢያ እየሰራ ነው። እባክዎ ትንሽ ይጠብቁ።");
-            return;
-        }
-        googlePopupInProgress = true;
-        const provider = new firebase.auth.GoogleAuthProvider();
+    function persistCurrentUser() {
+        if (currentUser) localStorage.setItem('awolia_current_user', JSON.stringify({ fullName: currentUser.fullName, password: currentUser.password }));
+        else localStorage.removeItem('awolia_current_user');
+    }
+    const savedUser = localStorage.getItem('awolia_current_user');
+    if (savedUser) {
         try {
-            // Sign out any existing session to avoid conflicts
-            await auth.signOut().catch(() => {});
-            const result = await auth.signInWithPopup(provider);
-            const user = result.user;
-            const displayName = user.displayName || user.email.split('@')[0];
-            if (isUserBlocked(displayName)) {
-                alert("እርስዎ በአስተዳዳሪ ታግደዋል። እባክዎ የአስተዳዳሪውን ያነጋግሩ።");
-                return;
-            }
-            let localUser = findUserByName(displayName);
-            if (!localUser) {
-                localUser = registerUser(displayName, 'google_' + user.uid);
-            } else {
-                localUser.password = 'google_' + user.uid;
-                saveUsers();
-            }
-            currentUser = localUser;
-            persistCurrentUser();
-            updateUserUI();
-            closeAuthModalFunc();
-            addActivity(currentUser.fullName, "🔓 በGoogle ገብቷል (Google login)");
-            alert(`እንኳን ደህና መጡ በGoogle መለያ: ${displayName}`);
-        } catch (error) {
-            if (error.code === 'auth/cancelled-popup-request') {
-                console.warn("Popup was cancelled or another popup was already open.");
-                alert("የGoogle መስኮት ተሰርዟል ወይም ሌላ መስኮት ተከፍቷል። እባክዎ ይሞክሩ።");
-            } else {
-                alert("Google መግባት አልተሳካም: " + error.message);
-            }
-        } finally {
-            googlePopupInProgress = false;
-        }
-    };
-
-    demoLoginBtn.onclick=()=>{ demoLogin(); };
-    document.getElementById('topBarSignBtn').addEventListener('click',()=>{ if(currentUser){ logoutUser(); currentUser=null; persistCurrentUser(); updateUserUI(); alert("በስኬት ወጥተዋል።"); } else showAuthModal(false); });
-
-    // ----- Sidebar Navigation -----
-    const sidebar=document.getElementById('sidebar'), overlay=document.getElementById('sidebarOverlay'), menuBtn=document.getElementById('menuBtn');
-    menuBtn.onclick=()=>{ sidebar.classList.add('open'); overlay.classList.add('active'); };
-    overlay.onclick=()=>{ sidebar.classList.remove('open'); overlay.classList.remove('active'); };
-    const pages={ home:document.getElementById('home-page'), community:document.getElementById('community-page'), donate:document.getElementById('donate-page'), prayer:document.getElementById('prayer-page'), news:document.getElementById('news-page'), contact:document.getElementById('contact-page') };
-    const navLinks=document.querySelectorAll('.sidebar-nav a');
-    function switchPage(pageId){ Object.values(pages).forEach(p=>p.classList.remove('active-page')); pages[pageId].classList.add('active-page'); navLinks.forEach(l=>l.classList.toggle('active',l.dataset.page===pageId)); sidebar.classList.remove('open'); overlay.classList.remove('active'); window.scrollTo(0,0); }
-    navLinks.forEach(link=>{ link.addEventListener('click',(e)=>{ e.preventDefault(); const pid=link.dataset.page; if(pid&&pages[pid]) switchPage(pid); }); });
-    document.querySelectorAll('.hero-nav').forEach(btn=>{ btn.addEventListener('click',(e)=>{ e.preventDefault(); const target=btn.getAttribute('data-page-target'); if(target&&pages[target]) switchPage(target); }); });
-
-    // ----- Prayer Times (fixed location 3P55+GR Addis Ababa) -----
-    const prayerNames={Fajr:'ፋጅር', Dhuhr:'ዙህር', Asr:'ዐስር', Maghrib:'መግሪብ', Isha:'ዒሻ'};
-    let prayerCache=null, lastAlert=null;
-    async function fetchPrayerTimes() {
-        const lat=9.005, lon=38.763, method=3;
-        const d=new Date();
-        const url=`https://api.aladhan.com/v1/calendar/${d.getFullYear()}/${d.getMonth()+1}?latitude=${lat}&longitude=${lon}&method=${method}`;
-        try{
-            const res=await fetch(url);
-            const data=await res.json();
-            if(data.code===200 && data.data){
-                const day=data.data[d.getDate()-1];
-                if(day?.timings){
-                    return { Fajr:day.timings.Fajr.substring(0,5), Dhuhr:day.timings.Dhuhr.substring(0,5), Asr:day.timings.Asr.substring(0,5), Maghrib:day.timings.Maghrib.substring(0,5), Isha:day.timings.Isha.substring(0,5) };
-                }
-            }
-        }catch(e){}
-        return { Fajr:"05:02", Dhuhr:"12:23", Asr:"15:36", Maghrib:"18:35", Isha:"19:43" };
+            const parsed = JSON.parse(savedUser);
+            const exists = users.some(u => u.fullName === parsed.fullName);
+            if (exists) currentUser = parsed;
+            else localStorage.removeItem('awolia_current_user');
+        } catch(e) {}
     }
-    async function loadPrayerTimesUI(){
-        prayerCache=await fetchPrayerTimes();
-        const grid=document.getElementById('prayerGrid');
-        if(grid){
-            let html='';
-            for(let [k,v] of Object.entries(prayerCache)) html+=`<div class="glass-card fade-up"><div class="prayer-time">ال${k}</div><div>${prayerNames[k]}</div><div class="prayer-time">${v}</div></div>`;
-            grid.innerHTML=html;
-            document.querySelectorAll('#prayerGrid .fade-up').forEach(el=>observer.observe(el));
+    if (currentUser) updateUserUI();
+
+    // ----- Auth modal -----
+    const authModal = document.getElementById('authModal'), fName = document.getElementById('authFullName'), pwd = document.getElementById('authPassword'), submitBtn = document.getElementById('authSubmitBtn'), switchBtn = document.getElementById('authSwitch'), closeBtn = document.getElementById('closeAuthModal'), demoBtn = document.getElementById('demoLoginBtn');
+    let isReg = false;
+    function showAuthModal(reg) { isReg = reg; document.getElementById('authModalTitle').innerText = reg ? "📝 አዲስ የአካባቢ መለያ ይፍጠሩ" : "🔐 በአካባቢ መለያ ይግቡ"; submitBtn.innerText = reg ? "ይመዝገቡ" : "ግባ"; authModal.style.display = "flex"; }
+    function closeAuthModalFunc() { authModal.style.display = "none"; }
+    submitBtn.onclick = () => {
+        const name = fName.value.trim(), pass = pwd.value.trim();
+        if (!name || !pass) { alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; }
+        try {
+            if (isReg) {
+                const u = registerUser(name, pass);
+                currentUser = u;
+                alert(`እንኳን ደህና መጡ ${u.fullName}!`);
+            } else {
+                const u = loginUser(name, pass);
+                currentUser = u;
+                alert(`እንኳን ደህና መጡ ${u.fullName}!`);
+            }
+            closeAuthModalFunc();
+            fName.value = ''; pwd.value = '';
+            persistCurrentUser();
+            updateUserUI();        // This will refresh the matches grid
+        } catch (err) { alert("ስህተት: " + err.message); }
+    };
+    switchBtn.onclick = () => { isReg = !isReg; document.getElementById('authModalTitle').innerText = isReg ? "📝 አዲስ የአካባቢ መለያ ይፍጠሩ" : "🔐 በአካባቢ መለያ ይግቡ"; submitBtn.innerText = isReg ? "ይመዝገቡ" : "ግባ"; };
+    closeBtn.onclick = closeAuthModalFunc;
+    demoBtn.onclick = () => { demoLogin(); };
+    document.getElementById('topBarSignBtn').addEventListener('click', () => {
+        if (currentUser) { logoutUser(); currentUser = null; persistCurrentUser(); updateUserUI(); alert("በስኬት ወጥተዋል።"); }
+        else showAuthModal(false);
+    });
+
+    // ----- Sidebar navigation -----
+    const side = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), menu = document.getElementById('menuBtn');
+    menu.onclick = () => { side.classList.add('open'); overlay.classList.add('active'); };
+    overlay.onclick = () => { side.classList.remove('open'); overlay.classList.remove('active'); };
+    const pages = { home: document.getElementById('home-page'), community: document.getElementById('community-page'), donate: document.getElementById('donate-page'), prayer: document.getElementById('prayer-page'), news: document.getElementById('news-page'), contact: document.getElementById('contact-page') };
+    const navs = document.querySelectorAll('.sidebar-nav a');
+    function switchPage(id) { Object.values(pages).forEach(p => p.classList.remove('active-page')); pages[id].classList.add('active-page'); navs.forEach(l => l.classList.toggle('active', l.dataset.page === id)); side.classList.remove('open'); overlay.classList.remove('active'); window.scrollTo(0, 0); }
+    navs.forEach(l => l.addEventListener('click', (e) => { e.preventDefault(); const pid = l.dataset.page; if (pid && pages[pid]) switchPage(pid); }));
+    document.querySelectorAll('.hero-nav').forEach(b => b.addEventListener('click', (e) => { e.preventDefault(); const t = b.getAttribute('data-page-target'); if (t && pages[t]) switchPage(t); }));
+
+    // ----- Prayer times (fixed location) -----
+    const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
+    let prayerCache = null, lastAlert = null;
+    async function fetchPrayerTimes() {
+        const lat = 9.005, lon = 38.763, method = 3;
+        const d = new Date();
+        const url = `https://api.aladhan.com/v1/calendar/${d.getFullYear()}/${d.getMonth() + 1}?latitude=${lat}&longitude=${lon}&method=${method}`;
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.code === 200 && data.data) {
+                const day = data.data[d.getDate() - 1];
+                if (day?.timings) return { Fajr: day.timings.Fajr.substring(0, 5), Dhuhr: day.timings.Dhuhr.substring(0, 5), Asr: day.timings.Asr.substring(0, 5), Maghrib: day.timings.Maghrib.substring(0, 5), Isha: day.timings.Isha.substring(0, 5) };
+            }
+        } catch (e) { }
+        return { Fajr: "05:02", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
+    }
+    async function loadPrayerTimesUI() {
+        prayerCache = await fetchPrayerTimes();
+        const grid = document.getElementById('prayerGrid');
+        if (grid) {
+            let h = '';
+            for (let [k, v] of Object.entries(prayerCache)) h += `<div class="glass-card fade-up"><div class="prayer-time">ال${k}</div><div>${prayerNames[k]}</div><div class="prayer-time">${v}</div></div>`;
+            grid.innerHTML = h;
+            document.querySelectorAll('#prayerGrid .fade-up').forEach(el => observer.observe(el));
         }
-        const ticker=document.getElementById('tickerTrack');
-        if(ticker && prayerCache){ let t=''; for(let [k,v] of Object.entries(prayerCache)) t+=`<div class="ticker-item"><span class="ticker-dot"></span> ${prayerNames[k]} ${v}</div>`; ticker.innerHTML=t+t; }
+        const ticker = document.getElementById('tickerTrack');
+        if (ticker && prayerCache) {
+            let t = '';
+            for (let [k, v] of Object.entries(prayerCache)) t += `<div class="ticker-item"><span class="ticker-dot"></span> ${prayerNames[k]} ${v}</div>`;
+            ticker.innerHTML = t + t;
+        }
         startCountdownLoop();
     }
-    function getNextPrayer(){
-        if(!prayerCache) return null;
-        const now=new Date();
-        const cur=now.getHours()*60+now.getMinutes();
-        let next=null, minDiff=Infinity, nextTime=null;
-        for(let [name,time] of Object.entries(prayerCache)){
-            let [h,m]=time.split(':'); let total=parseInt(h)*60+parseInt(m);
-            if(total<cur) total+=1440;
-            let diff=total-cur;
-            if(diff<minDiff){ minDiff=diff; next=name; nextTime=time; }
+    function getNextPrayer() {
+        if (!prayerCache) return null;
+        const now = new Date();
+        const cur = now.getHours() * 60 + now.getMinutes();
+        let next = null, minDiff = Infinity, nextTime = null;
+        for (let [name, time] of Object.entries(prayerCache)) {
+            let [h, m] = time.split(':');
+            let total = parseInt(h) * 60 + parseInt(m);
+            if (total < cur) total += 1440;
+            let diff = total - cur;
+            if (diff < minDiff) { minDiff = diff; next = name; nextTime = time; }
         }
-        const sec=60-now.getSeconds();
-        return { name:prayerNames[next]||next, time:nextTime, hours:Math.floor(minDiff/60), minutes:minDiff%60, seconds:sec===60?0:sec, totalSec:minDiff*60+sec, key:next };
+        const sec = 60 - now.getSeconds();
+        return { name: prayerNames[next] || next, time: nextTime, hours: Math.floor(minDiff / 60), minutes: minDiff % 60, seconds: sec === 60 ? 0 : sec, totalSec: minDiff * 60 + sec, key: next };
     }
-    function startCountdownLoop(){
-        if(prayerInterval) clearInterval(prayerInterval);
-        prayerInterval=setInterval(()=>{
-            if(!prayerCache) return;
-            const nxt=getNextPrayer();
-            if(!nxt) return;
-            const timerDiv=document.getElementById('countdownTimer'), nameSpan=document.getElementById('nextPrayerName');
-            if(timerDiv) timerDiv.innerText=`${String(nxt.hours).padStart(2,'0')}:${String(nxt.minutes).padStart(2,'0')}:${String(nxt.seconds).padStart(2,'0')}`;
-            if(nameSpan) nameSpan.innerText=`${nxt.name} (${nxt.time})`;
-            if(nxt.totalSec<=0.5 && lastAlert!==nxt.key && notificationPermission && currentUser){
+    function startCountdownLoop() {
+        if (prayerInterval) clearInterval(prayerInterval);
+        prayerInterval = setInterval(() => {
+            if (!prayerCache) return;
+            const nxt = getNextPrayer();
+            if (!nxt) return;
+            const timerDiv = document.getElementById('countdownTimer'), nameSpan = document.getElementById('nextPrayerName');
+            if (timerDiv) timerDiv.innerText = `${String(nxt.hours).padStart(2, '0')}:${String(nxt.minutes).padStart(2, '0')}:${String(nxt.seconds).padStart(2, '0')}`;
+            if (nameSpan) nameSpan.innerText = `${nxt.name} (${nxt.time})`;
+            if (nxt.totalSec <= 0.5 && lastAlert !== nxt.key && notificationPermission && currentUser) {
                 playBeep();
-                new Notification("🕌 የሶላት ሰዓት ደረሰ",{body:`ለ${nxt.name} ሶላት ሰዓት ነው። አላህ ይቀበል።`});
-                lastAlert=nxt.key;
-            } else if(nxt.totalSec>60) lastAlert=null;
-        },500);
+                new Notification("🕌 የሶላት ሰዓት ደረሰ", { body: `ለ${nxt.name} ሶላት ሰዓት ነው።` });
+                lastAlert = nxt.key;
+            } else if (nxt.totalSec > 60) lastAlert = null;
+        }, 500);
     }
-    function playBeep(){
-        try{
-            const ctx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-            audioCtx=ctx;
-            const play=()=>{ const osc=ctx.createOscillator(), gain=ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value=880; gain.gain.value=0.2; osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.8); osc.stop(ctx.currentTime+0.8); };
-            if(ctx.state==='suspended') ctx.resume().then(play); else play();
-        }catch(e){}
+    function playBeep() {
+        try {
+            const ctx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+            audioCtx = ctx;
+            const play = () => {
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.value = 880; gain.gain.value = 0.2;
+                osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
+                osc.stop(ctx.currentTime + 0.8);
+            };
+            if (ctx.state === 'suspended') ctx.resume().then(play);
+            else play();
+        } catch (e) { }
     }
     loadPrayerTimesUI();
 
-    // ----- Notification Permission & Test -----
-    const enableNotifBtn=document.getElementById('enableNotifBtn');
-    if(enableNotifBtn){
-        enableNotifBtn.addEventListener('click',async()=>{
-            if(!currentUser){ alert("እባክዎ መጀመሪያ ይግቡ ወይም ይመዝገቡ።"); return; }
-            if(Notification.permission==='granted'){ notificationPermission=true; new Notification("✅ ማንቂያ ንቁ ነው"); }
-            else if(Notification.permission==='default'){ const perm=await Notification.requestPermission(); notificationPermission=perm==='granted'; if(notificationPermission) new Notification("✅ ማንቂያ ተንቅቷል"); }
-            else alert("ማንቂያ ታግዷል።");
-        });
-    }
-    document.getElementById('testPrayerSound')?.addEventListener('click',()=>{ playBeep(); if(notificationPermission) new Notification("ሙከራ",{body:"ድምፅ እየሰራ ነው"}); });
-    document.getElementById('clearAllNotifs')?.addEventListener('click',()=>{ if(currentUser) markAllNotificationsRead(); });
-    document.querySelectorAll('.copy-btn').forEach(btn=>{ btn.addEventListener('click',function(){ navigator.clipboard.writeText(this.dataset.text); this.innerText='ተቀድቷል!'; setTimeout(()=>this.innerText='ቅዳ',1500); }); });
+    // ----- Notification permission button -----
+    document.getElementById('enableNotifBtn')?.addEventListener('click', async () => {
+        if (!currentUser) { alert("እባክዎ መጀመሪያ ይግቡ።"); return; }
+        if (Notification.permission === 'granted') { notificationPermission = true; new Notification("✅ ማንቂያ ንቁ ነው"); }
+        else if (Notification.permission === 'default') { const perm = await Notification.requestPermission(); notificationPermission = perm === 'granted'; if (notificationPermission) new Notification("✅ ማንቂያ ተንቅቷል"); }
+        else alert("ማንቂያ ታግዷል።");
+    });
+    document.getElementById('testPrayerSound')?.addEventListener('click', () => { playBeep(); if (notificationPermission) new Notification("ሙከራ", { body: "ድምፅ እየሰራ ነው" }); });
+    document.getElementById('clearAllNotifs')?.addEventListener('click', () => { if (currentUser) markAllNotificationsRead(); });
+    document.querySelectorAll('.copy-btn').forEach(btn => { btn.addEventListener('click', function () { navigator.clipboard.writeText(this.dataset.text); this.innerText = 'ተቀድቷል!'; setTimeout(() => this.innerText = 'ቅዳ', 1500); }); });
 
-    // ----- Storage & Cross-tab sync -----
-    window.addEventListener('storage', (event) => {
-        if (event.key === 'awolia_users' && currentUser) {
-            try { users = JSON.parse(event.newValue || '[]'); } catch(e) { users = []; }
+    // ----- Storage & cross-tab sync -----
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'awolia_users' && currentUser) {
+            try { users = JSON.parse(e.newValue || '[]'); } catch (e) { }
             checkForNewNotificationsAndShow();
             loadUserNotifications();
         }
-        if (event.key === 'awolia_matches') {
-            try { matches = JSON.parse(event.newValue || '[]'); } catch(e) { matches = []; }
-            renderMatches();
+        if (e.key === 'awolia_matches') {
+            try { matches = JSON.parse(e.newValue || '[]'); } catch (e) { }
+            renderMatchesWithComments();
+        }
+        if (e.key === 'awolia_comments') {
+            try { allComments = JSON.parse(e.newValue || '[]'); } catch (e) { }
+            renderMatchesWithComments();
         }
     });
     function checkForNewNotificationsAndShow() {
@@ -727,14 +599,29 @@
         const freshMatches = JSON.parse(localStorage.getItem('awolia_matches') || '[]');
         if (JSON.stringify(matches) !== JSON.stringify(freshMatches)) {
             matches = freshMatches;
-            renderMatches();
+            renderMatchesWithComments();
+        }
+        const freshComments = JSON.parse(localStorage.getItem('awolia_comments') || '[]');
+        if (JSON.stringify(allComments) !== JSON.stringify(freshComments)) {
+            allComments = freshComments;
+            renderMatchesWithComments();
         }
     }, 3000);
 
-    // ----- Scroll Animations -----
-    const observer=new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); },{threshold:0.1});
-    document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
-    window.addEventListener('load',()=>{ setTimeout(()=>{ const loader=document.getElementById('loader'); loader.style.opacity='0'; setTimeout(()=>loader.style.display='none',800); },1200); loadData(); });
+    // ----- Scroll animations & loader -----
+    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 800);
+        }, 1200);
+        loadData();
+    });
+
+    // Expose function for inline onclick
+    window.addUserComment = addUserComment;
 </script>
 </body>
 </html>
