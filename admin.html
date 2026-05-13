@@ -14,7 +14,7 @@
         .login-box button { background: #2dd4bf; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 2rem; cursor: pointer; }
         .admin-panel { background: white; border-radius: 1.5rem; padding: 1.5rem; margin-top: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .table-wrapper { overflow-x: auto; margin-top: 1rem; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        table { width: 100%; border-collapse: collapse; min-width: 850px; }
         th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         th { background: #f8fafc; }
         .search-box { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
@@ -54,14 +54,12 @@
 </head>
 <body>
 <div class="container" id="app">
-    <!-- ደረጃ 1: ዓለም አቀፍ የአስተዳዳሪ ይለፍ ቃል -->
     <div id="step1" class="login-box">
         <h1>🔐 ደረጃ 1: ዓለም አቀፍ የአስተዳዳሪ ይለፍ ቃል</h1>
         <input type="password" id="globalPassword" placeholder="ዓለም አቀፍ ይለፍ ቃል ያስገቡ">
         <button onclick="checkGlobalPassword()">ቀጥል</button>
     </div>
 
-    <!-- ደረጃ 2: የአስተዳዳሪ መለያ መግቢያ -->
     <div id="step2" style="display: none;" class="login-box">
         <h1>👤 ደረጃ 2: የአስተዳዳሪ መግቢያ</h1>
         <input type="text" id="adminUsername" placeholder="ሙሉ ስም">
@@ -71,14 +69,12 @@
         <div id="loginError" style="color:#ef4444; font-size:0.8rem; margin-top:0.5rem;"></div>
     </div>
 
-    <!-- የአስተዳዳሪ ዳሽቦርድ -->
     <div id="adminView" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <h1>📊 የአስተዳዳሪ ፓነል – <span id="currentAdminName"></span></h1>
             <button class="logout-btn" onclick="logoutAdmin()">ውጣ</button>
         </div>
 
-        <!-- አዲስ ተጠቃሚ መጨመር -->
         <div class="admin-panel">
             <h2>➕ አዲስ ተጠቃሚ ይጨምሩ</h2>
             <div class="add-user-form">
@@ -88,7 +84,6 @@
             </div>
         </div>
 
-        <!-- የተመዘገቡ ተጠቃሚዎች (እንዲሁም ሰርዝ) -->
         <div class="admin-panel">
             <h2>👥 የተመዘገቡ ተጠቃሚዎች</h2>
             <div class="search-box">
@@ -108,7 +103,6 @@
             </div>
         </div>
 
-        <!-- ግጥሚያዎች እና አስተያየቶች አስተዳደር -->
         <div class="admin-panel">
             <h2>⚽ ግጥሚያዎች እና አስተያየቶች አስተዳደር</h2>
             <div class="add-match-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
@@ -121,13 +115,11 @@
             <div id="matchesList"></div>
         </div>
 
-        <!-- የእንቅስቃሴ መዝገብ -->
         <div class="admin-panel">
             <h2>📜 የቅርብ ጊዜ እንቅስቃሴዎች</h2>
             <div class="activity-log" id="activityLog"></div>
         </div>
 
-        <!-- ለሁሉም ተጠቃሚዎች ማሳወቂያ መላክ -->
         <div class="admin-panel send-notif">
             <h2>📢 ለሁሉም ተጠቃሚዎች ማሳወቂያ ላክ</h2>
             <textarea id="notifTitle" placeholder="ርዕስ"></textarea>
@@ -219,7 +211,6 @@
         addActivity("ስርዓት", "አስተዳዳሪ ወጥቷል");
     }
 
-    // Add new user (admin action)
     function addNewUser() {
         const name = document.getElementById('newUserName').value.trim();
         const pass = document.getElementById('newUserPass').value.trim();
@@ -235,7 +226,6 @@
         alert(`ተጠቃሚ "${name}" ተጨምሯል።`);
     }
 
-    // Delete user (only admin can delete, cannot delete own account)
     function deleteUser(fullName) {
         if (fullName === ADMIN_USER) {
             alert("የራስዎን መለያ መሰረዝ አይችሉም።");
@@ -256,7 +246,7 @@
         let filtered = allUsers.filter(u => u.fullName.toLowerCase().includes(currentFilter.toLowerCase()));
         tbody.innerHTML = '';
         filtered.forEach(user => {
-            const isOnline = false; // not tracking online in admin
+            const isOnline = false;
             const rowClass = user.favorite ? 'favorite-row' : '';
             const tr = document.createElement('tr');
             tr.className = rowClass;
@@ -317,7 +307,6 @@
         loadAllData();
     }
 
-    // ----- Match & comment management (same as before) -----
     function addComment(matchId) {
         const inputField = document.getElementById(`admin-comment-input-${matchId}`);
         if (!inputField) return;
@@ -481,7 +470,6 @@
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-    // Make functions global for inline onclick
     window.addNewUser = addNewUser;
     window.toggleFavorite = toggleFavorite;
     window.toggleBlock = toggleBlock;
