@@ -47,9 +47,12 @@
         .add-comment-form { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .add-comment-form input { flex: 1; padding: 0.3rem; border: 1px solid #e2e8f0; border-radius: 2rem; font-size: 0.8rem; }
         .add-comment-form button { padding: 0.2rem 0.6rem; font-size: 0.7rem; }
-        .add-user-form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; background: #f8fafc; padding: 0.8rem; border-radius: 1rem; align-items: center; }
-        .add-user-form input { flex: 1; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 2rem; }
-        .add-user-form button { background: #10b981; padding: 0.4rem 1rem; }
+        .add-admin-form, .add-user-form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; background: #f8fafc; padding: 0.8rem; border-radius: 1rem; align-items: center; }
+        .add-admin-form input, .add-user-form input { flex: 1; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 2rem; }
+        .add-admin-form button, .add-user-form button { background: #10b981; padding: 0.4rem 1rem; }
+        .admin-users-section { margin-top: 1rem; }
+        .admin-user-card { background: #f8fafc; padding: 0.5rem; border-radius: 0.5rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        hr { margin: 1rem 0; }
     </style>
 </head>
 <body>
@@ -75,8 +78,20 @@
             <button class="logout-btn" onclick="logoutAdmin()">ውጣ</button>
         </div>
 
+        <!-- Manage Admin Users (Separate) -->
         <div class="admin-panel">
-            <h2>➕ አዲስ ተጠቃሚ ይጨምሩ</h2>
+            <h2>👑 አስተዳዳሪ ተጠቃሚዎችን ያስተዳድሩ</h2>
+            <div class="add-admin-form">
+                <input type="text" id="newAdminName" placeholder="አስተዳዳሪ ሙሉ ስም">
+                <input type="password" id="newAdminPass" placeholder="የይለፍ ቃል">
+                <button onclick="addAdminUser()">አስተዳዳሪ ጨምር</button>
+            </div>
+            <div id="adminUsersList"></div>
+        </div>
+
+        <!-- Manage Regular Users (Main Site) -->
+        <div class="admin-panel">
+            <h2>➕ አዲስ ተጠቃሚ (ዋና ጣቢያ) ይጨምሩ</h2>
             <div class="add-user-form">
                 <input type="text" id="newUserName" placeholder="ሙሉ ስም">
                 <input type="password" id="newUserPass" placeholder="የይለፍ ቃል">
@@ -85,7 +100,7 @@
         </div>
 
         <div class="admin-panel">
-            <h2>👥 የተመዘገቡ ተጠቃሚዎች</h2>
+            <h2>👥 የተመዘገቡ ተጠቃሚዎች (ዋና ጣቢያ)</h2>
             <div class="search-box">
                 <input type="text" id="searchUser" placeholder="በስም ፈልግ..." onkeyup="filterUsers()">
                 <button onclick="filterUsers()">🔍 ፈልግ</button>
@@ -131,23 +146,31 @@
 
 <script>
     const GLOBAL_PASS = "admin123";
-    const ADMIN_USER = "AB Ahmed";
-    const ADMIN_PASS = "2224633";
-
-    let globalVerified = false;
+    // Master admin is now stored in adminUsers list (will be added automatically)
+    let adminUsers = []; // { fullName, password }
     let allUsers = [], allMatches = [], allComments = [], activityLog = [], currentFilter = '';
     let currentLoggedAdmin = null;
+    let globalVerified = false;
 
     function loadAllData() {
+        // Load admin users from localStorage
+        try { adminUsers = JSON.parse(localStorage.getItem('awolia_admins') || '[]'); } catch(e) { adminUsers = []; }
+        // Ensure master admin exists
+        if (!adminUsers.some(u => u.fullName === "AB Ahmed")) {
+            adminUsers.push({ fullName: "AB Ahmed", password: "2224633" });
+            saveAdminUsers();
+        }
         allUsers = JSON.parse(localStorage.getItem('awolia_users') || '[]');
         allMatches = JSON.parse(localStorage.getItem('awolia_matches') || '[]');
         allComments = JSON.parse(localStorage.getItem('awolia_comments') || '[]');
         activityLog = JSON.parse(localStorage.getItem('awolia_activity') || '[]');
+        renderAdminUsersList();
         renderUsersTable();
         renderMatchesWithComments();
         renderActivityLog();
     }
 
+    function saveAdminUsers() { localStorage.setItem('awolia_admins', JSON.stringify(adminUsers)); }
     function saveMatches() { localStorage.setItem('awolia_matches', JSON.stringify(allMatches)); }
     function saveComments() { localStorage.setItem('awolia_comments', JSON.stringify(allComments)); }
     function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(allUsers)); }
@@ -185,8 +208,9 @@
         }
         const username = document.getElementById('adminUsername').value.trim();
         const password = document.getElementById('adminUserPass').value.trim();
-        if (username === ADMIN_USER && password === ADMIN_PASS) {
-            currentLoggedAdmin = { fullName: username };
+        const found = adminUsers.find(u => u.fullName === username && u.password === password);
+        if (found) {
+            currentLoggedAdmin = found;
             document.getElementById('step2').style.display = 'none';
             document.getElementById('adminView').style.display = 'block';
             document.getElementById('currentAdminName').innerText = username;
@@ -211,6 +235,55 @@
         addActivity("ስርዓት", "አስተዳዳሪ ወጥቷል");
     }
 
+    // Admin user management
+    function renderAdminUsersList() {
+        const container = document.getElementById('adminUsersList');
+        if (!container) return;
+        if (adminUsers.length === 0) {
+            container.innerHTML = '<p>እስካሁን ምንም አስተዳዳሪ የለም።</p>';
+            return;
+        }
+        let html = '';
+        adminUsers.forEach((user, idx) => {
+            const isMaster = (user.fullName === "AB Ahmed");
+            const canDelete = (currentLoggedAdmin && currentLoggedAdmin.fullName !== user.fullName);
+            html += `<div class="admin-user-card">
+                        <span><strong>${escapeHtml(user.fullName)}</strong> ${isMaster ? '(Master)' : ''}</span>
+                        ${canDelete ? `<button class="delete-btn" onclick="deleteAdminUser('${escapeHtml(user.fullName)}')">ሰርዝ</button>` : ''}
+                    </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function addAdminUser() {
+        const name = document.getElementById('newAdminName').value.trim();
+        const pass = document.getElementById('newAdminPass').value.trim();
+        if (!name || !pass) { alert("እባክዎ ሙሉ ስም እና የይለፍ ቃል ያስገቡ።"); return; }
+        if (adminUsers.some(u => u.fullName.toLowerCase() === name.toLowerCase())) { alert("ይህ አስተዳዳሪ ቀድሞ አለ።"); return; }
+        adminUsers.push({ fullName: name, password: pass });
+        saveAdminUsers();
+        renderAdminUsersList();
+        document.getElementById('newAdminName').value = '';
+        document.getElementById('newAdminPass').value = '';
+        addActivity(currentLoggedAdmin ? currentLoggedAdmin.fullName : "አስተዳዳሪ", `አዲስ አስተዳዳሪ ተጨምሯል: ${name}`);
+        alert(`አስተዳዳሪ "${name}" ተጨምሯል።`);
+    }
+
+    function deleteAdminUser(fullName) {
+        if (fullName === "AB Ahmed") {
+            alert("ዋናውን አስተዳዳሪ መሰረዝ አይቻልም።");
+            return;
+        }
+        if (confirm(`አስተዳዳሪ "${fullName}" ን መሰረዝ ይፈልጋሉ?`)) {
+            adminUsers = adminUsers.filter(u => u.fullName !== fullName);
+            saveAdminUsers();
+            renderAdminUsersList();
+            addActivity(currentLoggedAdmin ? currentLoggedAdmin.fullName : "አስተዳዳሪ", `አስተዳዳሪ ተሰርዟል: ${fullName}`);
+            alert(`አስተዳዳሪ "${fullName}" ተሰርዟል።`);
+        }
+    }
+
+    // Regular user management (main site users)
     function addNewUser() {
         const name = document.getElementById('newUserName').value.trim();
         const pass = document.getElementById('newUserPass').value.trim();
@@ -227,10 +300,6 @@
     }
 
     function deleteUser(fullName) {
-        if (fullName === ADMIN_USER) {
-            alert("የራስዎን መለያ መሰረዝ አይችሉም።");
-            return;
-        }
         if (confirm(`ተጠቃሚ "${fullName}" ን መሰረዝ ይፈልጋሉ? ይህ እርምጃ ሊቀለበስ አይችልም።`)) {
             allUsers = allUsers.filter(u => u.fullName !== fullName);
             saveUsers();
@@ -307,6 +376,7 @@
         loadAllData();
     }
 
+    // Match and comment management (same as before)
     function addComment(matchId) {
         const inputField = document.getElementById(`admin-comment-input-${matchId}`);
         if (!inputField) return;
@@ -470,7 +540,11 @@
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
+    // Expose functions globally
+    window.addAdminUser = addAdminUser;
+    window.deleteAdminUser = deleteAdminUser;
     window.addNewUser = addNewUser;
+    window.deleteUser = deleteUser;
     window.toggleFavorite = toggleFavorite;
     window.toggleBlock = toggleBlock;
     window.filterUsers = filterUsers;
@@ -483,7 +557,6 @@
     window.addComment = addComment;
     window.editComment = editComment;
     window.deleteComment = deleteComment;
-    window.deleteUser = deleteUser;
     window.checkGlobalPassword = checkGlobalPassword;
     window.verifyAdminUser = verifyAdminUser;
     window.backToStep1 = backToStep1;
