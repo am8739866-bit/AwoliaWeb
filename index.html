@@ -8,7 +8,6 @@
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/am8739866-bit/AwoliaWeb/main/awolia-youth-logo.jpg">
     <meta name="theme-color" content="#f8fafc">
     <style>
-        /* ========== CSS (same as previous working version) ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg-gradient: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
@@ -178,6 +177,7 @@
         <h2 class="section-title fade-up">👁️ ራዕይ</h2><div class="glass-card fade-up"><p>በ2031 ዓ.ም በኢትዮጵያ እና በዓለም አቀፍ ደረጃ እንደ ተምሳሌት የሚጠቀስ የወጣቶች ድርጅት መሆን።</p></div>
         <h2 class="section-title fade-up">💎 መሠረታዊ እሴቶች</h2><div class="glass-card fade-up"><ul><li>መንፈሳዊ ቁርጠኝነት</li><li>አገልጋይ አመራር</li><li>ወንድማማችነት እና አንድነት</li><li>ታማኝነት እና ግልጽነት</li><li>ልቀትና ፈጠራ</li><li>እኩልነት እና ፍትሕ</li></ul></div>
     </div>
+
     <div id="community-page" class="page"><h2 class="section-title fade-up">🤝 ዘርፎች እና ተግባራት</h2><div class="activity-grid"><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">ማህበራዊ እንክብካቤ</h3><ul><li>የረመዳን የምግብ ድጋፍ</li><li>የዘካተ ፊጥር ስርጭት</li><li>የታመሙ ጉብኝት</li><li>የልብስ እና ጫማ ልገሳ</li><li>በክረምት የትምህርት ቁሳቁስ</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">📖 ዳዕዋ እና ቁርአን</h3><ul><li>የሸሪዓ ኮርሶች</li><li>ጥያቄ እና መልስ</li><li>የቁርአን ቅራኣት ድጋፍ</li><li>ሃይማኖታዊ መጣጥፎች</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">👩 የሴቶች ዘርፍ</h3><ul><li>ሳምንታዊ የቁርአን ጥናት</li><li>ሴት-ለ-ሴት ዳዕዋ</li><li>ለጁሙዓ ሶላት ማመቻቸት</li></ul></div><div class="glass-card fade-up"><h3 style="color:#2dd4bf;">🏅 ስፖርት</h3><ul><li>አክህላቅ ቱርናሜንት</li><li>የእሁድ እግር ኳስ</li><li>ቦክስ፣ ቮሊቦል</li></ul></div></div><div class="glass-card fade-up" style="margin-top:1.5rem;"><p>🌟 <strong>አዲስ ተነሳሽነት – የእውቀት መድረክ</strong> በየሳምንቱ ሐሙስ ከማግሪብ ሶላት በኋላ ይካሄዳል።</p></div></div>
     <div id="donate-page" class="page"><div class="donate-box fade-up"><h3 style="color:#2dd4bf;">💚 ድጋፍዎ እንኳን ደህና መጣ</h3><p>ልገሳዎችዎ የወጣቶች ፕሮግራሞችን ለማስኬድ ይረዳሉ።</p><div class="glass-card" style="margin:1rem auto; max-width:450px;"><p><strong>የባንክ አካውንት ቁጥር:</strong> 1000560249733 <button class="copy-btn" data-text="1000560249733">ቅዳ</button></p><p><strong>ባንክ:</strong> ንግድ ባንክ (ሲቢኢ)</p><p><strong>መግለጫ:</strong> “ለአወሊያ መስጂድ ወጣቶች”</p></div><p>🙏 አላህ ይቀበል። ትንሽም ቢሆን ልገሳ ከፍተኛ ለውጥ ያመጣል።</p></div></div>
     <div id="prayer-page" class="page"><h2 class="section-title fade-up">🕌 የሶላት ሰዓት (3P55+GR አዲስ አበባ)</h2><div class="prayer-grid" id="prayerGrid"></div><div class="countdown-box fade-up"><h3>⏳ ቀጣይ ሶላት</h3><div class="countdown-timer" id="countdownTimer">--:--:--</div><p>ቀጣይ: <span id="nextPrayerName">--</span></p><button id="enableNotifBtn" class="btn btn-outline">🔔 ማንቂያ አንቃ</button><button id="testPrayerSound" class="btn btn-outline" style="margin-top:0.5rem;">🔊 ሙከራ</button></div><div class="notif-history fade-up"><h3 style="color:#2dd4bf;">📬 አዲስ ማሳወቂያ</h3><div id="notifList">እባክዎ ይግቡ ወይም ይመዝገቡ</div><button id="clearAllNotifs" style="background:#a12a2a; color:white; border:none; padding:0.3rem 0.8rem; border-radius:2rem; margin-top:0.5rem;">🗑 ሁሉንም አንብብ አድርግ</button></div><p style="margin-top:1rem;">የጁምአ ሰላት ከቀኑ 12፡24 ሰአት ይሰግዳል። ከመድረሱ በፊት ገላዎን መታጠብዎን ያረጋግጡ።</p></div>
@@ -212,19 +212,15 @@
         try { users = JSON.parse(localStorage.getItem('awolia_users') || '[]'); } catch(e) { users = []; }
         try { matches = JSON.parse(localStorage.getItem('awolia_matches') || '[]'); } catch(e) { matches = []; }
         try { allComments = JSON.parse(localStorage.getItem('awolia_comments') || '[]'); } catch(e) { allComments = []; }
-        renderMatchesWithComments();  // always refresh after data load
+        renderMatchesWithComments();
     }
 
     function saveComments() { localStorage.setItem('awolia_comments', JSON.stringify(allComments)); }
 
     function getCommentsForMatch(matchId) { return allComments.filter(c => c.matchId === matchId); }
 
-    // User adds a comment – only if logged in
     function addUserComment(matchId) {
-        if (!currentUser) {
-            alert("እባክዎ መጀመሪያ ይግቡ ወይም ይመዝገቡ።");
-            return;
-        }
+        if (!currentUser) { alert("እባክዎ መጀመሪያ ይግቡ ወይም ይመዝገቡ።"); return; }
         const inputField = document.getElementById(`comment-input-${matchId}`);
         if (!inputField) return;
         const text = inputField.value.trim();
@@ -238,7 +234,6 @@
         };
         allComments.push(newComment);
         saveComments();
-        // Dynamically add comment to the DOM without full refresh
         const commentsContainer = document.getElementById(`comments-container-${matchId}`);
         if (commentsContainer) {
             const noCommentsDiv = commentsContainer.querySelector('.no-comments');
@@ -251,7 +246,7 @@
             if (countSpan) countSpan.innerText = allComments.filter(c => c.matchId === matchId).length;
         }
         inputField.value = '';
-        inputField.focus();  // keep keyboard open
+        inputField.focus();
     }
 
     function renderMatchesWithComments() {
@@ -298,7 +293,7 @@
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-    // ----- User management (same as before, but added renderMatchesWithComments on login/logout) -----
+    // ----- User management -----
     function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(users)); }
     let activityLog = [];
     try { const a = localStorage.getItem('awolia_activity'); if (a) activityLog = JSON.parse(a); } catch(e) { activityLog = []; }
@@ -334,10 +329,10 @@
         currentUser = user; persistCurrentUser(); updateUserUI(); closeAuthModalFunc();
         addActivity(currentUser.fullName, "🎮 በዴሞ ገብቷል");
         alert("በዴሞ መለያ ገብተዋል። ሁሉም ተግባራት በሙሉ ይገኛሉ።");
-        renderMatchesWithComments(); // Refresh the matches grid to show comment form
+        renderMatchesWithComments();
     }
 
-    // ----- Notifications (unchanged) -----
+    // ----- Notifications -----
     function getCurrentUserNotifications() { if (!currentUser) return []; const u=findUserByName(currentUser.fullName); return u ? (u.notifications||[]) : []; }
     function showPopupWithOk(notification) {
         let cont = document.getElementById('msgContainer');
@@ -405,7 +400,6 @@
             statusDiv.innerHTML = '🔒 እባክዎ ይግቡ ወይም ይመዝገቡ';
             document.getElementById('notifList').innerHTML = '<div class="notif-item" style="text-align:center;">እባክዎ ይግቡ ወይም ይመዝገቡ</div>';
         }
-        // Refresh the matches grid whenever the user UI changes (login/logout)
         renderMatchesWithComments();
     }
 
@@ -445,7 +439,7 @@
             closeAuthModalFunc();
             fName.value = ''; pwd.value = '';
             persistCurrentUser();
-            updateUserUI();        // This will refresh the matches grid
+            updateUserUI();
         } catch (err) { alert("ስህተት: " + err.message); }
     };
     switchBtn.onclick = () => { isReg = !isReg; document.getElementById('authModalTitle').innerText = isReg ? "📝 አዲስ የአካባቢ መለያ ይፍጠሩ" : "🔐 በአካባቢ መለያ ይግቡ"; submitBtn.innerText = isReg ? "ይመዝገቡ" : "ግባ"; };
@@ -620,7 +614,6 @@
         loadData();
     });
 
-    // Expose function for inline onclick
     window.addUserComment = addUserComment;
 </script>
 </body>
