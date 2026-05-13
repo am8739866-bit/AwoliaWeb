@@ -186,7 +186,7 @@
 </div><footer>© 2025 አወሊያ መስጂድ ወጣቶች ጀምዐ – ሁሉም መብቶች ተጠብቀዋል</footer></main>
 
 <script>
-    // ----- Theme switcher -----
+    // Theme switcher
     function setTheme(theme) {
         if (theme === 'dark') { document.body.classList.add('dark'); localStorage.setItem('awolia_theme', 'dark'); }
         else { document.body.classList.remove('dark'); localStorage.setItem('awolia_theme', 'light'); }
@@ -199,7 +199,6 @@
         if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
     });
 
-    // ----- Global variables -----
     let currentUser = null;
     let notificationPermission = false;
     let audioCtx = null;
@@ -216,7 +215,6 @@
     }
 
     function saveComments() { localStorage.setItem('awolia_comments', JSON.stringify(allComments)); }
-
     function getCommentsForMatch(matchId) { return allComments.filter(c => c.matchId === matchId); }
 
     function addUserComment(matchId) {
@@ -293,7 +291,7 @@
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-    // ----- User management -----
+    // ---- User management ----
     function saveUsers() { localStorage.setItem('awolia_users', JSON.stringify(users)); }
     let activityLog = [];
     try { const a = localStorage.getItem('awolia_activity'); if (a) activityLog = JSON.parse(a); } catch(e) { activityLog = []; }
@@ -332,7 +330,6 @@
         renderMatchesWithComments();
     }
 
-    // ----- Notifications -----
     function getCurrentUserNotifications() { if (!currentUser) return []; const u=findUserByName(currentUser.fullName); return u ? (u.notifications||[]) : []; }
     function showPopupWithOk(notification) {
         let cont = document.getElementById('msgContainer');
@@ -418,7 +415,6 @@
     }
     if (currentUser) updateUserUI();
 
-    // ----- Auth modal -----
     const authModal = document.getElementById('authModal'), fName = document.getElementById('authFullName'), pwd = document.getElementById('authPassword'), submitBtn = document.getElementById('authSubmitBtn'), switchBtn = document.getElementById('authSwitch'), closeBtn = document.getElementById('closeAuthModal'), demoBtn = document.getElementById('demoLoginBtn');
     let isReg = false;
     function showAuthModal(reg) { isReg = reg; document.getElementById('authModalTitle').innerText = reg ? "📝 አዲስ የአካባቢ መለያ ይፍጠሩ" : "🔐 በአካባቢ መለያ ይግቡ"; submitBtn.innerText = reg ? "ይመዝገቡ" : "ግባ"; authModal.style.display = "flex"; }
@@ -450,7 +446,6 @@
         else showAuthModal(false);
     });
 
-    // ----- Sidebar navigation -----
     const side = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), menu = document.getElementById('menuBtn');
     menu.onclick = () => { side.classList.add('open'); overlay.classList.add('active'); };
     overlay.onclick = () => { side.classList.remove('open'); overlay.classList.remove('active'); };
@@ -460,7 +455,7 @@
     navs.forEach(l => l.addEventListener('click', (e) => { e.preventDefault(); const pid = l.dataset.page; if (pid && pages[pid]) switchPage(pid); }));
     document.querySelectorAll('.hero-nav').forEach(b => b.addEventListener('click', (e) => { e.preventDefault(); const t = b.getAttribute('data-page-target'); if (t && pages[t]) switchPage(t); }));
 
-    // ----- Prayer times (fixed location) -----
+    // Prayer times
     const prayerNames = { Fajr: 'ፋጅር', Dhuhr: 'ዙህር', Asr: 'ዐስር', Maghrib: 'መግሪብ', Isha: 'ዒሻ' };
     let prayerCache = null, lastAlert = null;
     async function fetchPrayerTimes() {
@@ -472,9 +467,9 @@
             const data = await res.json();
             if (data.code === 200 && data.data) {
                 const day = data.data[d.getDate() - 1];
-                if (day?.timings) return { Fajr: day.timings.Fajr.substring(0, 5), Dhuhr: day.timings.Dhuhr.substring(0, 5), Asr: day.timings.Asr.substring(0, 5), Maghrib: day.timings.Maghrib.substring(0, 5), Isha: day.timings.Isha.substring(0, 5) };
+                if (day?.timings) return { Fajr: day.timings.Fajr.substring(0,5), Dhuhr: day.timings.Dhuhr.substring(0,5), Asr: day.timings.Asr.substring(0,5), Maghrib: day.timings.Maghrib.substring(0,5), Isha: day.timings.Isha.substring(0,5) };
             }
-        } catch (e) { }
+        } catch(e) { }
         return { Fajr: "05:02", Dhuhr: "12:23", Asr: "15:36", Maghrib: "18:35", Isha: "19:43" };
     }
     async function loadPrayerTimesUI() {
@@ -516,7 +511,7 @@
             const nxt = getNextPrayer();
             if (!nxt) return;
             const timerDiv = document.getElementById('countdownTimer'), nameSpan = document.getElementById('nextPrayerName');
-            if (timerDiv) timerDiv.innerText = `${String(nxt.hours).padStart(2, '0')}:${String(nxt.minutes).padStart(2, '0')}:${String(nxt.seconds).padStart(2, '0')}`;
+            if (timerDiv) timerDiv.innerText = `${String(nxt.hours).padStart(2,'0')}:${String(nxt.minutes).padStart(2,'0')}:${String(nxt.seconds).padStart(2,'0')}`;
             if (nameSpan) nameSpan.innerText = `${nxt.name} (${nxt.time})`;
             if (nxt.totalSec <= 0.5 && lastAlert !== nxt.key && notificationPermission && currentUser) {
                 playBeep();
@@ -538,11 +533,10 @@
             };
             if (ctx.state === 'suspended') ctx.resume().then(play);
             else play();
-        } catch (e) { }
+        } catch(e) { }
     }
     loadPrayerTimesUI();
 
-    // ----- Notification permission button -----
     document.getElementById('enableNotifBtn')?.addEventListener('click', async () => {
         if (!currentUser) { alert("እባክዎ መጀመሪያ ይግቡ።"); return; }
         if (Notification.permission === 'granted') { notificationPermission = true; new Notification("✅ ማንቂያ ንቁ ነው"); }
@@ -551,23 +545,12 @@
     });
     document.getElementById('testPrayerSound')?.addEventListener('click', () => { playBeep(); if (notificationPermission) new Notification("ሙከራ", { body: "ድምፅ እየሰራ ነው" }); });
     document.getElementById('clearAllNotifs')?.addEventListener('click', () => { if (currentUser) markAllNotificationsRead(); });
-    document.querySelectorAll('.copy-btn').forEach(btn => { btn.addEventListener('click', function () { navigator.clipboard.writeText(this.dataset.text); this.innerText = 'ተቀድቷል!'; setTimeout(() => this.innerText = 'ቅዳ', 1500); }); });
+    document.querySelectorAll('.copy-btn').forEach(btn => { btn.addEventListener('click', function() { navigator.clipboard.writeText(this.dataset.text); this.innerText='ተቀድቷል!'; setTimeout(()=>this.innerText='ቅዳ',1500); }); });
 
-    // ----- Storage & cross-tab sync -----
     window.addEventListener('storage', (e) => {
-        if (e.key === 'awolia_users' && currentUser) {
-            try { users = JSON.parse(e.newValue || '[]'); } catch (e) { }
-            checkForNewNotificationsAndShow();
-            loadUserNotifications();
-        }
-        if (e.key === 'awolia_matches') {
-            try { matches = JSON.parse(e.newValue || '[]'); } catch (e) { }
-            renderMatchesWithComments();
-        }
-        if (e.key === 'awolia_comments') {
-            try { allComments = JSON.parse(e.newValue || '[]'); } catch (e) { }
-            renderMatchesWithComments();
-        }
+        if (e.key === 'awolia_users' && currentUser) { try { users = JSON.parse(e.newValue || '[]'); } catch(e) { } checkForNewNotificationsAndShow(); loadUserNotifications(); }
+        if (e.key === 'awolia_matches') { try { matches = JSON.parse(e.newValue || '[]'); } catch(e) { } renderMatchesWithComments(); }
+        if (e.key === 'awolia_comments') { try { allComments = JSON.parse(e.newValue || '[]'); } catch(e) { } renderMatchesWithComments(); }
     });
     function checkForNewNotificationsAndShow() {
         if (!currentUser) return;
@@ -575,34 +558,20 @@
         if (!user || !user.notifications) return;
         if (!window.shownNotifIds) window.shownNotifIds = new Set();
         const unread = user.notifications.filter(n => !n.read && !window.shownNotifIds.has(n.id));
-        for (let notif of unread) {
-            window.shownNotifIds.add(notif.id);
-            showPopupWithOk(notif);
-        }
+        for (let notif of unread) { window.shownNotifIds.add(notif.id); showPopupWithOk(notif); }
         loadUserNotifications();
     }
     setInterval(() => {
         if (currentUser) {
             const freshUsers = JSON.parse(localStorage.getItem('awolia_users') || '[]');
-            if (JSON.stringify(users) !== JSON.stringify(freshUsers)) {
-                users = freshUsers;
-                checkForNewNotificationsAndShow();
-                loadUserNotifications();
-            }
+            if (JSON.stringify(users) !== JSON.stringify(freshUsers)) { users = freshUsers; checkForNewNotificationsAndShow(); loadUserNotifications(); }
         }
         const freshMatches = JSON.parse(localStorage.getItem('awolia_matches') || '[]');
-        if (JSON.stringify(matches) !== JSON.stringify(freshMatches)) {
-            matches = freshMatches;
-            renderMatchesWithComments();
-        }
+        if (JSON.stringify(matches) !== JSON.stringify(freshMatches)) { matches = freshMatches; renderMatchesWithComments(); }
         const freshComments = JSON.parse(localStorage.getItem('awolia_comments') || '[]');
-        if (JSON.stringify(allComments) !== JSON.stringify(freshComments)) {
-            allComments = freshComments;
-            renderMatchesWithComments();
-        }
+        if (JSON.stringify(allComments) !== JSON.stringify(freshComments)) { allComments = freshComments; renderMatchesWithComments(); }
     }, 3000);
 
-    // ----- Scroll animations & loader -----
     const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     window.addEventListener('load', () => {
@@ -613,7 +582,6 @@
         }, 1200);
         loadData();
     });
-
     window.addUserComment = addUserComment;
 </script>
 </body>
